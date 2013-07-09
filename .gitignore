@@ -11,3 +11,9 @@
 *.lai
 *.la
 *.a
+/ClipClient/Debug
+/ClipClient/ipch
+/ClipClient/ClipClient.opensdf
+/ClipClient/ClipClient.sdf
+/ClipClient/ClipClient.suo
+/ClipClient/ClipClient.vcxproj.user
