@@ -39,18 +39,18 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>C:\Program Files (x86)\ZeroMQ 3.2.3\include;$(VCInstallDir)include;$(VCInstallDir)atlmfc\include;$(WindowsSdkDir)include;$(FrameworkSDKDir)\include;</IncludePath>
-    <LibraryPath>C:\Program Files (x86)\ZeroMQ 3.2.3\lib;$(VCInstallDir)lib;$(VCInstallDir)atlmfc\lib;$(WindowsSdkDir)lib;$(FrameworkSDKDir)\lib</LibraryPath>
+    <IncludePath>D:\docs\code\ClipClient\FirstPlugin;D:\docs\code\lib\boost_1_54_0;C:\Program Files (x86)\ZeroMQ 3.2.3\include;$(VCInstallDir)include;$(VCInstallDir)atlmfc\include;$(WindowsSdkDir)include;$(FrameworkSDKDir)\include;./</IncludePath>
+    <LibraryPath>D:\docs\code\lib\boost_1_54_0\stage\lib;C:\Program Files (x86)\ZeroMQ 3.2.3\lib;$(VCInstallDir)lib;$(VCInstallDir)atlmfc\lib;$(WindowsSdkDir)lib;$(FrameworkSDKDir)\lib</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
-      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>SS_DONT_USE_BOOST;WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -84,17 +84,46 @@
     <ClInclude Include="ClipboardItem.h" />
     <ClInclude Include="ClipClient.h" />
     <ClInclude Include="Data.h" />
+    <ClInclude Include="DynamicLibrary.h" />
     <ClInclude Include="NetworkHandler.h" />
+    <ClInclude Include="PluginManager.h" />
+    <ClInclude Include="plugin\Plugin.h" />
     <ClInclude Include="Resource.h" />
+    <ClInclude Include="ss\array.h" />
+    <ClInclude Include="ss\bulk_setting.h" />
+    <ClInclude Include="ss\configuration.h" />
+    <ClInclude Include="ss\const_.h" />
+    <ClInclude Include="ss\defaults_holder.h" />
+    <ClInclude Include="ss\enum.h" />
+    <ClInclude Include="ss\error.h" />
+    <ClInclude Include="ss\file_storage.h" />
+    <ClInclude Include="ss\fwd.h" />
+    <ClInclude Include="ss\registry_storage.h" />
+    <ClInclude Include="ss\setting.h" />
+    <ClInclude Include="ss\setting_storage.h" />
+    <ClInclude Include="ss\template.h" />
+    <ClInclude Include="ss\ts.h" />
+    <ClInclude Include="ss\util.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
+    <ClInclude Include="utils.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Clipboard.cpp" />
     <ClCompile Include="ClipboardItem.cpp" />
     <ClCompile Include="ClipClient.cpp" />
     <ClCompile Include="Data.cpp" />
+    <ClCompile Include="DynamicLibrary.cpp" />
     <ClCompile Include="NetworkHandler.cpp" />
+    <ClCompile Include="PluginManager.cpp" />
+    <ClCompile Include="ss_src\bulk_setting.cpp" />
+    <ClCompile Include="ss_src\configuration.cpp" />
+    <ClCompile Include="ss_src\defaults_holder.cpp" />
+    <ClCompile Include="ss_src\enum.cpp" />
+    <ClCompile Include="ss_src\error.cpp" />
+    <ClCompile Include="ss_src\file_storage.cpp" />
+    <ClCompile Include="ss_src\registry_storage.cpp" />
+    <ClCompile Include="ss_src\util.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>

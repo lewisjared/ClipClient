@@ -1,6 +1,13 @@
 #include "stdafx.h"
+#include <string>
 #include "ClipboardItem.h"
 #include "ClipClient.h"
+#include "DynamicLibrary.h"
+#include "PluginManager.h"
+
+#include "ss/setting.h"
+
+using namespace ss;
 
 
 ClipboardItem::ClipboardItem()
@@ -45,12 +52,16 @@ void ClipboardItem::readClipboard()
 	//Allocate the correct size
 	HGLOBAL   hglb;
 	hglb = GetClipboardData(m_format);
+	std::wstring str;
 
 	if (hglb != NULL) 
     {
 		void* rawData = GlobalLock(hglb);
 		size_t allocatedSize = GlobalSize(hglb);
-		m_data = Data(rawData, allocatedSize);
+
+		if (allocatedSize < setting<int>(TTEXT("max_size")))
+			m_data = Data(rawData, allocatedSize);
+
 		GlobalUnlock(hglb);
 	}
 }

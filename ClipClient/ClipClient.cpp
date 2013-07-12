@@ -5,7 +5,14 @@
 #include "ClipClient.h"
 #include "ClipboardItem.h"
 #include "NetworkHandler.h"
+#include "PluginManager.h"
+#include "TestClass.h"
+#include "ss/setting.h"
+#include "ss/configuration.h"
+#include "ss/file_storage.h"
 #include <vector>
+
+using namespace ss;
 
 #define MAX_LOADSTRING 100
 
@@ -15,6 +22,20 @@ TCHAR szTitle[MAX_LOADSTRING];					// The title bar text
 TCHAR szWindowClass[MAX_LOADSTRING];			// the main window class name
 
 NetworkHandler networkHandler;
+
+void ss::init_settings( ) {
+	def_cfg().add_storage(TTEXT("user"), new file_storage("user.ini"));
+
+	// defaults
+	setting(TTEXT("max_size")) = 10;
+	setting(TTEXT("a.b")) = TTEXT("amazingly def");
+
+	bulk_setting(
+		TTEXT("chart.window.width=100"),
+		TTEXT("chart.window.height=50"),
+		TTEXT("user.ab=yes_or_no"),
+		TTEXT("tmp.del_period=20"));
+}
 
 // Forward declarations of functions included in this code module:
 ATOM				MyRegisterClass(HINSTANCE hInstance);
@@ -114,6 +135,14 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
    }
 
    AddClipboardFormatListener(hWnd);
+
+	PluginManager& pm = PluginManager::getInstance();
+	pm.loadAll("D:/docs/code/ClipClient/ClipClient/debug");
+
+	void* pTc = pm.createObject("TestClass");
+	int res = ((ITemp*)pTc)->getVal();
+
+	delete pTc;
 
    ShowWindow(hWnd, nCmdShow);
    UpdateWindow(hWnd);

@@ -13,6 +13,15 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Header Files\ss">
+      <UniqueIdentifier>{f9fd58ba-64d5-4804-b508-491fbbf871dc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\ss_src">
+      <UniqueIdentifier>{a84d0222-3de6-469c-9b0d-ceb90d95ad2a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\plugin">
+      <UniqueIdentifier>{c547ef10-10bc-4179-bdad-22e59f7f0292}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="ReadMe.txt" />
@@ -48,6 +57,63 @@
     <ClInclude Include="ClipboardItem.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="ss\fwd.h">
+      <Filter>Header Files\ss</Filter>
+    </ClInclude>
+    <ClInclude Include="ss\registry_storage.h">
+      <Filter>Header Files\ss</Filter>
+    </ClInclude>
+    <ClInclude Include="ss\setting.h">
+      <Filter>Header Files\ss</Filter>
+    </ClInclude>
+    <ClInclude Include="ss\setting_storage.h">
+      <Filter>Header Files\ss</Filter>
+    </ClInclude>
+    <ClInclude Include="ss\template.h">
+      <Filter>Header Files\ss</Filter>
+    </ClInclude>
+    <ClInclude Include="ss\ts.h">
+      <Filter>Header Files\ss</Filter>
+    </ClInclude>
+    <ClInclude Include="ss\util.h">
+      <Filter>Header Files\ss</Filter>
+    </ClInclude>
+    <ClInclude Include="ss\array.h">
+      <Filter>Header Files\ss</Filter>
+    </ClInclude>
+    <ClInclude Include="ss\bulk_setting.h">
+      <Filter>Header Files\ss</Filter>
+    </ClInclude>
+    <ClInclude Include="ss\configuration.h">
+      <Filter>Header Files\ss</Filter>
+    </ClInclude>
+    <ClInclude Include="ss\const_.h">
+      <Filter>Header Files\ss</Filter>
+    </ClInclude>
+    <ClInclude Include="ss\defaults_holder.h">
+      <Filter>Header Files\ss</Filter>
+    </ClInclude>
+    <ClInclude Include="ss\enum.h">
+      <Filter>Header Files\ss</Filter>
+    </ClInclude>
+    <ClInclude Include="ss\error.h">
+      <Filter>Header Files\ss</Filter>
+    </ClInclude>
+    <ClInclude Include="ss\file_storage.h">
+      <Filter>Header Files\ss</Filter>
+    </ClInclude>
+    <ClInclude Include="DynamicLibrary.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="utils.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PluginManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="plugin\Plugin.h">
+      <Filter>Header Files\plugin</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -66,6 +132,36 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Data.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ss_src\bulk_setting.cpp">
+      <Filter>Source Files\ss_src</Filter>
+    </ClCompile>
+    <ClCompile Include="ss_src\configuration.cpp">
+      <Filter>Source Files\ss_src</Filter>
+    </ClCompile>
+    <ClCompile Include="ss_src\defaults_holder.cpp">
+      <Filter>Source Files\ss_src</Filter>
+    </ClCompile>
+    <ClCompile Include="ss_src\enum.cpp">
+      <Filter>Source Files\ss_src</Filter>
+    </ClCompile>
+    <ClCompile Include="ss_src\error.cpp">
+      <Filter>Source Files\ss_src</Filter>
+    </ClCompile>
+    <ClCompile Include="ss_src\file_storage.cpp">
+      <Filter>Source Files\ss_src</Filter>
+    </ClCompile>
+    <ClCompile Include="ss_src\registry_storage.cpp">
+      <Filter>Source Files\ss_src</Filter>
+    </ClCompile>
+    <ClCompile Include="ss_src\util.cpp">
+      <Filter>Source Files\ss_src</Filter>
+    </ClCompile>
+    <ClCompile Include="DynamicLibrary.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="PluginManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
