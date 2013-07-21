@@ -4,6 +4,7 @@
 
 
 NetworkHandler::NetworkHandler(void)
+	:m_subscriber(NULL)
 {
 	m_context = new zmq::context_t(1);
 	m_publisher = new zmq::socket_t(*m_context,ZMQ_PUB);

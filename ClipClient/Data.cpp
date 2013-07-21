@@ -3,13 +3,13 @@
 
 
 Data::Data(void)
-	:m_data(NULL), m_size(0)
+	:m_data(NULL), m_size(0), m_deflatedSize(0)
 {
 }
 
 Data::Data(void* data, size_t n)
+	:m_deflatedSize(0), m_data(std::shared_ptr<void>(operator new(n)))
 {
-	m_data = std::shared_ptr<void>(operator new(n));
 	memcpy(m_data.get(),data, n);
 	m_size = n;
 }

@@ -4,6 +4,7 @@
 #include <boost/chrono.hpp>
 
 
+
 Broadcaster::Broadcaster(void)
 	:m_socket(5000)
 {
@@ -16,10 +17,21 @@ Broadcaster::~Broadcaster(void)
 	m_thread.interrupt();
 }
 
+/**
+ \fn	std::vector<Client> Broadcaster::getActiveClients()
+
+ \brief	Gets active clients.
+ This function can be called from outside of the thread so the internal data is explicitly copied.
+
+ \return	The active clients.
+ */
 
 std::vector<Client> Broadcaster::getActiveClients()
 {
-	return m_clientList;
+	boost::lock_guard<boost::mutex> guard(m_mutex);
+	//Explict copy of data
+	std::vector<Client> result(m_clientList);
+	return result;
 }
 
 void Broadcaster::loop()
@@ -56,6 +68,7 @@ void Broadcaster::checkForReplies()
 	char sender[40];
 	while(m_socket.recv(buff,40,sender) != -1)
 	{
+		boost::lock_guard<boost::mutex> guard(m_mutex);
 		Client client;
 		client.ip = sender;
 		time(&client.lastActiveTime);

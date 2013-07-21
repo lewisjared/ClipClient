@@ -26,5 +26,6 @@ private:
 	boost::thread m_thread;
 	std::vector<Client> m_clientList;
 
+	boost::mutex m_mutex;
 };
 

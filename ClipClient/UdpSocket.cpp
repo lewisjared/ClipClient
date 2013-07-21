@@ -149,6 +149,7 @@ int UDP_Socket::recv(char *buffer, size_t length, char* sender)
 		return -1;
 
 	std::string str = "UDP: Packet received from " + temp;
+	LOG(str);
 
 	if (sender != NULL)
 		strcpy(sender, temp.c_str());

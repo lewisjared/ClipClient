@@ -11,7 +11,7 @@ using namespace ss;
 
 
 ClipboardItem::ClipboardItem()
-	:m_format(-1), m_data()
+	:m_format(-1), m_data(), m_uid(0)
 {
 
 }

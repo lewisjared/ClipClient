@@ -190,8 +190,6 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		EndPaint(hWnd, &ps);
 		break;
 	case WM_CLIPBOARDUPDATE:
-		getClipboard();
-		LOG("testing");
 		break;
 	case WM_DESTROY:
 		RemoveClipboardFormatListener(hWnd);
@@ -222,23 +220,4 @@ INT_PTR CALLBACK About(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
 		break;
 	}
 	return (INT_PTR)FALSE;
-}
-
-
-std::vector<ClipboardItem> getClipboard()
-{
-	std::vector<ClipboardItem> vals;
-
-	UINT format = 0;
-	while(true)
-	{
-		if (!OpenClipboard(NULL))
-			return vals;
-		format = EnumClipboardFormats(format);
-		CloseClipboard();
-		DWORD res = GetLastError();
-		if (format == 0)
-			return vals;
-		vals.push_back(ClipboardItem(format));
-	}
 }
