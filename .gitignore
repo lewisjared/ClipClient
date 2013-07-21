@@ -21,3 +21,4 @@
 /FirstPlugin/FirstPlugin.vcxproj.user
 *.log
 /ClipClient/Visual Lint
+/ClipClient/*.ini
