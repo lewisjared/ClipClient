@@ -19,3 +19,4 @@
 /ClipClient/ClipClient.vcxproj.user
 /FirstPlugin/Debug
 /FirstPlugin/FirstPlugin.vcxproj.user
+*.log
