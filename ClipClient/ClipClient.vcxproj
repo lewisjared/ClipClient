@@ -50,7 +50,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>SS_DONT_USE_BOOST;WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>SS_DONT_USE_BOOST;_CRT_SECURE_NO_WARNINGS;WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -80,11 +80,15 @@
     <None Include="small.ico" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Broadcaster.h" />
     <ClInclude Include="Clipboard.h" />
     <ClInclude Include="ClipboardItem.h" />
     <ClInclude Include="ClipClient.h" />
     <ClInclude Include="Data.h" />
     <ClInclude Include="DynamicLibrary.h" />
+    <ClInclude Include="log\fileLogPolicy.h" />
+    <ClInclude Include="log\logger.h" />
+    <ClInclude Include="log\logPolicy.h" />
     <ClInclude Include="NetworkHandler.h" />
     <ClInclude Include="PluginManager.h" />
     <ClInclude Include="plugin\Plugin.h" />
@@ -106,14 +110,19 @@
     <ClInclude Include="ss\util.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
+    <ClInclude Include="UdpSocket.h" />
     <ClInclude Include="utils.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Broadcaster.cpp" />
     <ClCompile Include="Clipboard.cpp" />
     <ClCompile Include="ClipboardItem.cpp" />
     <ClCompile Include="ClipClient.cpp" />
     <ClCompile Include="Data.cpp" />
     <ClCompile Include="DynamicLibrary.cpp" />
+    <ClCompile Include="log\fileLogPolicy.cpp" />
+    <ClCompile Include="UdpSocket.cpp" />
+    <ClInclude Include="log\logger.cpp" />
     <ClCompile Include="NetworkHandler.cpp" />
     <ClCompile Include="PluginManager.cpp" />
     <ClCompile Include="ss_src\bulk_setting.cpp" />

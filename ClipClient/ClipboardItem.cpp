@@ -59,7 +59,7 @@ void ClipboardItem::readClipboard()
 		void* rawData = GlobalLock(hglb);
 		size_t allocatedSize = GlobalSize(hglb);
 
-		if (allocatedSize < setting<int>(TTEXT("max_size")))
+		if ((int)allocatedSize < setting<int>(TTEXT("max_size")))
 			m_data = Data(rawData, allocatedSize);
 
 		GlobalUnlock(hglb);

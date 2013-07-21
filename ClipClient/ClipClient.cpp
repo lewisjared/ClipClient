@@ -10,6 +10,9 @@
 #include "ss/setting.h"
 #include "ss/configuration.h"
 #include "ss/file_storage.h"
+
+#include "log/logger.h"
+#include "Broadcaster.h"
 #include <vector>
 
 using namespace ss;
@@ -22,7 +25,7 @@ TCHAR szTitle[MAX_LOADSTRING];					// The title bar text
 TCHAR szWindowClass[MAX_LOADSTRING];			// the main window class name
 
 NetworkHandler networkHandler;
-
+Broadcaster* broadcaster;
 void ss::init_settings( ) {
 	def_cfg().add_storage(TTEXT("user"), new file_storage("user.ini"));
 
@@ -52,7 +55,8 @@ int APIENTRY _tWinMain(_In_ HINSTANCE hInstance,
 	UNREFERENCED_PARAMETER(hPrevInstance);
 	UNREFERENCED_PARAMETER(lpCmdLine);
 
- 	// TODO: Place code here.
+	MyLogger::getInstance().setName("output.log");
+	
 	MSG msg;
 	HACCEL hAccelTable;
 
@@ -122,32 +126,28 @@ ATOM MyRegisterClass(HINSTANCE hInstance)
 //
 BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 {
-   HWND hWnd;
+	HWND hWnd;
 
-   hInst = hInstance; // Store instance handle in our global variable
+	hInst = hInstance; // Store instance handle in our global variable
 
-   hWnd = CreateWindow(szWindowClass, szTitle, WS_OVERLAPPEDWINDOW,
-      CW_USEDEFAULT, 0, CW_USEDEFAULT, 0, NULL, NULL, hInstance, NULL);
+	hWnd = CreateWindow(szWindowClass, szTitle, WS_OVERLAPPEDWINDOW,
+		CW_USEDEFAULT, 0, CW_USEDEFAULT, 0, NULL, NULL, hInstance, NULL);
 
-   if (!hWnd)
-   {
-      return FALSE;
-   }
+	if (!hWnd)
+	{
+		return FALSE;
+	}
 
-   AddClipboardFormatListener(hWnd);
+	AddClipboardFormatListener(hWnd);
+	broadcaster = new Broadcaster();
 
 	PluginManager& pm = PluginManager::getInstance();
 	pm.loadAll("D:/docs/code/ClipClient/ClipClient/debug");
 
-	void* pTc = pm.createObject("TestClass");
-	int res = ((ITemp*)pTc)->getVal();
+	ShowWindow(hWnd, nCmdShow);
+	UpdateWindow(hWnd);
 
-	delete pTc;
-
-   ShowWindow(hWnd, nCmdShow);
-   UpdateWindow(hWnd);
-
-   return TRUE;
+	return TRUE;
 }
 
 //
@@ -191,9 +191,11 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		break;
 	case WM_CLIPBOARDUPDATE:
 		getClipboard();
+		LOG("testing");
 		break;
 	case WM_DESTROY:
 		RemoveClipboardFormatListener(hWnd);
+		delete broadcaster;
 		PostQuitMessage(0);
 		break;
 	default:

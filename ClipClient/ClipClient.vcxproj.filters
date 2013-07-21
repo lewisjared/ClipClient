@@ -22,6 +22,12 @@
     <Filter Include="Header Files\plugin">
       <UniqueIdentifier>{c547ef10-10bc-4179-bdad-22e59f7f0292}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\log">
+      <UniqueIdentifier>{dbd47c42-be4a-49a4-bc03-c8008100f70a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\log">
+      <UniqueIdentifier>{c447578f-6955-4313-b17c-410f968c1984}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="ReadMe.txt" />
@@ -114,6 +120,24 @@
     <ClInclude Include="plugin\Plugin.h">
       <Filter>Header Files\plugin</Filter>
     </ClInclude>
+    <ClInclude Include="log\logPolicy.h">
+      <Filter>Header Files\log</Filter>
+    </ClInclude>
+    <ClInclude Include="log\logger.h">
+      <Filter>Header Files\log</Filter>
+    </ClInclude>
+    <ClInclude Include="log\fileLogPolicy.h">
+      <Filter>Header Files\log</Filter>
+    </ClInclude>
+    <ClInclude Include="log\logger.cpp">
+      <Filter>Source Files\log</Filter>
+    </ClInclude>
+    <ClInclude Include="UdpSocket.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Broadcaster.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -162,6 +186,15 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="PluginManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="log\fileLogPolicy.cpp">
+      <Filter>Source Files\log</Filter>
+    </ClCompile>
+    <ClCompile Include="UdpSocket.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Broadcaster.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
