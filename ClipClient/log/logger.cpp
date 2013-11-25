@@ -1,35 +1,52 @@
+#ifdef WIN32
 #include <cassert>
 #include <ctime>
 #include <sstream>
 
-using namespace logging;
+#include "Logger.h"
+#include "LogFile.h"
+#include "LogConsole.h"
 
-
-template<typename log_policy>
-Logger<log_policy>::Logger()
+Logger::Logger()
 {
+	m_nullStream = new std::ostream(NULL);
 	m_lineNum = 0;
-	m_policy = new log_policy;
-	
-	m_mutex = CreateMutex(NULL,false,NULL);
+	m_severity = WARNING;
+	m_file = NULL;
+
+	enableConsole();
 }
 
-template<typename log_policy>
-Logger<log_policy>::~Logger()
+Logger::~Logger()
 {
-	delete m_policy;
+	delete m_file;
 }
 
-template<typename log_policy>
-Logger<log_policy>& Logger<log_policy>::getInstance()
+
+Logger& Logger::getInstance()
 {
-	static Logger<log_policy> logger;
+	static Logger logger;
 
 	return logger;
 }
 
-template<typename log_policy>
-std::string Logger<log_policy>::getTime()
+void Logger::enableConsole()
+{
+	if (m_file)
+		delete m_file;
+	m_file = new ConsoleLogPolicy;
+}
+
+void Logger::enableFile(const std::string& name)
+{
+	if (m_file)
+		delete m_file;
+	m_name = name;
+	m_file = new FileLogPolicy;
+	m_file->openOStream(name);
+}
+
+std::string Logger::getTime()
 {
 	std::string timeStr;
 	time_t currentTime;
@@ -41,8 +58,7 @@ std::string Logger<log_policy>::getTime()
 	return timeStr.substr(0, timeStr.length()-1);
 }
 
-template<typename log_policy>
-std::string Logger<log_policy>::getHeaderText()
+std::string Logger::getHeaderText()
 {
 	std::stringstream text;
 	text.width(5);
@@ -51,44 +67,59 @@ std::string Logger<log_policy>::getHeaderText()
 	return text.str();
 }
 
-template<typename log_policy>
-void Logger<log_policy>::setName(const std::string& name)
+std::ostream& Logger::print()
 {
-	m_name = name;
-	m_policy->openOStream(name);
+	if (m_severity <= DEBUG)
+	{
+		printHeader(DEBUG);
+		return m_file->getStream();
+	} else {
+		return *m_nullStream;
+	}
 }
 
-template<typename log_policy>
-void Logger<log_policy>::print(const std::string& msg)
+std::ostream& Logger::printInfo()
 {
-	printImpl(msg,DEBUG);
+	//Info is always printed
+	printHeader(DEBUG);
+	return m_file->getStream();
 }
 
-template<typename log_policy>
-void Logger<log_policy>::printErr(const std::string& msg)
+std::ostream& Logger::printErr()
 {
-	printImpl(msg,ERROR_SEV);
+	if (m_severity <= ERROR_SEV)
+	{
+		printHeader(ERROR_SEV);
+		return m_file->getStream();
+	} else {
+		return *m_nullStream;
+	}
 }
 
-template<typename log_policy>
-void Logger<log_policy>::printWarn(const std::string& msg)
+std::ostream& Logger::printWarn()
 {
-	printImpl(msg,WARNING);
+	if (m_severity <= WARNING)
+	{
+		printHeader(WARNING);
+		return m_file->getStream();
+	} else {
+		return *m_nullStream;
+	}
 }
 
-template<typename log_policy>
-void Logger<log_policy>::printImpl(const std::string& msg, severity_type severity)
-{
-	assert(m_policy->isOpen());
 
-	//TODO check severity level
-	
-	WaitForSingleObject( m_mutex, INFINITE );
+void Logger::printHeader(severity_type severity)
+{
+	assert(m_file->isOpen());
+
 	std::string line = getHeaderText();
 	switch(severity)
 	{
 	case DEBUG:
 		line.append("<DEBUG> : ");
+		break;
+	case INFO:
+		line.append("<INFO> : ");
 		break;
 	case WARNING:
 		line.append("<WARNING> : ");
@@ -97,7 +128,11 @@ void Logger<log_policy>::printImpl(const std::string& msg, severity_type severit
 		line.append("<ERROR> : ");
 		break;
 	}
-	line.append(msg);
-	m_policy->write(line);
-	ReleaseMutex( m_mutex );
+	m_file->getStream() << line;
 }
+
+void Logger::setSeverity(severity_type severity)
+{
+	m_severity = severity;
+}
+#endif // WIN32

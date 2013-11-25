@@ -6,7 +6,6 @@
 #include "ClipboardItem.h"
 #include "NetworkHandler.h"
 #include "PluginManager.h"
-#include "TestClass.h"
 #include "ss/setting.h"
 #include "ss/configuration.h"
 #include "ss/file_storage.h"
@@ -55,7 +54,7 @@ int APIENTRY _tWinMain(_In_ HINSTANCE hInstance,
 	UNREFERENCED_PARAMETER(hPrevInstance);
 	UNREFERENCED_PARAMETER(lpCmdLine);
 
-	MyLogger::getInstance().setName("output.log");
+	Logger::getInstance().setSeverity(DEBUG);
 	
 	MSG msg;
 	HACCEL hAccelTable;

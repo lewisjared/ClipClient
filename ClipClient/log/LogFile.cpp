@@ -1,8 +1,8 @@
-#include "fileLogPolicy.h"
+#ifdef WIN32
+#include "LogFile.h"
 
 #include <assert.h>
 
-using namespace logging;
 
 FileLogPolicy::FileLogPolicy()
 	:m_stream(new std::ofstream)
@@ -31,13 +31,18 @@ bool FileLogPolicy::isOpen()
 {
 	if (m_stream)
 		return m_stream->is_open();
+	return false;
 }
 
-void FileLogPolicy::write( const std::string& msg )
+void FileLogPolicy::writeLine( const std::string& msg )
 {
 	(*m_stream) << msg << std::endl;
 	m_stream->flush();
 }
 
+std::ostream& FileLogPolicy::getStream()
+{
+	return (*m_stream);
+}
 
-
+#endif // WIN32

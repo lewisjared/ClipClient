@@ -28,6 +28,9 @@
     <Filter Include="Header Files\log">
       <UniqueIdentifier>{c447578f-6955-4313-b17c-410f968c1984}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\network">
+      <UniqueIdentifier>{40fb9c0d-4e04-41da-94c8-61076abf2f6a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="ReadMe.txt" />
@@ -120,23 +123,23 @@
     <ClInclude Include="plugin\Plugin.h">
       <Filter>Header Files\plugin</Filter>
     </ClInclude>
-    <ClInclude Include="log\logPolicy.h">
-      <Filter>Header Files\log</Filter>
-    </ClInclude>
-    <ClInclude Include="log\logger.h">
-      <Filter>Header Files\log</Filter>
-    </ClInclude>
-    <ClInclude Include="log\fileLogPolicy.h">
-      <Filter>Header Files\log</Filter>
-    </ClInclude>
-    <ClInclude Include="log\logger.cpp">
-      <Filter>Source Files\log</Filter>
-    </ClInclude>
     <ClInclude Include="UdpSocket.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Broadcaster.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="log\LogConsole.h">
+      <Filter>Header Files\log</Filter>
+    </ClInclude>
+    <ClInclude Include="log\LogFile.h">
+      <Filter>Header Files\log</Filter>
+    </ClInclude>
+    <ClInclude Include="log\Logger.h">
+      <Filter>Header Files\log</Filter>
+    </ClInclude>
+    <ClInclude Include="log\LogPolicy.h">
+      <Filter>Header Files\log</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -188,14 +191,20 @@
     <ClCompile Include="PluginManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="log\fileLogPolicy.cpp">
-      <Filter>Source Files\log</Filter>
-    </ClCompile>
     <ClCompile Include="UdpSocket.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Broadcaster.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="log\Logger.cpp">
+      <Filter>Source Files\log</Filter>
+    </ClCompile>
+    <ClCompile Include="log\LogFile.cpp">
+      <Filter>Source Files\log</Filter>
+    </ClCompile>
+    <ClCompile Include="log\LogConsole.cpp">
+      <Filter>Source Files\log</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

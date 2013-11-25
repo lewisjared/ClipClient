@@ -58,7 +58,7 @@ void Broadcaster::loop()
 
 void Broadcaster::shout()
 {
-	LOG("Looking for other clients");
+	LOG() << "Looking for clients" << std::endl;
 	m_socket.send("Whos Alive?",12);
 }
 
@@ -74,7 +74,7 @@ void Broadcaster::checkForReplies()
 		time(&client.lastActiveTime);
 
 		m_clientList.push_back(client);
-		LOG("Found client: " + client.ip);
+		LOG() << "Client found " + client.ip << std::endl;
 
 		if (strcmp(buff, "Whos Alive?") == 0)
 		{

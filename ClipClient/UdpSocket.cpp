@@ -108,12 +108,7 @@ void UDP_Socket::handleIOError(const std::string& reason)
 			|| errno == ECONNRESET)
 			return; // Ignore error and try again
 		else {
-			std::stringstream str;
-			str << "(udp) error ";
-			str << strerror (errno);
-			str << " on ";
-			str << reason;
-			LOG (str.str());
+			LOG_ERR() << "UDP " << strerror(errno) << " reason: " << reason << std::endl;
 			assert (false);
 		}
 }
@@ -148,8 +143,7 @@ int UDP_Socket::recv(char *buffer, size_t length, char* sender)
 	if (strcmp(temp.c_str(), getAddress()) == 0)
 		return -1;
 
-	std::string str = "UDP: Packet received from " + temp;
-	LOG(str);
+	LOG() << "UDP packet received from " << temp << std::endl;
 
 	if (sender != NULL)
 		strcpy(sender, temp.c_str());
