@@ -22,14 +22,11 @@
     <Filter Include="Header Files\plugin">
       <UniqueIdentifier>{c547ef10-10bc-4179-bdad-22e59f7f0292}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\log">
-      <UniqueIdentifier>{dbd47c42-be4a-49a4-bc03-c8008100f70a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\log">
-      <UniqueIdentifier>{c447578f-6955-4313-b17c-410f968c1984}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\network">
       <UniqueIdentifier>{40fb9c0d-4e04-41da-94c8-61076abf2f6a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Plugin">
+      <UniqueIdentifier>{3f756342-ee54-485f-a2b4-18d57c977cd9}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -123,23 +120,8 @@
     <ClInclude Include="plugin\Plugin.h">
       <Filter>Header Files\plugin</Filter>
     </ClInclude>
-    <ClInclude Include="UdpSocket.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Broadcaster.h">
       <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="log\LogConsole.h">
-      <Filter>Header Files\log</Filter>
-    </ClInclude>
-    <ClInclude Include="log\LogFile.h">
-      <Filter>Header Files\log</Filter>
-    </ClInclude>
-    <ClInclude Include="log\Logger.h">
-      <Filter>Header Files\log</Filter>
-    </ClInclude>
-    <ClInclude Include="log\LogPolicy.h">
-      <Filter>Header Files\log</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -147,9 +129,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ClipClient.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="NetworkHandler.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Clipboard.cpp">
@@ -186,25 +165,16 @@
       <Filter>Source Files\ss_src</Filter>
     </ClCompile>
     <ClCompile Include="DynamicLibrary.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Plugin</Filter>
     </ClCompile>
     <ClCompile Include="PluginManager.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Plugin</Filter>
     </ClCompile>
-    <ClCompile Include="UdpSocket.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="NetworkHandler.cpp">
+      <Filter>Source Files\network</Filter>
     </ClCompile>
     <ClCompile Include="Broadcaster.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="log\Logger.cpp">
-      <Filter>Source Files\log</Filter>
-    </ClCompile>
-    <ClCompile Include="log\LogFile.cpp">
-      <Filter>Source Files\log</Filter>
-    </ClCompile>
-    <ClCompile Include="log\LogConsole.cpp">
-      <Filter>Source Files\log</Filter>
+      <Filter>Source Files\network</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -2,8 +2,14 @@
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ClipClient", "ClipClient.vcxproj", "{062EFCD4-9E2E-4142-B6AA-A6F26DC4EBED}"
+	ProjectSection(ProjectDependencies) = postProject
+		{2A879616-B25F-474A-AB78-A5FBEBA39DC0} = {2A879616-B25F-474A-AB78-A5FBEBA39DC0}
+		{9B040A9F-D157-4B00-B96C-B9DBBD215E06} = {9B040A9F-D157-4B00-B96C-B9DBBD215E06}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "FirstPlugin", "..\FirstPlugin\FirstPlugin.vcxproj", "{2A879616-B25F-474A-AB78-A5FBEBA39DC0}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "LibClip", "..\LibClip\LibClip.vcxproj", "{9B040A9F-D157-4B00-B96C-B9DBBD215E06}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -19,6 +25,10 @@ Global
 		{2A879616-B25F-474A-AB78-A5FBEBA39DC0}.Debug|Win32.Build.0 = Debug|Win32
 		{2A879616-B25F-474A-AB78-A5FBEBA39DC0}.Release|Win32.ActiveCfg = Release|Win32
 		{2A879616-B25F-474A-AB78-A5FBEBA39DC0}.Release|Win32.Build.0 = Release|Win32
+		{9B040A9F-D157-4B00-B96C-B9DBBD215E06}.Debug|Win32.ActiveCfg = Debug|Win32
+		{9B040A9F-D157-4B00-B96C-B9DBBD215E06}.Debug|Win32.Build.0 = Debug|Win32
+		{9B040A9F-D157-4B00-B96C-B9DBBD215E06}.Release|Win32.ActiveCfg = Release|Win32
+		{9B040A9F-D157-4B00-B96C-B9DBBD215E06}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

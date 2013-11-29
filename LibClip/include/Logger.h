@@ -7,8 +7,9 @@
 #define LOGGER_H
 
 #ifdef WIN32
-#include "log/LogPolicy.h"
 #include <ostream>
+
+class LogPolicy;
 
 /**
 	\enum	severity_type
@@ -50,8 +51,6 @@ private:
 	unsigned int m_lineNum;
 	LogPolicy* m_file;
 };
-
-//#include "BS_Logger.inl"
 
 
 /**

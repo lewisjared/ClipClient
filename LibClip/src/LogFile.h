@@ -7,7 +7,7 @@
 #ifndef FILELOGPOLICY_H
 #define FILELOGPOLICY_H
 
-#include "log/LogPolicy.h"
+#include "LogPolicy.h"
 
 #include <memory>
 #include <string>

@@ -39,8 +39,8 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>$(INCLUDE_PATH);$(VCInstallDir)include;$(VCInstallDir)atlmfc\include;$(WindowsSdkDir)include;$(FrameworkSDKDir)\include;./</IncludePath>
-    <LibraryPath>$(LIB_PATH);$(VCInstallDir)lib;$(VCInstallDir)atlmfc\lib;$(WindowsSdkDir)lib;$(FrameworkSDKDir)\lib</LibraryPath>
+    <IncludePath>$(INCLUDE_PATH);../LibClip/include;$(VCInstallDir)include;$(VCInstallDir)atlmfc\include;$(WindowsSdkDir)include;$(FrameworkSDKDir)\include;./</IncludePath>
+    <LibraryPath>$(LIB_PATH);../LibClip/lib;$(VCInstallDir)lib;$(VCInstallDir)atlmfc\lib;$(WindowsSdkDir)lib;$(FrameworkSDKDir)\lib</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
@@ -55,7 +55,7 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>libzmq-v120-mt-gd-4_0_1.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>libzmq-v100-mt-gd-3_2_4.lib;libclipd.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -86,10 +86,6 @@
     <ClInclude Include="ClipClient.h" />
     <ClInclude Include="Data.h" />
     <ClInclude Include="DynamicLibrary.h" />
-    <ClInclude Include="log\LogConsole.h" />
-    <ClInclude Include="log\LogFile.h" />
-    <ClInclude Include="log\Logger.h" />
-    <ClInclude Include="log\LogPolicy.h" />
     <ClInclude Include="NetworkHandler.h" />
     <ClInclude Include="PluginManager.h" />
     <ClInclude Include="plugin\Plugin.h" />
@@ -111,7 +107,6 @@
     <ClInclude Include="ss\util.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
-    <ClInclude Include="UdpSocket.h" />
     <ClInclude Include="utils.h" />
   </ItemGroup>
   <ItemGroup>
@@ -121,10 +116,6 @@
     <ClCompile Include="ClipClient.cpp" />
     <ClCompile Include="Data.cpp" />
     <ClCompile Include="DynamicLibrary.cpp" />
-    <ClCompile Include="log\LogConsole.cpp" />
-    <ClCompile Include="log\LogFile.cpp" />
-    <ClCompile Include="log\Logger.cpp" />
-    <ClCompile Include="UdpSocket.cpp" />
     <ClCompile Include="NetworkHandler.cpp" />
     <ClCompile Include="PluginManager.cpp" />
     <ClCompile Include="ss_src\bulk_setting.cpp" />

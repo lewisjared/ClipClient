@@ -10,7 +10,7 @@
 #include "ss/configuration.h"
 #include "ss/file_storage.h"
 
-#include "log/logger.h"
+#include "logger.h"
 #include "Broadcaster.h"
 #include <vector>
 

@@ -1,8 +1,8 @@
-#include "StdAfx.h"
+
 #include "UdpSocket.h"
 #include "Winsock2.h"
 
-#include <log/logger.h>
+#include <logger.h>
 #include <cassert>
 
 #pragma comment(lib, "Ws2_32.lib")

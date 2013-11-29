@@ -1,6 +1,6 @@
 #include "StdAfx.h"
 #include "Broadcaster.h"
-#include "log/logger.h"
+#include "logger.h"
 #include <boost/chrono.hpp>
 
 
