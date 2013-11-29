@@ -80,10 +80,33 @@
     <ClCompile Include="src\LogConsole.cpp" />
     <ClCompile Include="src\LogFile.cpp" />
     <ClCompile Include="src\Logger.cpp" />
+    <ClCompile Include="src\ss\bulk_setting.cpp" />
+    <ClCompile Include="src\ss\configuration.cpp" />
+    <ClCompile Include="src\ss\defaults_holder.cpp" />
+    <ClCompile Include="src\ss\enum.cpp" />
+    <ClCompile Include="src\ss\error.cpp" />
+    <ClCompile Include="src\ss\file_storage.cpp" />
+    <ClCompile Include="src\ss\registry_storage.cpp" />
+    <ClCompile Include="src\ss\util.cpp" />
     <ClCompile Include="src\UdpSocket.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Logger.h" />
+    <ClInclude Include="include\ss\array.h" />
+    <ClInclude Include="include\ss\bulk_setting.h" />
+    <ClInclude Include="include\ss\configuration.h" />
+    <ClInclude Include="include\ss\const_.h" />
+    <ClInclude Include="include\ss\defaults_holder.h" />
+    <ClInclude Include="include\ss\enum.h" />
+    <ClInclude Include="include\ss\error.h" />
+    <ClInclude Include="include\ss\file_storage.h" />
+    <ClInclude Include="include\ss\fwd.h" />
+    <ClInclude Include="include\ss\registry_storage.h" />
+    <ClInclude Include="include\ss\setting.h" />
+    <ClInclude Include="include\ss\setting_storage.h" />
+    <ClInclude Include="include\ss\template.h" />
+    <ClInclude Include="include\ss\ts.h" />
+    <ClInclude Include="include\ss\util.h" />
     <ClInclude Include="include\UdpSocket.h" />
     <ClInclude Include="src\LogConsole.h" />
     <ClInclude Include="src\LogFile.h" />
