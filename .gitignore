@@ -15,10 +15,9 @@
 /ClipClient/ClipClient.opensdf
 /ClipClient/ClipClient.sdf
 /ClipClient/ClipClient.suo
-/ClipClient/ClipClient.vcxproj.user
-/FirstPlugin/FirstPlugin.vcxproj.user
 *.log
 /ClipClient/*.ini
+*.user
 Debug
 Release
 ipch
