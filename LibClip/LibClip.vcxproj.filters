@@ -34,6 +34,9 @@
     <Filter Include="Source Files\zyre">
       <UniqueIdentifier>{9549258b-5024-4ae3-b3e8-927699a730c3}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\network">
+      <UniqueIdentifier>{d3268b35-b3e0-4e2c-a404-5c2f2ea05b88}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="ReadMe.txt" />
@@ -75,34 +78,16 @@
     <ClCompile Include="src\LogFile.cpp">
       <Filter>Source Files\log</Filter>
     </ClCompile>
-    <ClCompile Include="src\zyre\zyre_log.c">
-      <Filter>Source Files\zyre</Filter>
+    <ClCompile Include="src\ByteStream.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\zyre\zyre_node.c">
-      <Filter>Source Files\zyre</Filter>
-    </ClCompile>
-    <ClCompile Include="src\zyre\zyre_peer.c">
-      <Filter>Source Files\zyre</Filter>
-    </ClCompile>
-    <ClCompile Include="src\zyre\zyre_selftest.c">
-      <Filter>Source Files\zyre</Filter>
-    </ClCompile>
-    <ClCompile Include="src\zyre\zre_log_msg.c">
-      <Filter>Source Files\zyre</Filter>
-    </ClCompile>
-    <ClCompile Include="src\zyre\zre_msg.c">
-      <Filter>Source Files\zyre</Filter>
-    </ClCompile>
-    <ClCompile Include="src\zyre\zyre.c">
-      <Filter>Source Files\zyre</Filter>
-    </ClCompile>
-    <ClCompile Include="src\zyre\zyre_event.c">
-      <Filter>Source Files\zyre</Filter>
-    </ClCompile>
-    <ClCompile Include="src\zyre\zyre_group.c">
-      <Filter>Source Files\zyre</Filter>
+    <ClCompile Include="src\Beacon.cpp">
+      <Filter>Source Files\network</Filter>
     </ClCompile>
     <ClCompile Include="src\Node.cpp">
+      <Filter>Source Files\network</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Peer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -167,38 +152,26 @@
     <ClInclude Include="include\Logger.h">
       <Filter>Header Files\log</Filter>
     </ClInclude>
-    <ClInclude Include="include\zre_msg.h">
-      <Filter>Header Files\zyre</Filter>
+    <ClInclude Include="src\ByteStream.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\zyre.h">
-      <Filter>Header Files\zyre</Filter>
+    <ClInclude Include="src\Beacon.h">
+      <Filter>Header Files\network</Filter>
     </ClInclude>
-    <ClInclude Include="include\zyre_event.h">
-      <Filter>Header Files\zyre</Filter>
-    </ClInclude>
-    <ClInclude Include="include\zre_log_msg.h">
-      <Filter>Header Files\zyre</Filter>
-    </ClInclude>
-    <ClInclude Include="src\zyre\zyre_log.h">
-      <Filter>Source Files\zyre</Filter>
-    </ClInclude>
-    <ClInclude Include="src\zyre\zyre_node.h">
-      <Filter>Source Files\zyre</Filter>
-    </ClInclude>
-    <ClInclude Include="src\zyre\zyre_peer.h">
-      <Filter>Source Files\zyre</Filter>
-    </ClInclude>
-    <ClInclude Include="src\zyre\zyre_classes.h">
-      <Filter>Source Files\zyre</Filter>
-    </ClInclude>
-    <ClInclude Include="src\zyre\zyre_group.h">
-      <Filter>Source Files\zyre</Filter>
-    </ClInclude>
-    <ClInclude Include="zre_msg.h">
+    <ClInclude Include="src\CZMQContext.h">
       <Filter>Header Files\network</Filter>
     </ClInclude>
     <ClInclude Include="src\Node.h">
+      <Filter>Header Files\network</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Peer.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ZyreCPP.h">
+      <Filter>Header Files\network</Filter>
+    </ClInclude>
+    <ClInclude Include="Message.h">
+      <Filter>Header Files\network</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

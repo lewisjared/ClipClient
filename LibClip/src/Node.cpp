@@ -1,6 +1,9 @@
 #include "Node.h"
+#include "Peer.h"
 #include "Beacon.h"
 #include "Logger.h"
+#include "Message.h"
+#include "ZyreCPP.h"
 
 #include "boost/uuid/uuid_io.hpp"
 
@@ -55,6 +58,12 @@ void Node::checkPeersHealth()
 	{
 		Peer* peer = it->second;
 
+		if (peer->isClosed())
+		{
+			delete it->second;
+			m_peers.erase(it);
+		}
+
 		int64_t expiredAt = peer->lastSeen() + EXPIRED_TIME;
 		int64_t evaisiveAt = peer->lastSeen() + EVAISIVE_TIME;
 		if (zclock_time() >= expiredAt)
@@ -62,13 +71,15 @@ void Node::checkPeersHealth()
 			//Remove the Node
 			LOG() << "Node " << it->first << " expired" << std::endl;
 			zstr_sendm(m_pipe,"EXIT");
-			zstr_send(m_pipe, boost::uuids::to_string(it->first));
+			zstr_send(m_pipe, boost::uuids::to_string(it->first).c_str());
 
+			delete it->second;
 			m_peers.erase(it);
 		} else if (zclock_time() > evaisiveAt)
 		{
 			//Ping the node
-			peer->sendMesg(ZRE_MSG_PING);
+			Message msg(MSG_PING);
+			peer->sendMesg(&msg);
 		}
 	}
 }

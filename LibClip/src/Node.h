@@ -1,7 +1,5 @@
 #pragma once
 
-
-
 #include <boost/uuid/uuid.hpp>
 #include <boost/uuid/uuid_generators.hpp>
 #include <string>
@@ -18,10 +16,6 @@ class Peer;
 
 typedef std::map<std::string, std::string> KeyValuePair;
 typedef std::map<boost::uuids::uuid, Peer *> Peers;
-
-#define REAP_INTERVAL 1000
-#define EXPIRED_TIME 10000
-#define EVAISIVE_TIME 5000
 
 class Node
 {

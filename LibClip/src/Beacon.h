@@ -17,10 +17,10 @@ public:
 	void setNoEcho();
 	void setInterval(int millis);
 
-	void publish(ByteStream packet);
+	void publish(const ByteStream& packet);
 	void silence();
 
-	void subscribe(ByteStream packet);
+	void subscribe(const ByteStream& packet);
 	void unsubscribe();
 
 	void* getSocket();

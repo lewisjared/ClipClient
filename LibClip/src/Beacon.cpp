@@ -1,5 +1,6 @@
 #include "Beacon.h"
-#include "CMZQContext.h"
+#include "ByteStream.h"
+#include "CZMQContext.h"
 #include "Logger.h"
 
 
@@ -28,7 +29,7 @@ void Beacon::setInterval(int millis)
 
 void Beacon::publish(ByteStream packet)
 {
-	zbeacon_publish(m_beacon, packet->data(), packet->size());
+	zbeacon_publish(m_beacon, packet.data(), packet.size());
 }
 
 void Beacon::silence()
@@ -36,9 +37,9 @@ void Beacon::silence()
 	zbeacon_silence(m_beacon);
 }
 
-void Beacon::subscribe(ByteStream packet)
+void Beacon::subscribe(const ByteStream& packet)
 {
-	zbeacon_subscribe(m_beacon, packet->data(), packet->size());
+	zbeacon_subscribe(m_beacon, packet.data(), packet.size());
 }
 
 void* Beacon::getSocket()

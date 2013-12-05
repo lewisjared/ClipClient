@@ -6,23 +6,21 @@
 #ifndef LOGGER_H
 #define LOGGER_H
 
-#ifdef WIN32
 #include <ostream>
 
-class LogPolicy;
-
+#include "LogPolicy.h"
 /**
 	\enum	severity_type
 	
 	\brief	Enumeration for the various levels of warnings
 	*/
 
-enum severity_type
+enum Severity
 {
-	DEBUG = 1,
+	DEBUG_LOG,
 	INFO,
 	WARNING,
-	ERROR_SEV
+	ERROR_SEV,
 };
 
 class Logger
@@ -33,7 +31,7 @@ public:
 	static Logger& getInstance();
 	void enableFile(const std::string& name);
 	void enableConsole();
-	void setSeverity(severity_type severity);
+	void setSeverity(Severity severity);
 
 	std::ostream&  print();
 	std::ostream&  printInfo();
@@ -43,10 +41,10 @@ private:
 	Logger();
 	std::string getTime();
 	std::string getHeaderText();
-	void printHeader(severity_type severity);
+	void printHeader(Severity severity);
 
 	std::ostream* m_nullStream;
-	severity_type m_severity;
+	Severity m_severity;
 	std::string m_name;
 	unsigned int m_lineNum;
 	LogPolicy* m_file;
@@ -60,6 +58,5 @@ private:
 #define LOG_INFO Logger::getInstance().printInfo
 #define LOG_ERR Logger::getInstance().printErr
 #define LOG_WARN Logger::getInstance().printWarn
-#endif // WIN32
 
 #endif

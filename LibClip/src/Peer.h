@@ -1,16 +1,20 @@
 #pragma once
 
+#include <string>
 #include "czmq.h"
+#include <boost/uuid/uuid.hpp>
 
-class ZRE_Msg;
+class Message;
 
 class Peer
 {
 public:
-	Peer(void);
+	Peer (boost::uuids::uuid nodeUUID, boost::uuids::uuid peerUUID);
 	~Peer(void);
 
-	void sendMesg(ZRE_Msg* msg);
+	int sendMesg(Message* msg);
+
+	bool connect(const std::string& target);
 
 	/**
 	 \fn	int64_t Peer::lastSeen();
@@ -22,7 +26,15 @@ public:
 
 	int64_t lastSeen();
 	void seen();
+
+	bool isClosed();
 private:
+	std::string m_endpoint;
+	bool m_connected;
+	bool m_closed;
 	int64_t m_lastSeen;
+	boost::uuids::uuid m_uuid;
+	boost::uuids::uuid m_self;
+	void* m_mailbox;
 };
 

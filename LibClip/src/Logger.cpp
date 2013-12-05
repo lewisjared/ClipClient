@@ -69,9 +69,9 @@ std::string Logger::getHeaderText()
 
 std::ostream& Logger::print()
 {
-	if (m_severity <= DEBUG)
+	if (m_severity <= DEBUG_LOG)
 	{
-		printHeader(DEBUG);
+		printHeader(DEBUG_LOG);
 		return m_file->getStream();
 	} else {
 		return *m_nullStream;
@@ -81,7 +81,7 @@ std::ostream& Logger::print()
 std::ostream& Logger::printInfo()
 {
 	//Info is always printed
-	printHeader(DEBUG);
+	printHeader(DEBUG_LOG);
 	return m_file->getStream();
 }
 
@@ -108,14 +108,14 @@ std::ostream& Logger::printWarn()
 }
 
 
-void Logger::printHeader(severity_type severity)
+void Logger::printHeader(Severity severity)
 {
 	assert(m_file->isOpen());
 
 	std::string line = getHeaderText();
 	switch(severity)
 	{
-	case DEBUG:
+	case DEBUG_LOG:
 		line.append("<DEBUG> : ");
 		break;
 	case INFO:
@@ -131,7 +131,7 @@ void Logger::printHeader(severity_type severity)
 	m_file->getStream() << line;
 }
 
-void Logger::setSeverity(severity_type severity)
+void Logger::setSeverity(Severity severity)
 {
 	m_severity = severity;
 }

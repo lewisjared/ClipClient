@@ -39,7 +39,7 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <OutDir>lib\</OutDir>
-    <IncludePath>include;$(INCLUDE_PATH);$(IncludePath)</IncludePath>
+    <IncludePath>include;src;$(INCLUDE_PATH);$(IncludePath)</IncludePath>
     <TargetName>libclipd</TargetName>
     <LibraryPath>$(LIB_PATH);$(LibraryPath)</LibraryPath>
   </PropertyGroup>
@@ -77,10 +77,13 @@
     <None Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Beacon.cpp" />
+    <ClCompile Include="src\ByteStream.cpp" />
     <ClCompile Include="src\LogConsole.cpp" />
     <ClCompile Include="src\LogFile.cpp" />
     <ClCompile Include="src\Logger.cpp" />
     <ClCompile Include="src\Node.cpp" />
+    <ClCompile Include="src\Peer.cpp" />
     <ClCompile Include="src\ss\bulk_setting.cpp" />
     <ClCompile Include="src\ss\configuration.cpp" />
     <ClCompile Include="src\ss\defaults_holder.cpp" />
@@ -90,15 +93,6 @@
     <ClCompile Include="src\ss\registry_storage.cpp" />
     <ClCompile Include="src\ss\util.cpp" />
     <ClCompile Include="src\UdpSocket.cpp" />
-    <ClCompile Include="src\zyre\zre_log_msg.c" />
-    <ClCompile Include="src\zyre\zre_msg.c" />
-    <ClCompile Include="src\zyre\zyre.c" />
-    <ClCompile Include="src\zyre\zyre_event.c" />
-    <ClCompile Include="src\zyre\zyre_group.c" />
-    <ClCompile Include="src\zyre\zyre_log.c" />
-    <ClCompile Include="src\zyre\zyre_node.c" />
-    <ClCompile Include="src\zyre\zyre_peer.c" />
-    <ClCompile Include="src\zyre\zyre_selftest.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Logger.h" />
@@ -118,20 +112,16 @@
     <ClInclude Include="include\ss\ts.h" />
     <ClInclude Include="include\ss\util.h" />
     <ClInclude Include="include\UdpSocket.h" />
-    <ClInclude Include="include\zre_log_msg.h" />
-    <ClInclude Include="include\zre_msg.h" />
-    <ClInclude Include="include\zyre.h" />
-    <ClInclude Include="include\zyre_event.h" />
+    <ClInclude Include="src\Beacon.h" />
+    <ClInclude Include="src\ByteStream.h" />
+    <ClInclude Include="src\CZMQContext.h" />
     <ClInclude Include="src\LogConsole.h" />
     <ClInclude Include="src\LogFile.h" />
     <ClInclude Include="src\LogPolicy.h" />
     <ClInclude Include="src\Node.h" />
-    <ClInclude Include="src\zyre\zyre_classes.h" />
-    <ClInclude Include="src\zyre\zyre_group.h" />
-    <ClInclude Include="src\zyre\zyre_log.h" />
-    <ClInclude Include="src\zyre\zyre_node.h" />
-    <ClInclude Include="src\zyre\zyre_peer.h" />
-    <ClInclude Include="zre_msg.h" />
+    <ClInclude Include="src\Peer.h" />
+    <ClInclude Include="Message.h" />
+    <ClInclude Include="ZyreCPP.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
