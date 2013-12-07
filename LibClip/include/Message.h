@@ -8,7 +8,7 @@
 
 enum msg_t
 {
-	MSG_HELLO,
+	MSG_HELLO = 1,
 	MSG_WHISPER,
 	MSG_SHOUT,
 	MSG_JOIN,
@@ -24,8 +24,6 @@ class Message
 public:
 	Message(msg_t id);
 	~Message();
-
-	static Message parse(void* input);
 
 	KeyValuePair getHeaders();
 	std::ostream& dump() const;

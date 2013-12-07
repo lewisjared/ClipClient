@@ -77,11 +77,13 @@
     <None Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Message.cpp" />
     <ClCompile Include="src\Beacon.cpp" />
     <ClCompile Include="src\ByteStream.cpp" />
     <ClCompile Include="src\LogConsole.cpp" />
     <ClCompile Include="src\LogFile.cpp" />
     <ClCompile Include="src\Logger.cpp" />
+    <ClCompile Include="src\MessageFactory.cpp" />
     <ClCompile Include="src\Node.cpp" />
     <ClCompile Include="src\Peer.cpp" />
     <ClCompile Include="src\ss\bulk_setting.cpp" />
@@ -118,6 +120,7 @@
     <ClInclude Include="src\LogConsole.h" />
     <ClInclude Include="src\LogFile.h" />
     <ClInclude Include="src\LogPolicy.h" />
+    <ClInclude Include="src\MessageFactory.h" />
     <ClInclude Include="src\Node.h" />
     <ClInclude Include="src\Peer.h" />
     <ClInclude Include="Message.h" />

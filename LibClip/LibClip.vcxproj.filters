@@ -90,6 +90,12 @@
     <ClCompile Include="src\Peer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Message.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\MessageFactory.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\UdpSocket.h">
@@ -172,6 +178,9 @@
     </ClInclude>
     <ClInclude Include="Message.h">
       <Filter>Header Files\network</Filter>
+    </ClInclude>
+    <ClInclude Include="src\MessageFactory.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
