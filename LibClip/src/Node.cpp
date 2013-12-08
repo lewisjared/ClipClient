@@ -2,7 +2,7 @@
 #include "Peer.h"
 #include "Beacon.h"
 #include "Logger.h"
-#include "Message.h"
+#include "MessageFactory.h"
 #include "ZyreCPP.h"
 
 #include "boost/uuid/uuid_io.hpp"
@@ -78,8 +78,8 @@ void Node::checkPeersHealth()
 		} else if (zclock_time() > evaisiveAt)
 		{
 			//Ping the node
-			Message msg(MSG_PING);
-			peer->sendMesg(&msg);
+			Message* msg = MessageFactory::generatePing();
+			peer->sendMesg(msg);
 		}
 	}
 }
