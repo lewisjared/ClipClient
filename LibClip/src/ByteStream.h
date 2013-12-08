@@ -14,9 +14,13 @@ public:
 class ByteStream
 {
 public:
+	ByteStream();
 	ByteStream(size_t bufferSize);
 	ByteStream(zframe_t* frame);
+
 	~ByteStream(void);
+
+	void setFrame(zframe_t* frame);
 
 	void putBlock(void* data, size_t size);
 	void getBlock(void* buffer, size_t size);

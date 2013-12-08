@@ -1,6 +1,13 @@
 #include "ByteStream.h"
 
 
+ByteStream::ByteStream()
+{
+	m_data = NULL;
+	m_start = NULL;
+	m_end = NULL;
+	m_end = false;
+}
 ByteStream::ByteStream(size_t bufferSize)
 {
 	m_data = (byte*)malloc(bufferSize);
@@ -11,10 +18,7 @@ ByteStream::ByteStream(size_t bufferSize)
 
 ByteStream::ByteStream(zframe_t* frame)
 {
-	m_start = zframe_data(frame);
-	m_end = m_data + zframe_size(frame);
-	m_data = m_start;
-	m_allocated = false;
+	setFrame(frame);
 }
 
 ByteStream::~ByteStream(void)
@@ -38,6 +42,15 @@ size_t ByteStream::size() const
 size_t ByteStream::usedSize() const
 {
 	return m_data - m_start;
+}
+
+
+void ByteStream::setFrame( zframe_t* frame ) 
+{
+	m_start = zframe_data(frame);
+	m_end = m_data + zframe_size(frame);
+	m_data = m_start;
+	m_allocated = false;
 }
 
 void ByteStream::putBlock( void* data, size_t size )
