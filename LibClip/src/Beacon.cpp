@@ -9,6 +9,7 @@ Beacon::Beacon(int portNumber)
 {
 	m_beacon = zbeacon_new(CZMQContext::getContext(), portNumber);
 	LOG() << "Creating new beacon on port " << portNumber << std::endl;
+	m_hostname = zbeacon_hostname(m_beacon);
 }
 
 
@@ -19,7 +20,7 @@ Beacon::~Beacon(void)
 
 const std::string& Beacon::getHostname()
 {
-	return std::string(zbeacon_hostname(m_beacon));
+	return m_hostname;
 }
 
 void Beacon::setInterval(int millis)
@@ -27,9 +28,9 @@ void Beacon::setInterval(int millis)
 	zbeacon_set_interval(m_beacon,millis);
 }
 
-void Beacon::publish(ByteStream packet)
+void Beacon::publish(const ByteStream& packet)
 {
-	zbeacon_publish(m_beacon, packet.data(), packet.size());
+	zbeacon_publish(m_beacon, (byte*)packet.data(), packet.size());
 }
 
 void Beacon::silence()
@@ -39,7 +40,7 @@ void Beacon::silence()
 
 void Beacon::subscribe(const ByteStream& packet)
 {
-	zbeacon_subscribe(m_beacon, packet.data(), packet.size());
+	zbeacon_subscribe(m_beacon,(byte*) packet.data(), packet.size());
 }
 
 void* Beacon::getSocket()
