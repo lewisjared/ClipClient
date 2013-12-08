@@ -8,7 +8,7 @@
 
 #include <ostream>
 
-#include "LogPolicy.h"
+class LogPolicy;
 /**
 	\enum	severity_type
 	
