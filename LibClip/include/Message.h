@@ -6,6 +6,7 @@
 #include <vector>
 #include <string>
 #include "czmq.h"
+#include "ByteStream.h"
 
 enum msg_t
 {
@@ -18,6 +19,7 @@ enum msg_t
 	MSG_PING_OK
 };
 
+#define HEADER_SIZE 3
 
 
 class Message
@@ -34,7 +36,8 @@ public:
 	void setSequence(uint16_t sequence);
 	void setAddress(zframe_t* address);
 	zframe_t* getAddress() const;
-private:
+protected:
+	int sendBytes(void* socket, ByteStream bs, int flags);
 	msg_t m_id;
 	uint16_t m_sequence;
 	zframe_t* m_address;
@@ -49,7 +52,8 @@ public:
 	MessageHello();
 
 	KeyValuePair getHeaders();
-	void addHeader(const std::string& group);
+	void addHeader(const std::string& keyValue);
+	void addHeader(const std::string& key, const std::string& value);
 	void addGroup(const std::string& group);
 	void setIP(std::string ip);
 	void setMailbox(uint16_t mailboxPort);
@@ -61,6 +65,7 @@ private:
 	TStringVector m_groups;
 	uint16_t m_mailboxPort;
 	uint8_t m_status;
+	std::string m_ip;
 };
 
 class MessageWhisper : public Message

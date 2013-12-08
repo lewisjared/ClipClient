@@ -77,13 +77,20 @@
     <None Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Message.cpp" />
     <ClCompile Include="src\Beacon.cpp" />
     <ClCompile Include="src\ByteStream.cpp" />
     <ClCompile Include="src\LogConsole.cpp" />
     <ClCompile Include="src\LogFile.cpp" />
     <ClCompile Include="src\Logger.cpp" />
+    <ClCompile Include="src\Message.cpp" />
     <ClCompile Include="src\MessageFactory.cpp" />
+    <ClCompile Include="src\MessageHello.cpp" />
+    <ClCompile Include="src\MessageJoin.cpp" />
+    <ClCompile Include="src\MessageLeave.cpp" />
+    <ClCompile Include="src\MessagePing.cpp" />
+    <ClCompile Include="src\MessagePingOk.cpp" />
+    <ClCompile Include="src\MessageShout.cpp" />
+    <ClCompile Include="src\MessageWhisper.cpp" />
     <ClCompile Include="src\Node.cpp" />
     <ClCompile Include="src\Peer.cpp" />
     <ClCompile Include="src\ss\bulk_setting.cpp" />
