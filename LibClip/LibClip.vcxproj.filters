@@ -87,35 +87,35 @@
     <ClCompile Include="src\Node.cpp">
       <Filter>Source Files\network</Filter>
     </ClCompile>
+    <ClCompile Include="src\Message.cpp">
+      <Filter>Source Files\network</Filter>
+    </ClCompile>
     <ClCompile Include="src\Peer.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\network</Filter>
     </ClCompile>
     <ClCompile Include="src\MessageFactory.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Message.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\MessagePing.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\MessagePingOk.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\MessageJoin.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\MessageLeave.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\MessageWhisper.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\MessageShout.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\network</Filter>
     </ClCompile>
     <ClCompile Include="src\MessageHello.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\network</Filter>
+    </ClCompile>
+    <ClCompile Include="src\MessageJoin.cpp">
+      <Filter>Source Files\network</Filter>
+    </ClCompile>
+    <ClCompile Include="src\MessageLeave.cpp">
+      <Filter>Source Files\network</Filter>
+    </ClCompile>
+    <ClCompile Include="src\MessagePing.cpp">
+      <Filter>Source Files\network</Filter>
+    </ClCompile>
+    <ClCompile Include="src\MessagePingOk.cpp">
+      <Filter>Source Files\network</Filter>
+    </ClCompile>
+    <ClCompile Include="src\MessageShout.cpp">
+      <Filter>Source Files\network</Filter>
+    </ClCompile>
+    <ClCompile Include="src\MessageWhisper.cpp">
+      <Filter>Source Files\network</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

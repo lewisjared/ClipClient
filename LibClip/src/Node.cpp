@@ -15,6 +15,10 @@ Node::Node(void* pipe)
 
 Node::~Node(void)
 {
+	for (auto it = m_peers.begin(); it != m_peers.end(); ++it)
+	{
+		delete it->second;
+	}
 }
 
 
@@ -80,6 +84,70 @@ void Node::checkPeersHealth()
 			//Ping the node
 			Message* msg = MessageFactory::generatePing();
 			peer->sendMesg(msg);
+		}
+	}
+}
+
+void handleAPI()
+{
+	//To Write
+	assert( false);
+}
+
+void Node::handlePeers()
+{
+	Message* msg = MessageFactory::parse(m_inbox);
+
+	boost::uuids::uuid uuid = msg->getAddress();
+
+	Peer* peer = NULL;
+	//Find peer in list
+	auto it = m_peers.find(uuid);
+	if (it != m_peers.end())
+		peer = it->second;
+
+	assert( msg->getID() != MSG_HELLO && peer);
+
+	//Process the command
+	if (msg->getID() == MSG_HELLO)
+	{
+		MessageHello* hello = reinterpret_cast<MessageHello*> (msg);
+
+	} else if (msg->getID() == MSG_SHOUT) 
+	{
+		zstr_sendm(m_pipe, "SHOUT");
+		zstr_sendm(m_pipe, boost::uuids::to_string(msg->getAddress()).c_str());
+	} else if (msg->getID() == MSG_PING)
+	{
+		//Reply with ping ok
+		peer->sendMesg(MessageFactory::generatePingOk());
+	}
+
+	peer->seen();
+
+	//Consume message
+	delete msg;
+}
+
+void Node::handleBeacon()
+{
+	beacon_t beacon;
+
+	if (m_beacon->getPacket(beacon))
+	{
+		boost::uuids::uuid uid;
+		memcpy(&uid, beacon.packet.uuid, 16);
+		auto it = m_peers.find(uid);
+
+		if (it == m_peers.end())
+		{
+			//Found a new peer
+			Peer* peer = new Peer(m_uid, uid);
+			m_peers[uid] = peer;
+		} else {
+			//Heard from an existing peer
+			Peer* peer = it->second;
+			peer->seen();
 		}
 	}
 }

@@ -47,3 +47,23 @@ void* Beacon::getSocket()
 {
 	return zbeacon_socket(m_beacon);
 }
+
+bool Beacon::getPacket(beacon_t& beacon)
+{
+	char* ipaddress = zstr_recv(getSocket());
+	zframe_t* frame = zframe_recv(getSocket());
+	beacon.ipAddress = std::string(ipaddress);
+
+	bool valid = true;
+
+	if (zframe_size(frame) == sizeof(beacon_packet_t))
+	{
+		memcpy(&beacon, zframe_data(frame), zframe_size(frame));
+		assert(beacon.packet.version == BEACON_VERSION);
+	} else 
+		valid = false;
+
+	free (ipaddress);
+	zframe_destroy(&frame);
+	return valid;
+}

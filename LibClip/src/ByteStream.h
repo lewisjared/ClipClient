@@ -5,6 +5,8 @@
 #include <string>
 #include "czmq.h"
 
+#include <boost/uuid/uuid.hpp>
+
 class EByteStream : public std::runtime_error {
 public:
 	EByteStream(const std::string& message) 
@@ -34,6 +36,8 @@ public:
 	uint64_t getUINT64();
 	void putString(const std::string& data);
 	std::string getString();
+	boost::uuids::uuid getUUID();
+	void putUUID(boost::uuids::uuid uuid);
 	
 
 	void* data() const;

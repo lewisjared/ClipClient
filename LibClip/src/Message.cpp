@@ -4,13 +4,10 @@
 Message::Message(msg_t type)
 	:m_id(type)
 {
-	m_address = NULL;
 }
 
 Message::~Message()
 {
-	if (m_address)
-		zframe_destroy(&m_address);
 }
 
 msg_t Message::getID() const
@@ -20,9 +17,14 @@ msg_t Message::getID() const
 
 void Message::setAddress(zframe_t* address)
 {
-	if (m_address)
-		zframe_destroy(&m_address);
-	m_address = address;
+	ByteStream bs(address);
+	m_address = bs.getUUID();
+	zframe_destroy(&address);
+}
+
+boost::uuids::uuid Message::getAddress() const
+{
+	return m_address;
 }
 
 void Message::setSequence(uint16_t sequence)
@@ -42,22 +44,34 @@ void Message::setSequence(uint16_t sequence)
 
 int Message::sendBytes( void* socket, ByteStream bs, int flags )
 {
+	int result = 0;
 	//  If we're sending to a ROUTER, we send the address first
 	if (zsocket_type (socket) == ZMQ_ROUTER) {
-		assert (m_address);
-		if (zframe_send (&m_address, socket, ZFRAME_MORE)) {
-			return -1;
+		ByteStream addressByteStream(16);
+		addressByteStream.putUUID(m_address);
+		zframe_t* frame = zframe_new(addressByteStream.data(), addressByteStream.size());
+
+		if (zframe_send (&frame, socket, ZFRAME_MORE)) 
+		{
+			LOG_WARN() << "Address frame could not be sent" << std::endl;
+			result = -2;
 		}
-	}
-	//  Now send the data frame
-	zframe_t* frame = zframe_new(bs.data(), bs.size());
-	if (zframe_send (&frame, socket, flags)) {
 		zframe_destroy (&frame);
-		LOG_WARN() << "Frame could not be sent" << std::endl;
-		return -1;
 	}
 
-	return 0;
+	if (result == 0)
+	{
+		//  Now send the data frame
+		zframe_t* frame = zframe_new(bs.data(), bs.size());
+		if (zframe_send (&frame, socket, flags)) 
+		{
+			result = -1;
+			LOG_WARN() << "Frame could not be sent" << std::endl;
+		}
+		zframe_destroy (&frame);
+	}
+
+	return result;
 }
 
 

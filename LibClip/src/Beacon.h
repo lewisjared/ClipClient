@@ -6,6 +6,23 @@
 
 class ByteStream;
 
+#define  BEACON_VERSION 0x01
+
+typedef struct {
+	byte protocol [3];
+	byte version;
+	byte uuid [16];
+	uint16_t port;
+} beacon_packet_t;
+
+typedef struct
+{
+	std::string ipAddress;
+	beacon_packet_t packet;
+}beacon_t;
+
+
+
 //Encapsulates a zBeacon
 class Beacon
 {
@@ -24,6 +41,7 @@ public:
 	void unsubscribe();
 
 	void* getSocket();
+	bool getPacket(beacon_t& beacon);
 private:
 	zbeacon_t *m_beacon;
 	int m_portNumber;

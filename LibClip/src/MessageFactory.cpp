@@ -152,6 +152,7 @@ Message* MessageFactory::parse( void* socket )
 	}
 	if (address)
 		msg->setAddress(address);
+
 	//  Successful return
 	zframe_destroy (&frame);
 	return msg;

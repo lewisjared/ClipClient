@@ -33,6 +33,7 @@ private:
 
 	Beacon* m_beacon;
 	void* m_pipe;
+	void* m_inbox;
 	KeyValuePair m_headers;
 	Peers m_peers;
 	boost::uuids::uuid m_uid;

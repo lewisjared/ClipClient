@@ -21,6 +21,8 @@ enum msg_t
 
 #define HEADER_SIZE 3
 
+#include <boost/uuid/uuid.hpp>
+
 
 class Message
 {
@@ -35,12 +37,12 @@ public:
 
 	void setSequence(uint16_t sequence);
 	void setAddress(zframe_t* address);
-	zframe_t* getAddress() const;
+	boost::uuids::uuid getAddress() const;
 protected:
 	int sendBytes(void* socket, ByteStream bs, int flags);
 	msg_t m_id;
 	uint16_t m_sequence;
-	zframe_t* m_address;
+	boost::uuids::uuid m_address;
 };
 
 typedef std::map<std::string, std::string> KeyValuePair;
