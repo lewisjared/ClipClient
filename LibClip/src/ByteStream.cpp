@@ -175,3 +175,16 @@ std::string ByteStream::getString()
 
 	return result;
 }
+
+void ByteStream::putUUID(boost::uuids::uuid uuid)
+{
+	memcpy(m_data, &uuid, 16);
+	m_data += 16;
+}
+
+boost::uuid::uuid ByteStream::getUUID()
+{
+	boost::uuids::uuid uuid;
+	memcpy(&uuid, m_data, 16);
+	m_data += 16;
+}
