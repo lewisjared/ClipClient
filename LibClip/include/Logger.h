@@ -17,9 +17,9 @@ class LogPolicy;
 
 enum Severity
 {
-	DEBUG_LOG,
-	INFO,
-	WARNING,
+	DEBUG_SEV,
+	INFO_SEV,
+	WARNING_SEV,
 	ERROR_SEV,
 };
 
