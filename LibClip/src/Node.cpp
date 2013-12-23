@@ -12,18 +12,21 @@
 Node::Node(zctx_t* context, void* pipe)
 	:m_context(context), m_pipe(pipe)
 {
+	LOG() << "Creating new node" << std::endl;
+	m_uuid = boost::uuids::random_generator() ();
+	LOG() << "Node UUID: " << boost::uuids::to_string(m_uuid) << std::endl;
+
 	//Create and bind the inbox
 	m_inbox = zsocket_new(m_context, ZMQ_ROUTER);
 	m_port = zsocket_bind(m_inbox, "tcp://*:*");
+	LOG() << "Inbox bound to port " << m_port;
 
 	//Create the beacon on the correct port
 	m_beacon = new Beacon(m_context, ZRE_PORT);
 	m_beacon->setInterval(500);
 	m_beacon->setNoEcho();
 
-	//Create the nodes UUID
-	m_uuid = boost::uuids::random_generator() ();
-
+	//Generate the packet for the beacon
 	ByteStream stream(sizeof(beacon_packet_t));
 	stream.putByte('Z');
 	stream.putByte('R');
@@ -38,6 +41,8 @@ Node::Node(zctx_t* context, void* pipe)
 
 Node::~Node(void)
 {
+	LOG() << "Destroying Node" << std::endl;
+
 	zsocket_destroy(m_context, m_inbox);
 	
 	delete m_beacon;
@@ -102,7 +107,7 @@ void Node::checkPeersHealth()
 			if (zclock_time() >= expiredAt)
 			{
 				//Remove the Node
-				LOG() << "Node " << it->first << " expired" << std::endl;
+				LOG() << "Peer " << it->first << " expired" << std::endl;
 				//zstr_sendm(m_pipe,"EXIT");
 				//zstr_send(m_pipe, boost::uuids::to_string(it->first).c_str());
 
@@ -110,6 +115,7 @@ void Node::checkPeersHealth()
 				m_peers.erase(it++);
 			} else if (zclock_time() > evaisiveAt)
 			{
+				LOG() << "Peer " << it->first << " evasive" << std::endl;
 				//Ping the node
 				Message* msg = MessageFactory::generatePing();
 				peer->sendMesg(msg);
