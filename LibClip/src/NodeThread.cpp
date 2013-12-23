@@ -6,6 +6,7 @@
 #include "ZyreCPP.h"
 
 #include <sstream>
+#include <vector>
 
 #include "boost/uuid/uuid_io.hpp"
 
@@ -43,6 +44,9 @@ NodeThread::~NodeThread(void)
 {
 	LOG() << "Destroying Node" << std::endl;
 
+	//Terminate the worker thread
+	terminate();
+
 	zsocket_destroy(m_context, m_inbox);
 	
 	delete m_beacon;
@@ -56,10 +60,11 @@ NodeThread::~NodeThread(void)
 
 void NodeThread::eventLoop(void *pipe)
 {
+	LOG() << "Beginning Node eventLoop" << std::endl;
 	m_pipe = pipe;
 	zstr_send(m_pipe, "OK");
 
-	uint64_t reap_at = zclock_time() + REAP_INTERVAL;
+	int64_t reap_at = zclock_time() + REAP_INTERVAL;
 	zpoller_t *poller = zpoller_new(m_pipe, m_beacon->getSocket(), m_inbox, NULL);
 
 	m_terminated = false;
@@ -88,48 +93,71 @@ void NodeThread::eventLoop(void *pipe)
 		if (m_terminated)
 			break;
 	}
+	LOG() << "Node event loop terminated" << std::endl;
 	zpoller_destroy(&poller);
 }
 
+/**
+ \fn	void NodeThread::checkPeersHealth()
+
+ \brief	Check peers health and deletes or queries them if necessary
+ */
 void NodeThread::checkPeersHealth()
 {
-	for (auto it = m_peers.begin(); it != m_peers.end();)
+	std::vector< Peers::iterator> toDelete;
+
+	for (auto it = m_peers.begin(); it != m_peers.end();++it)
 	{
 		Peer* peer = it->second;
 
 		if (!peer->isConnected())
 		{
-			delete it->second;
-			m_peers.erase(it++);
+			//Remove any unconnected peers
+			toDelete.push_back(it);
 		} else {
 
 			int64_t expiredAt = peer->lastSeen() + EXPIRED_TIME;
 			int64_t evaisiveAt = peer->lastSeen() + EVAISIVE_TIME;
-			if (zclock_time() >= expiredAt)
+			int64_t time = zclock_time();
+			if (time >= expiredAt)
 			{
 				//Remove the Node
 				LOG() << "Peer " << it->first << " expired" << std::endl;
 				zstr_sendm(m_pipe,"EXIT");
 				zstr_send(m_pipe, boost::uuids::to_string(it->first).c_str());
 
-				delete it->second;
-				m_peers.erase(it++);
-			} else if (zclock_time() > evaisiveAt)
+				toDelete.push_back(it);
+			} else if (time > evaisiveAt)
 			{
 				LOG() << "Peer " << it->first << " evasive" << std::endl;
 				//Ping the node
 				Message* msg = MessageFactory::generatePing();
 				peer->sendMesg(msg);
-				++it;
 			}
 		}
+	}
+
+	//Finally delete the peers and iterators in m_peers
+	for (auto it = toDelete.begin(); it != toDelete.end(); ++it)
+	{
+		delete (*it)->second;
+		m_peers.erase(*it);
 	}
 }
 
 void NodeThread::handleAPI()
 {
-	//To Write
-	assert( false);
+	char* text = zstr_recv(m_pipe);
+	std::string command(text);
+	zstr_free(&text);
+
+	LOG() << "Node received command: " << command << std::endl;
+
+	if (command == "TERMINATE")
+	{
+		m_terminated = true;
+		zstr_send(m_pipe, "OK");
+	}
 }
 
 void NodeThread::handlePeers()
@@ -187,13 +215,14 @@ void NodeThread::handleBeacon()
 			ss << "tcp://" << beacon.ipAddress << ":" << beacon.packet.port;
 			std::string endpoint = ss.str();
 
-			for (auto pr = m_peers.begin(); pr != m_peers.end(); ++pr)
+			for (auto pr = m_peers.begin(); pr != m_peers.end();)
 			{
 				if (pr->second->getEndpoint() == ss.str())
 				{
 					delete it->second;
-					m_peers.erase(it);
-				}				
+					m_peers.erase(it++);
+				} else 
+					++it;
 			}
 
 			peer->connect(endpoint);
@@ -202,6 +231,7 @@ void NodeThread::handleBeacon()
 			//Heard from an existing peer
 			Peer* peer = it->second;
 			peer->seen();
+			LOG() << "Seen peer " << peerUUID << std::endl;
 		}
 	}
 }
