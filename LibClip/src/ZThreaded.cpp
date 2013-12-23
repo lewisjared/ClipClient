@@ -10,7 +10,6 @@ ZThread::ZThread(zctx_t* ctx)
 
 ZThread::~ZThread(void)
 {
-	terminate();
 }
 
 /**
