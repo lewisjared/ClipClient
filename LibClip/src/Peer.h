@@ -9,12 +9,14 @@ class Message;
 class Peer
 {
 public:
-	Peer (boost::uuids::uuid nodeUUID, boost::uuids::uuid peerUUID);
+	Peer (zctx_t* context, boost::uuids::uuid nodeUUID, boost::uuids::uuid peerUUID);
 	~Peer(void);
 
 	int sendMesg(Message* msg);
 
-	bool connect(const std::string& target);
+	bool connect(const std::string& endpoint);
+
+	std::string getEndpoint() const;
 
 	/**
 	 \fn	int64_t Peer::lastSeen();
@@ -27,8 +29,9 @@ public:
 	int64_t lastSeen();
 	void seen();
 
-	bool isClosed();
+	bool isConnected();
 private:
+	zctx_t* m_context;
 	std::string m_endpoint;
 	bool m_connected;
 	bool m_closed;

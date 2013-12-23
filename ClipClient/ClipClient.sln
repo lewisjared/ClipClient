@@ -11,6 +11,11 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "FirstPlugin", "..\FirstPlug
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "LibClip", "..\LibClip\LibClip.vcxproj", "{9B040A9F-D157-4B00-B96C-B9DBBD215E06}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "LibTest", "..\LibTest\LibTest.vcxproj", "{8AB2868D-F76D-412D-BC3B-253329ED27A4}"
+	ProjectSection(ProjectDependencies) = postProject
+		{9B040A9F-D157-4B00-B96C-B9DBBD215E06} = {9B040A9F-D157-4B00-B96C-B9DBBD215E06}
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -29,6 +34,10 @@ Global
 		{9B040A9F-D157-4B00-B96C-B9DBBD215E06}.Debug|Win32.Build.0 = Debug|Win32
 		{9B040A9F-D157-4B00-B96C-B9DBBD215E06}.Release|Win32.ActiveCfg = Release|Win32
 		{9B040A9F-D157-4B00-B96C-B9DBBD215E06}.Release|Win32.Build.0 = Release|Win32
+		{8AB2868D-F76D-412D-BC3B-253329ED27A4}.Debug|Win32.ActiveCfg = Debug|Win32
+		{8AB2868D-F76D-412D-BC3B-253329ED27A4}.Debug|Win32.Build.0 = Debug|Win32
+		{8AB2868D-F76D-412D-BC3B-253329ED27A4}.Release|Win32.ActiveCfg = Release|Win32
+		{8AB2868D-F76D-412D-BC3B-253329ED27A4}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

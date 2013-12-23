@@ -11,7 +11,7 @@ Logger::Logger()
 {
 	m_nullStream = new std::ostream(NULL);
 	m_lineNum = 0;
-	m_severity = WARNING;
+	m_severity = WARNING_SEV;
 	m_file = NULL;
 
 	enableConsole();
@@ -69,9 +69,9 @@ std::string Logger::getHeaderText()
 
 std::ostream& Logger::print()
 {
-	if (m_severity <= DEBUG_LOG)
+	if (m_severity <= DEBUG_SEV)
 	{
-		printHeader(DEBUG_LOG);
+		printHeader(DEBUG_SEV);
 		return m_file->getStream();
 	} else {
 		return *m_nullStream;
@@ -81,7 +81,7 @@ std::ostream& Logger::print()
 std::ostream& Logger::printInfo()
 {
 	//Info is always printed
-	printHeader(DEBUG_LOG);
+	printHeader(DEBUG_SEV);
 	return m_file->getStream();
 }
 
@@ -98,9 +98,9 @@ std::ostream& Logger::printErr()
 
 std::ostream& Logger::printWarn()
 {
-	if (m_severity <= WARNING)
+	if (m_severity <= WARNING_SEV)
 	{
-		printHeader(WARNING);
+		printHeader(WARNING_SEV);
 		return m_file->getStream();
 	} else {
 		return *m_nullStream;
@@ -115,13 +115,13 @@ void Logger::printHeader(Severity severity)
 	std::string line = getHeaderText();
 	switch(severity)
 	{
-	case DEBUG_LOG:
+	case DEBUG_SEV:
 		line.append("<DEBUG> : ");
 		break;
-	case INFO:
+	case INFO_SEV:
 		line.append("<INFO> : ");
 		break;
-	case WARNING:
+	case WARNING_SEV:
 		line.append("<WARNING> : ");
 		break;
 	case ERROR_SEV:

@@ -5,16 +5,43 @@
 #include "MessageFactory.h"
 #include "ZyreCPP.h"
 
+#include <sstream>
+
 #include "boost/uuid/uuid_io.hpp"
 
-Node::Node(void* pipe)
-	:m_pipe(pipe)
+Node::Node(zctx_t* context, void* pipe)
+	:m_context(context), m_pipe(pipe)
 {
+	//Create and bind the inbox
+	m_inbox = zsocket_new(m_context, ZMQ_ROUTER);
+	m_port = zsocket_bind(m_inbox, "tcp://*:*");
+
+	//Create the beacon on the correct port
+	m_beacon = new Beacon(m_context, ZRE_PORT);
+	m_beacon->setInterval(500);
+	m_beacon->setNoEcho();
+
+	//Create the nodes UUID
+	m_uuid = boost::uuids::random_generator() ();
+
+	ByteStream stream(sizeof(beacon_packet_t));
+	stream.putByte('Z');
+	stream.putByte('R');
+	stream.putByte('E');
+	stream.putByte(BEACON_VERSION);
+	stream.putUUID(m_uuid);
+	stream.putUINT16(htons(m_port));
+	m_beacon->publish(stream);
+	m_beacon->subscribe("ZRE");
 }
 
 
 Node::~Node(void)
 {
+	zsocket_destroy(m_context, m_inbox);
+	
+	delete m_beacon;
+
 	for (auto it = m_peers.begin(); it != m_peers.end(); ++it)
 	{
 		delete it->second;
@@ -24,10 +51,12 @@ Node::~Node(void)
 
 void Node::run()
 {
-	zstr_send(m_pipe, "OK");
+	//zstr_send(m_pipe, "OK");
 
 	uint64_t reap_at = zclock_time() + REAP_INTERVAL;
-	zpoller_t *poller = zpoller_new(m_pipe, m_beacon->getSocket(), NULL);
+	zpoller_t *poller = zpoller_new(/*m_pipe,*/ m_beacon->getSocket(), m_inbox, NULL);
+
+	m_terminated = false;
 
 	while(!zpoller_terminated(poller))
 	{
@@ -38,9 +67,9 @@ void Node::run()
 			timeout = 0;
 		void* socket = zpoller_wait(poller,timeout);
 
-		if (socket == m_pipe)
+		/*if (socket == m_pipe)
 			handleAPI();
-		else if (socket == m_beacon->getSocket())
+		else */if (socket == m_beacon->getSocket())
 			handleBeacon();
 		else if (0)
 			handlePeers();
@@ -58,37 +87,39 @@ void Node::run()
 
 void Node::checkPeersHealth()
 {
-	for (auto it = m_peers.begin(); it != m_peers.end(); ++it)
+	for (auto it = m_peers.begin(); it != m_peers.end();)
 	{
 		Peer* peer = it->second;
 
-		if (peer->isClosed())
+		if (!peer->isConnected())
 		{
 			delete it->second;
-			m_peers.erase(it);
-		}
+			m_peers.erase(it++);
+		} else {
 
-		int64_t expiredAt = peer->lastSeen() + EXPIRED_TIME;
-		int64_t evaisiveAt = peer->lastSeen() + EVAISIVE_TIME;
-		if (zclock_time() >= expiredAt)
-		{
-			//Remove the Node
-			LOG() << "Node " << it->first << " expired" << std::endl;
-			zstr_sendm(m_pipe,"EXIT");
-			zstr_send(m_pipe, boost::uuids::to_string(it->first).c_str());
+			int64_t expiredAt = peer->lastSeen() + EXPIRED_TIME;
+			int64_t evaisiveAt = peer->lastSeen() + EVAISIVE_TIME;
+			if (zclock_time() >= expiredAt)
+			{
+				//Remove the Node
+				LOG() << "Node " << it->first << " expired" << std::endl;
+				//zstr_sendm(m_pipe,"EXIT");
+				//zstr_send(m_pipe, boost::uuids::to_string(it->first).c_str());
 
-			delete it->second;
-			m_peers.erase(it);
-		} else if (zclock_time() > evaisiveAt)
-		{
-			//Ping the node
-			Message* msg = MessageFactory::generatePing();
-			peer->sendMesg(msg);
+				delete it->second;
+				m_peers.erase(it++);
+			} else if (zclock_time() > evaisiveAt)
+			{
+				//Ping the node
+				Message* msg = MessageFactory::generatePing();
+				peer->sendMesg(msg);
+				++it;
+			}
 		}
 	}
 }
 
-void handleAPI()
+void Node::handleAPI()
 {
 	//To Write
 	assert( false);
@@ -135,15 +166,31 @@ void Node::handleBeacon()
 
 	if (m_beacon->getPacket(beacon))
 	{
-		boost::uuids::uuid uid;
-		memcpy(&uid, beacon.packet.uuid, 16);
-		auto it = m_peers.find(uid);
+		boost::uuids::uuid peerUUID;
+		memcpy(&peerUUID, beacon.packet.uuid, 16);
+		auto it = m_peers.find(peerUUID);
 
 		if (it == m_peers.end())
 		{
 			//Found a new peer
-			Peer* peer = new Peer(m_uid, uid);
-			m_peers[uid] = peer;
+			Peer* peer = new Peer(m_context, m_uuid, peerUUID);
+
+			//Clear out any existing peers with the same endpoint
+			std::stringstream ss;
+			ss << "tcp://" << beacon.ipAddress << ":" << beacon.packet.port;
+			std::string endpoint = ss.str();
+
+			for (auto pr = m_peers.begin(); pr != m_peers.end(); ++pr)
+			{
+				if (pr->second->getEndpoint() == ss.str())
+				{
+					delete it->second;
+					m_peers.erase(it);
+				}				
+			}
+
+			peer->connect(endpoint);
+			m_peers[peerUUID] = peer;
 		} else {
 			//Heard from an existing peer
 			Peer* peer = it->second;

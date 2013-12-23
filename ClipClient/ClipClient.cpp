@@ -54,7 +54,7 @@ int APIENTRY _tWinMain(_In_ HINSTANCE hInstance,
 	UNREFERENCED_PARAMETER(hPrevInstance);
 	UNREFERENCED_PARAMETER(lpCmdLine);
 
-	Logger::getInstance().setSeverity(DEBUG);
+	Logger::getInstance().setSeverity(DEBUG_SEV);
 	
 	MSG msg;
 	HACCEL hAccelTable;
@@ -145,6 +145,8 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 
 	ShowWindow(hWnd, nCmdShow);
 	UpdateWindow(hWnd);
+
+	Node* node = new Node();
 
 	return TRUE;
 }

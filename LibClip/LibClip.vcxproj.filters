@@ -185,9 +185,6 @@
     <ClInclude Include="src\Beacon.h">
       <Filter>Header Files\network</Filter>
     </ClInclude>
-    <ClInclude Include="src\CZMQContext.h">
-      <Filter>Header Files\network</Filter>
-    </ClInclude>
     <ClInclude Include="src\Node.h">
       <Filter>Header Files\network</Filter>
     </ClInclude>

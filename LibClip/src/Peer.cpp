@@ -1,4 +1,3 @@
-#include "CZMQContext.h"
 #include "Peer.h"
 #include "Logger.h"
 #include "Message.h"
@@ -6,12 +5,14 @@
 #include "boost/uuid/uuid_io.hpp"
 
 
-Peer::Peer(boost::uuids::uuid nodeUUID, boost::uuids::uuid peerUUID)
-	: m_self(nodeUUID), m_uuid(peerUUID)
+Peer::Peer(zctx_t* context, boost::uuids::uuid nodeUUID, boost::uuids::uuid peerUUID)
+	: m_context(context), m_self(nodeUUID), m_uuid(peerUUID)
 {
-	assert (nodeUUID == peerUUID);
+	assert (nodeUUID != peerUUID);
+	m_mailbox = NULL;
 
 	LOG() << "Creating peer for " << peerUUID << std::endl;
+	m_lastSeen = zclock_time();
 }
 
 
@@ -19,20 +20,21 @@ Peer::~Peer(void)
 {
 	LOG() << "Destroying peer for " << m_uuid << std::endl;
 	if (m_mailbox)
-		zsocket_destroy(CZMQContext::getContext(), m_mailbox);
+		zsocket_destroy(m_context, m_mailbox);
 }
 
-bool Peer::connect(const std::string& target)
+bool Peer::connect(const std::string& endpoint)
 {
+	LOG() << "Connecting peer " << m_uuid << " to " << endpoint << std::endl;
 	//Create mailbox
 	if (m_mailbox)
 	{
 		LOG_WARN() << "Peer " << m_uuid << " already has a mailbox Peer::connect" << std::endl;
-		zsocket_destroy( CZMQContext::getContext(), m_mailbox);
+		zsocket_destroy( m_context, m_mailbox);
 	}
 
 	//  Create new outgoing socket (drop any messages in transit)
-	m_mailbox = zsocket_new ( CZMQContext::getContext(), ZMQ_DEALER);
+	m_mailbox = zsocket_new ( m_context, ZMQ_DEALER);
 
 	if (m_mailbox)
 	{
@@ -47,15 +49,20 @@ bool Peer::connect(const std::string& target)
 		zsocket_set_sndtimeo (m_mailbox, 0);
 
 		//  Connect through to peer node
-		int rc = zsocket_connect (m_mailbox, target.c_str());
+		int rc = zsocket_connect (m_mailbox, endpoint.c_str());
 		assert (rc == 0);
-		m_endpoint = target;
+		m_endpoint = endpoint;
 		m_connected = true;
 
 		return true;
 	}
 	return false;
 
+}
+
+std::string Peer::getEndpoint() const
+{
+	return m_endpoint;
 }
 
 int64_t Peer::lastSeen()
@@ -81,7 +88,7 @@ int Peer::sendMesg(Message* msg)
 	return 0;
 }
 
-bool Peer::isClosed()
+bool Peer::isConnected()
 {
-	return m_closed;
+	return m_connected;
 }

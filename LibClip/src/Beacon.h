@@ -27,7 +27,7 @@ typedef struct
 class Beacon
 {
 public:
-	Beacon(int portNumber);
+	Beacon(zctx_t* context, int portNumber);
 	~Beacon(void);
 
 	const std::string& getHostname();
@@ -35,14 +35,17 @@ public:
 	void setInterval(int millis);
 
 	void publish(const ByteStream& packet);
+	void publish(const std::string& packet);
 	void silence();
 
 	void subscribe(const ByteStream& packet);
+	void subscribe(const std::string& packet);
 	void unsubscribe();
 
 	void* getSocket();
 	bool getPacket(beacon_t& beacon);
 private:
+	zctx_t* m_context;
 	zbeacon_t *m_beacon;
 	int m_portNumber;
 	std::string m_hostname;
