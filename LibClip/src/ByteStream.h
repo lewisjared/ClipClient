@@ -19,6 +19,7 @@ public:
 	ByteStream();
 	ByteStream(size_t bufferSize);
 	ByteStream(zframe_t* frame);
+	ByteStream(const ByteStream& a);
 
 	~ByteStream(void);
 

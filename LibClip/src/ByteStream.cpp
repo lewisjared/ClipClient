@@ -6,14 +6,30 @@ ByteStream::ByteStream()
 	m_data = NULL;
 	m_start = NULL;
 	m_end = NULL;
-	m_end = false;
+	m_allocated = false;
 }
 ByteStream::ByteStream(size_t bufferSize)
 {
-	m_data = (byte*)malloc(bufferSize);
+	m_data = new byte[bufferSize];
 	m_start = m_data;
 	m_end = m_data + bufferSize;
 	m_allocated = true;
+}
+
+/**
+ \fn	ByteStream::ByteStream(const ByteStream& a);
+
+ \brief	Copy constructor.
+		Should probably use shared_ptr instead
+
+ \param	a	The const ByteStream&amp; to process.
+ */
+ByteStream::ByteStream(const ByteStream& a)
+{
+	m_data = a.m_data;
+	m_start = a.m_start;
+	m_end = a.m_end;
+	m_allocated = false;
 }
 
 ByteStream::ByteStream(zframe_t* frame)
@@ -25,7 +41,7 @@ ByteStream::~ByteStream(void)
 {
 	if (m_allocated)
 	{
-		free(m_start);
+		delete m_start;
 	}
 }
 
@@ -182,9 +198,11 @@ void ByteStream::putUUID(boost::uuids::uuid uuid)
 	m_data += 16;
 }
 
-boost::uuid::uuid ByteStream::getUUID()
+boost::uuids::uuid ByteStream::getUUID()
 {
 	boost::uuids::uuid uuid;
 	memcpy(&uuid, m_data, 16);
 	m_data += 16;
+
+	return uuid;
 }
