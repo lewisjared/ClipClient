@@ -84,9 +84,6 @@
     <ClCompile Include="src\Beacon.cpp">
       <Filter>Source Files\network</Filter>
     </ClCompile>
-    <ClCompile Include="src\Node.cpp">
-      <Filter>Source Files\network</Filter>
-    </ClCompile>
     <ClCompile Include="src\Message.cpp">
       <Filter>Source Files\network</Filter>
     </ClCompile>
@@ -115,6 +112,12 @@
       <Filter>Source Files\network</Filter>
     </ClCompile>
     <ClCompile Include="src\MessageWhisper.cpp">
+      <Filter>Source Files\network</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ZThreaded.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\NodeThread.cpp">
       <Filter>Source Files\network</Filter>
     </ClCompile>
   </ItemGroup>
@@ -185,20 +188,17 @@
     <ClInclude Include="src\Beacon.h">
       <Filter>Header Files\network</Filter>
     </ClInclude>
-    <ClInclude Include="src\Node.h">
-      <Filter>Header Files\network</Filter>
-    </ClInclude>
     <ClInclude Include="src\Peer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ZyreCPP.h">
-      <Filter>Header Files\network</Filter>
-    </ClInclude>
-    <ClInclude Include="Message.h">
-      <Filter>Header Files\network</Filter>
-    </ClInclude>
     <ClInclude Include="src\MessageFactory.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ZThreaded.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\NodeThread.h">
+      <Filter>Header Files\network</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

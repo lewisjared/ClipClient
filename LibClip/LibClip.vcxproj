@@ -92,7 +92,7 @@
     <ClCompile Include="src\MessagePingOk.cpp" />
     <ClCompile Include="src\MessageShout.cpp" />
     <ClCompile Include="src\MessageWhisper.cpp" />
-    <ClCompile Include="src\Node.cpp" />
+    <ClCompile Include="src\NodeThread.cpp" />
     <ClCompile Include="src\Peer.cpp" />
     <ClCompile Include="src\ss\bulk_setting.cpp" />
     <ClCompile Include="src\ss\configuration.cpp" />
@@ -103,6 +103,7 @@
     <ClCompile Include="src\ss\registry_storage.cpp" />
     <ClCompile Include="src\ss\util.cpp" />
     <ClCompile Include="src\UdpSocket.cpp" />
+    <ClCompile Include="src\ZThreaded.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Logger.h" />
@@ -122,16 +123,15 @@
     <ClInclude Include="include\ss\ts.h" />
     <ClInclude Include="include\ss\util.h" />
     <ClInclude Include="include\UdpSocket.h" />
+    <ClInclude Include="include\ZThreaded.h" />
     <ClInclude Include="src\Beacon.h" />
     <ClInclude Include="src\ByteStream.h" />
     <ClInclude Include="src\LogConsole.h" />
     <ClInclude Include="src\LogFile.h" />
     <ClInclude Include="src\LogPolicy.h" />
     <ClInclude Include="src\MessageFactory.h" />
-    <ClInclude Include="src\Node.h" />
+    <ClInclude Include="src\NodeThread.h" />
     <ClInclude Include="src\Peer.h" />
-    <ClInclude Include="Message.h" />
-    <ClInclude Include="ZyreCPP.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

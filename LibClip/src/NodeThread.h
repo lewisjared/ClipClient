@@ -1,17 +1,14 @@
 #pragma once
 
+#include "ZThreaded.h"
+
 #include <boost/uuid/uuid.hpp>
 #include <boost/uuid/uuid_generators.hpp>
 #include <string>
 #include <map>
+
 #include "czmq.h"
 
-/**
- \class	Node
-
- \brief	Defines a single node in zyre scheme
- */
- 
 class Beacon;
 class Peer;
 
@@ -20,15 +17,22 @@ typedef std::map<boost::uuids::uuid, Peer *> Peers;
 
 #define ZRE_PORT 888
 
-class Node
+/**
+ \class	NodeThread
+
+ \brief	The worker thread for a Node.
+
+		This class is spawned as a thread and eventloop is executed. The class then communicates 
+		over its pipe.
+ */
+class NodeThread : public ZThread
 {
 public:
-	Node(zctx_t* context, void* pipe);
-	~Node(void);
+	NodeThread(zctx_t* context);
+	~NodeThread(void);
 
-
-	void run();
 private:
+	void eventLoop(void *pipe);
 	void handleAPI();
 	void handlePeers();
 	void handleBeacon();

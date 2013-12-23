@@ -1,4 +1,4 @@
-#include "Node.h"
+#include "NodeThread.h"
 #include "Peer.h"
 #include "Beacon.h"
 #include "Logger.h"
@@ -9,8 +9,8 @@
 
 #include "boost/uuid/uuid_io.hpp"
 
-Node::Node(zctx_t* context, void* pipe)
-	:m_context(context), m_pipe(pipe)
+NodeThread::NodeThread(zctx_t* context)
+	:ZThread(context), m_context(context), m_pipe(NULL)
 {
 	LOG() << "Creating new node" << std::endl;
 	m_uuid = boost::uuids::random_generator() ();
@@ -19,7 +19,7 @@ Node::Node(zctx_t* context, void* pipe)
 	//Create and bind the inbox
 	m_inbox = zsocket_new(m_context, ZMQ_ROUTER);
 	m_port = zsocket_bind(m_inbox, "tcp://*:*");
-	LOG() << "Inbox bound to port " << m_port;
+	LOG() << "Inbox bound to port " << m_port << std::endl;
 
 	//Create the beacon on the correct port
 	m_beacon = new Beacon(m_context, ZRE_PORT);
@@ -39,7 +39,7 @@ Node::Node(zctx_t* context, void* pipe)
 }
 
 
-Node::~Node(void)
+NodeThread::~NodeThread(void)
 {
 	LOG() << "Destroying Node" << std::endl;
 
@@ -54,12 +54,13 @@ Node::~Node(void)
 }
 
 
-void Node::run()
+void NodeThread::eventLoop(void *pipe)
 {
-	//zstr_send(m_pipe, "OK");
+	m_pipe = pipe;
+	zstr_send(m_pipe, "OK");
 
 	uint64_t reap_at = zclock_time() + REAP_INTERVAL;
-	zpoller_t *poller = zpoller_new(/*m_pipe,*/ m_beacon->getSocket(), m_inbox, NULL);
+	zpoller_t *poller = zpoller_new(m_pipe, m_beacon->getSocket(), m_inbox, NULL);
 
 	m_terminated = false;
 
@@ -72,9 +73,9 @@ void Node::run()
 			timeout = 0;
 		void* socket = zpoller_wait(poller,timeout);
 
-		/*if (socket == m_pipe)
+		if (socket == m_pipe)
 			handleAPI();
-		else */if (socket == m_beacon->getSocket())
+		else if (socket == m_beacon->getSocket())
 			handleBeacon();
 		else if (0)
 			handlePeers();
@@ -90,7 +91,7 @@ void Node::run()
 	zpoller_destroy(&poller);
 }
 
-void Node::checkPeersHealth()
+void NodeThread::checkPeersHealth()
 {
 	for (auto it = m_peers.begin(); it != m_peers.end();)
 	{
@@ -108,8 +109,8 @@ void Node::checkPeersHealth()
 			{
 				//Remove the Node
 				LOG() << "Peer " << it->first << " expired" << std::endl;
-				//zstr_sendm(m_pipe,"EXIT");
-				//zstr_send(m_pipe, boost::uuids::to_string(it->first).c_str());
+				zstr_sendm(m_pipe,"EXIT");
+				zstr_send(m_pipe, boost::uuids::to_string(it->first).c_str());
 
 				delete it->second;
 				m_peers.erase(it++);
@@ -125,13 +126,13 @@ void Node::checkPeersHealth()
 	}
 }
 
-void Node::handleAPI()
+void NodeThread::handleAPI()
 {
 	//To Write
 	assert( false);
 }
 
-void Node::handlePeers()
+void NodeThread::handlePeers()
 {
 	Message* msg = MessageFactory::parse(m_inbox);
 
@@ -166,7 +167,7 @@ void Node::handlePeers()
 	delete msg;
 }
 
-void Node::handleBeacon()
+void NodeThread::handleBeacon()
 {
 	beacon_t beacon;
 
