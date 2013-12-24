@@ -123,6 +123,9 @@
     <ClCompile Include="src\MessageHeader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\Node.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\UdpSocket.h">
@@ -202,6 +205,9 @@
     </ClInclude>
     <ClInclude Include="src\NodeThread.h">
       <Filter>Header Files\network</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Node.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
