@@ -27,16 +27,7 @@ NodeThread::NodeThread(zctx_t* context)
 	m_beacon->setInterval(500);
 	m_beacon->setNoEcho();
 
-	//Generate the packet for the beacon
-	ByteStream stream(sizeof(beacon_packet_t));
-	stream.putByte('Z');
-	stream.putByte('R');
-	stream.putByte('E');
-	stream.putByte(BEACON_VERSION);
-	stream.putUUID(m_uuid);
-	stream.putUINT16(htons(m_port));
-	m_beacon->publish(stream);
-	m_beacon->subscribe("ZRE");
+	start();
 }
 
 
@@ -159,14 +150,20 @@ void NodeThread::handleAPI()
 		char* key = zmsg_popstr(request);
 		char* value = zmsg_popstr(request);
 		setKeyValue(key, value);
-		free(key);
-		free(value);
+		zstr_free(&key);
+		zstr_free(&value);
+	} else if (command == "START")
+	{
+		//start();
+		zstr_send(m_pipe, "OK");
 	}
 	else if (command == "TERMINATE")
 	{
 		m_terminated = true;
 		zstr_send(m_pipe, "OK");
 	}
+
+	zmsg_destroy(&request);
 }
 
 void NodeThread::handlePeers()
@@ -244,10 +241,10 @@ Peer* NodeThread::getPeer( boost::uuids::uuid peerUUID,std::string ip, uint16_t 
 		{
 			if (pr->second->getEndpoint() == ss.str())
 			{
-				delete it->second;
-				m_peers.erase(it++);
+				delete pr->second;
+				m_peers.erase(pr++);
 			} else 
-				++it;
+				++pr;
 		}
 
 		MessageHello* msg = reinterpret_cast<MessageHello*>(MessageFactory::generateHello());
@@ -276,4 +273,20 @@ void NodeThread::setKeyValue(std::string key, std::string value)
 		peer->sendMesg(msg);
 	}
 	delete msg;
+}
+
+void NodeThread::start()
+{
+	//Generate the packet for the beacon
+	ByteStream stream(sizeof(beacon_packet_t));
+	stream.putByte('Z');
+	stream.putByte('R');
+	stream.putByte('E');
+	stream.putByte(BEACON_VERSION);
+	stream.putUUID(m_uuid);
+	stream.putUINT16(htons(m_port));
+
+	//Start pub and subbing
+	m_beacon->publish(stream);
+	m_beacon->subscribe("ZRE");
 }
