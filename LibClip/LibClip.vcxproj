@@ -85,6 +85,7 @@
     <ClCompile Include="src\Logger.cpp" />
     <ClCompile Include="src\Message.cpp" />
     <ClCompile Include="src\MessageFactory.cpp" />
+    <ClCompile Include="src\MessageHeader.cpp" />
     <ClCompile Include="src\MessageHello.cpp" />
     <ClCompile Include="src\MessageJoin.cpp" />
     <ClCompile Include="src\MessageLeave.cpp" />

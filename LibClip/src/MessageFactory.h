@@ -26,6 +26,7 @@ public:
 	static Message* generateLeave();
 	static Message* generatePing();
 	static Message* generatePingOk();
+	static Message* generateHeader(const std::string &key, const std::string & value);
 
 	// Parses a Message from a socket
 	static Message* parse(void* socket);

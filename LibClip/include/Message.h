@@ -17,7 +17,8 @@ enum msg_t
 	MSG_JOIN,
 	MSG_LEAVE,
 	MSG_PING,
-	MSG_PING_OK
+	MSG_PING_OK,
+	MSG_HEADER
 };
 
 #define HEADER_SIZE 3
@@ -144,5 +145,19 @@ public:
 	MessagePingOK();
 	int send(void* socket);
 };
+
+class MessageHeader : public Message
+{
+public:
+	MessageHeader(const std::string& key, const std::string& value);
+	int send(void* socket);
+
+	std::string key() const;
+	std::string value() const;
+private:
+	std::string m_key;
+	std::string m_value;
+};
+
 
 #endif

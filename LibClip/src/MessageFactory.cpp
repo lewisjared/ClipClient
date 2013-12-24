@@ -38,6 +38,11 @@ Message* MessageFactory::generatePingOk()
 	return (Message*) new MessagePingOK();
 }
 
+Message* MessageFactory::generateHeader(const std::string& key, const std::string& value)
+{
+	return (Message*) new MessageHeader(key, value);
+}
+
 Message* MessageFactory::parse( void* socket )
 {
 	Message* msg;
@@ -82,10 +87,12 @@ Message* MessageFactory::parse( void* socket )
 	//  Get message id and parse per message type
 	msg_t type = (msg_t)frameStream.getByte();
 
-	switch (type) {
-	case MSG_HELLO:
+	uint16_t sequence = frameStream.getUINT16();
+
+	if (type == MSG_HELLO)
+	{
 		msg = new MessageHello();
-		msg->setSequence(frameStream.getUINT16());
+		msg->setSequence(sequence);
 		dynamic_cast<MessageHello*>(msg)->setIP(frameStream.getString());
 		dynamic_cast<MessageHello*>(msg)->setMailbox(frameStream.getUINT16());
 
@@ -100,54 +107,52 @@ Message* MessageFactory::parse( void* socket )
 			std::string header = frameStream.getString();
 			dynamic_cast<MessageHello*>(msg)->addHeader(header);
 		}
-		break;
-
-	case MSG_WHISPER:
+	} else if (type == MSG_WHISPER)
+	{
 		msg = new MessageWhisper();
-		msg->setSequence(frameStream.getUINT16());
+		msg->setSequence(sequence);
 		//  Get zero or more remaining frames,
 		//  leave current frame untouched
 		content = dynamic_cast<MessageWhisper*> (msg)->getContent();
 		while (zsocket_rcvmore (socket))
 			zmsg_add (content, zframe_recv (socket));
-		break;
-
-	case MSG_SHOUT:
+	} else if (type == MSG_SHOUT)
+	{
 		msg = new MessageShout();
-		msg->setSequence(frameStream.getUINT16());
+		msg->setSequence(sequence);
 		dynamic_cast<MessageShout*> (msg)->setGroup(frameStream.getString());
 		//  Get zero or more remaining frames,
 		//  leave current frame untouched
 		content = dynamic_cast<MessageShout*> (msg)->getContent();
 		while (zsocket_rcvmore (socket))
 			zmsg_add (content, zframe_recv (socket));
-		break;
-
-	case MSG_JOIN:
+	} else if (type == MSG_JOIN)
+	{
 		msg = new MessageJoin();
-		msg->setSequence(frameStream.getUINT16());
+		msg->setSequence(sequence);
 		dynamic_cast<MessageJoin*> (msg)->setGroup(frameStream.getString());
 		dynamic_cast<MessageJoin*> (msg)->setStatus(frameStream.getByte());
-		break;
-
-	case MSG_LEAVE:
+	} else if (type == MSG_LEAVE)
+	{
 		msg = new MessageLeave();
-		msg->setSequence(frameStream.getUINT16());
+		msg->setSequence(sequence);
 		dynamic_cast<MessageLeave*> (msg)->setGroup(frameStream.getString());
 		dynamic_cast<MessageLeave*> (msg)->setStatus(frameStream.getByte());
-		break;
-
-	case MSG_PING:
+	} else if (type == MSG_PING)
+	{
 		msg = new MessagePing();
-		msg->setSequence(frameStream.getUINT16());
-		break;
-
-	case MSG_PING_OK:
+		msg->setSequence(sequence);
+	} else if (type == MSG_PING_OK)
+	{
 		msg = new MessagePingOK();
-		msg->setSequence(frameStream.getUINT16());
-		break;
-
-	default:
+		msg->setSequence(sequence);
+	} else if (type == MSG_HEADER)
+	{
+		std::string key = frameStream.getString();
+		std::string value = frameStream.getString();
+		msg = new MessageHeader(key, value);
+		msg->setSequence(sequence);
+	} else {
 		LOG_WARN() << "Invalid message type received "<< type;
 	}
 	if (address)
