@@ -89,7 +89,11 @@ class MessageShout : public Message
 {
 public:
 	MessageShout();
+	~MessageShout();
+
 	zmsg_t* getContent();
+	void addContent(zframe_t* content);
+	void setContent(zmsg_t* content);
 	std::string getGroup() const;
 	void setGroup(const std::string& group);
 

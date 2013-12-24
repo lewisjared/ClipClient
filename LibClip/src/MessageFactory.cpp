@@ -9,6 +9,14 @@ Message* MessageFactory::generateHello()
 	return (Message*) msg;
 }
 
+Message* MessageFactory::generateShout()
+{
+	MessageShout* msg = new MessageShout();
+
+	return (Message*) msg;
+}
+
+
 Message* MessageFactory::generateWhisper()
 {
 	MessageWhisper* msg = new MessageWhisper();

@@ -21,6 +21,7 @@ class MessageFactory
 {
 public:
 	static Message* generateHello();
+	static Message* generateShout();
 	static Message* generateWhisper();
 	static Message* generateJoin();
 	static Message* generateLeave();

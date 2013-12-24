@@ -11,14 +11,19 @@
 MessageShout::MessageShout()
 	:Message(MSG_SHOUT)
 {
-	m_content = NULL;
+	m_content = zmsg_new();
+}
+
+MessageShout::~MessageShout()
+{
+	zmsg_destroy(&m_content);
 }
 
 /**
  \fn	int MessageShout::send(void* socket)
  \brief	Send this message via a socket
 
- \param [in,out]	socket	If non-null, the socket.
+ \param	socket	If non-null, the socket.
 
  \return	0 if successful.
  */
@@ -55,6 +60,25 @@ int MessageShout::send(void* socket)
 zmsg_t* MessageShout::getContent()
 {
 	return m_content;
+}
+
+/**
+ \fn	void MessageShout::setContent(zmsg_t* content)
+
+ \brief	Appends a frame to the message
+		Takes ownership of the passed message
+
+ \param 	content	If non-null, the conten of this message.
+ */
+void MessageShout::addContent(zframe_t* content)
+{
+	zmsg_append(m_content, &content);
+}
+
+void MessageShout::setContent(zmsg_t* content)
+{
+	zmsg_destroy(&m_content);
+	m_content = content;
 }
 
 std::string MessageShout::getGroup() const

@@ -39,3 +39,19 @@ void Node::start()
 	assert(std::string(resp) == "OK");
 	zstr_free(&resp);
 }
+
+void Node::whisper(boost::uuids::uuid target, const ByteStream& bs)
+{
+
+}
+
+void Node::shout(const ByteStream& bs)
+{
+	zstr_sendm(m_pipe, "SHOUT");
+	zmsg_t* msg = zmsg_new();
+
+	zframe_t* frame = zframe_new(bs.data(), bs.size());
+	zmsg_append(msg, &frame);
+	zmsg_send(&msg, m_pipe);
+	zmsg_destroy(&msg);
+}

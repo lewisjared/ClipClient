@@ -156,8 +156,13 @@ void NodeThread::handleAPI()
 	{
 		//start();
 		zstr_send(m_pipe, "OK");
-	}
-	else if (command == "TERMINATE")
+	} else if (command == "SHOUT")
+	{
+		MessageShout* msg = reinterpret_cast<MessageShout*> (MessageFactory::generateShout());
+		msg->setContent(request);
+		sendToPeers(msg);
+		request = NULL; //MessageShout destroys content in destructor
+	} else if (command == "TERMINATE")
 	{
 		m_terminated = true;
 		zstr_send(m_pipe, "OK");
@@ -195,6 +200,10 @@ void NodeThread::handlePeers()
 	{
 		zstr_sendm(m_pipe, "SHOUT");
 		zstr_sendm(m_pipe, boost::uuids::to_string(msg->getAddress()).c_str());
+		zmsg_t* zmsg =reinterpret_cast<MessageShout*> (msg)->getContent();
+		ByteStream bs(zmsg_first(zmsg));
+		LOG() << "Shout received " << bs.getString() << std::endl;
+		zmsg_destroy(&zmsg);
 	} else if (msg->getID() == MSG_PING)
 	{
 		//Reply with ping ok
@@ -258,6 +267,22 @@ Peer* NodeThread::getPeer( boost::uuids::uuid peerUUID,std::string ip, uint16_t 
 		return peer;
 	} else 
 		return it->second;
+}
+
+/**
+ \fn	void NodeThread::sendToPeers(Message* msg)
+
+ \brief	Sends a message to all connected peers
+
+ \param	msg	The Message
+ */
+void NodeThread::sendToPeers(Message* msg)
+{
+	for (auto it = m_peers.begin(); it != m_peers.end(); ++it)
+	{
+		Peer* peer = it->second;
+		peer->sendMesg(msg);
+	}
 }
 
 void NodeThread::setKeyValue(std::string key, std::string value)

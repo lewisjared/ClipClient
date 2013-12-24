@@ -9,6 +9,7 @@
 
 #include "czmq.h"
 
+class Message;
 class Beacon;
 class Peer;
 
@@ -37,10 +38,10 @@ private:
 	void handlePeers();
 	void handleBeacon();
 	void start();
-
 	Peer* getPeer( boost::uuids::uuid peerUUID, std::string ip, uint16_t port);
 	void checkPeersHealth();
 	void setKeyValue(std::string key, std::string value);
+	void sendToPeers(Message* msg);
 
 	zctx_t* m_context;
 	Beacon* m_beacon;

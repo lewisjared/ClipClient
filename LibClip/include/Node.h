@@ -4,7 +4,9 @@
 #include <string>
 
 #include "czmq.h"
+#include "boost/uuid/uuid.hpp"
 
+#include "ByteStream.h"
 
 class NodeThread;
 
@@ -19,6 +21,8 @@ public:
 	void leave(const std::string &group);
 	void addHeader(const std::string &key, const std::string &value);
 	void start();
+	void whisper(boost::uuids::uuid target, const ByteStream& bs);
+	void shout(const ByteStream& bs);
 private:
 	NodeThread* m_node;
 	void* m_pipe;
