@@ -78,9 +78,24 @@ int MessageHello::send(void* socket)
 	return sendBytes(socket, bs, 0);
 }
 
-KeyValuePair MessageHello::getHeaders()
+KeyValuePair MessageHello::getHeaders() const
 {
 	return m_headers;
+}
+
+void MessageHello::setHeaders(KeyValuePair headers)
+{
+	m_headers = headers;
+}
+
+void MessageHello::setGroups(TStringVector groups)
+{
+	m_groups = groups;
+}
+
+TStringVector MessageHello::getGroups() const
+{
+	return m_groups;
 }
 
 void MessageHello::addHeader(const std::string& key, const std::string& value)
@@ -104,9 +119,19 @@ void MessageHello::addGroup(const std::string& group)
 	m_groups.push_back(group);
 }
 
+std::string MessageHello::getIP() const
+{
+	return m_ip;
+}
+
 void MessageHello::setIP(std::string ip)
 {
 	m_ip = ip;
+}
+
+uint16_t MessageHello::getMailbox() const
+{
+	return m_mailboxPort;
 }
 
 void MessageHello::setMailbox(uint16_t mailboxPort)

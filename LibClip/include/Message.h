@@ -7,6 +7,7 @@
 #include <string>
 #include "czmq.h"
 #include "ByteStream.h"
+#include "ZyreCPP.h"
 
 enum msg_t
 {
@@ -45,19 +46,21 @@ protected:
 	boost::uuids::uuid m_address;
 };
 
-typedef std::map<std::string, std::string> KeyValuePair;
-typedef std::vector<std::string> TStringVector;
-
 class MessageHello : public Message
 {
 public:
 	MessageHello();
 
-	KeyValuePair getHeaders();
+	KeyValuePair getHeaders() const;
+	void setHeaders(KeyValuePair headers);
+	TStringVector getGroups() const;
+	void setGroups(TStringVector headers);
 	void addHeader(const std::string& keyValue);
 	void addHeader(const std::string& key, const std::string& value);
 	void addGroup(const std::string& group);
+	std::string getIP() const;
 	void setIP(std::string ip);
+	uint16_t getMailbox() const;
 	void setMailbox(uint16_t mailboxPort);
 	void setStatus(uint8_t status);
 

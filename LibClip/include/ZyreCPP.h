@@ -11,5 +11,11 @@
 #define EXPIRED_TIME 10000
 #define EVAISIVE_TIME 5000
 
+#include <string>
+#include <map>
+#include <vector>
+
+typedef std::map<std::string, std::string> KeyValuePair;
+typedef std::vector<std::string> TStringVector;
 
 #endif

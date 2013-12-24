@@ -4,7 +4,10 @@
 #include "czmq.h"
 #include <boost/uuid/uuid.hpp>
 
+#include "ZyreCPP.h"
+
 class Message;
+
 
 class Peer
 {
@@ -14,7 +17,7 @@ public:
 
 	int sendMesg(Message* msg);
 
-	bool connect(const std::string& endpoint);
+	bool connect(const std::string& endpoint, Message* hello);
 
 	std::string getEndpoint() const;
 
@@ -30,14 +33,20 @@ public:
 	void seen();
 
 	bool isConnected();
+	TStringVector getGroups() const;
+	void setGroups(TStringVector val);
+	KeyValuePair getHeaders() const;
+	void setHeaders(KeyValuePair val);
 private:
 	zctx_t* m_context;
 	std::string m_endpoint;
 	bool m_connected;
 	bool m_closed;
 	int64_t m_lastSeen;
-	boost::uuids::uuid m_uuid;
-	boost::uuids::uuid m_self;
+	boost::uuids::uuid m_peerUUID;
+	boost::uuids::uuid m_nodeUUID;
 	void* m_mailbox;
-};
 
+	KeyValuePair m_headers;
+	TStringVector m_groups;
+};

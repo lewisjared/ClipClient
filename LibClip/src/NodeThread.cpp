@@ -82,7 +82,7 @@ void NodeThread::eventLoop(void *pipe)
 			handleAPI();
 		else if (socket == m_beacon->getSocket())
 			handleBeacon();
-		else if (0)
+		else if (socket == m_inbox)
 			handlePeers();
 
 		if (zclock_time() >= reap_at)
@@ -166,20 +166,26 @@ void NodeThread::handlePeers()
 
 	boost::uuids::uuid uuid = msg->getAddress();
 
+	if (msg->getID() == MSG_HELLO)
+	{
+		LOG() << "Received a hello from " << uuid << std::endl;
+		MessageHello* hello = reinterpret_cast<MessageHello*> (msg);
+		//Update the peer
+		Peer* peer = getPeer(uuid, hello->getIP(), hello->getMailbox());
+		peer->setHeaders(hello->getHeaders());
+		peer->setGroups(hello->getGroups());
+
+		return;
+	}
+	
 	Peer* peer = NULL;
-	//Find peer in list
 	auto it = m_peers.find(uuid);
 	if (it != m_peers.end())
 		peer = it->second;
 
-	assert( msg->getID() != MSG_HELLO && peer);
+	assert (peer);
 
-	//Process the command
-	if (msg->getID() == MSG_HELLO)
-	{
-		MessageHello* hello = reinterpret_cast<MessageHello*> (msg);
-
-	} else if (msg->getID() == MSG_SHOUT) 
+	if (msg->getID() == MSG_SHOUT) 
 	{
 		zstr_sendm(m_pipe, "SHOUT");
 		zstr_sendm(m_pipe, boost::uuids::to_string(msg->getAddress()).c_str());
@@ -189,7 +195,8 @@ void NodeThread::handlePeers()
 		peer->sendMesg(MessageFactory::generatePingOk());
 	}
 
-	peer->seen();
+	if (peer)
+		peer->seen();
 
 	//Consume message
 	delete msg;
@@ -203,35 +210,45 @@ void NodeThread::handleBeacon()
 	{
 		boost::uuids::uuid peerUUID;
 		memcpy(&peerUUID, beacon.packet.uuid, 16);
-		auto it = m_peers.find(peerUUID);
-
-		if (it == m_peers.end())
-		{
-			//Found a new peer
-			Peer* peer = new Peer(m_context, m_uuid, peerUUID);
-
-			//Clear out any existing peers with the same endpoint
-			std::stringstream ss;
-			ss << "tcp://" << beacon.ipAddress << ":" << beacon.packet.port;
-			std::string endpoint = ss.str();
-
-			for (auto pr = m_peers.begin(); pr != m_peers.end();)
-			{
-				if (pr->second->getEndpoint() == ss.str())
-				{
-					delete it->second;
-					m_peers.erase(it++);
-				} else 
-					++it;
-			}
-
-			peer->connect(endpoint);
-			m_peers[peerUUID] = peer;
-		} else {
-			//Heard from an existing peer
-			Peer* peer = it->second;
-			peer->seen();
-			LOG() << "Seen peer " << peerUUID << std::endl;
-		}
+		
+		//Heard from an existing peer
+		Peer* peer = getPeer(peerUUID, beacon.ipAddress, beacon.packet.port);
+		peer->seen();
 	}
+}
+
+Peer* NodeThread::getPeer( boost::uuids::uuid peerUUID,std::string ip, uint16_t port)
+{
+	auto it = m_peers.find(peerUUID);
+
+	if (it == m_peers.end())
+	{
+		//Found a new peer
+		Peer* peer = new Peer(m_context, m_uuid, peerUUID);
+
+		//Clear out any existing peers with the same endpoint
+		std::stringstream ss;
+		ss << "tcp://" << ip << ":" << port;
+		std::string endpoint = ss.str();
+
+		for (auto pr = m_peers.begin(); pr != m_peers.end();)
+		{
+			if (pr->second->getEndpoint() == ss.str())
+			{
+				delete it->second;
+				m_peers.erase(it++);
+			} else 
+				++it;
+		}
+
+		MessageHello* msg = reinterpret_cast<MessageHello*>(MessageFactory::generateHello());
+		msg->setHeaders(m_headers);
+		msg->setStatus(1);
+		
+		peer->connect(endpoint, (Message*)msg);
+		m_peers[peerUUID] = peer;
+
+		return peer;
+	} else 
+		return it->second;
 }

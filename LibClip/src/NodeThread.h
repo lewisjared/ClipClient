@@ -36,6 +36,9 @@ private:
 	void handleAPI();
 	void handlePeers();
 	void handleBeacon();
+
+	Peer* getPeer( boost::uuids::uuid peerUUID, std::string ip, uint16_t port);
+
 	void checkPeersHealth();
 
 	zctx_t* m_context;

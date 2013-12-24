@@ -64,7 +64,7 @@ size_t ByteStream::usedSize() const
 void ByteStream::setFrame( zframe_t* frame ) 
 {
 	m_start = zframe_data(frame);
-	m_end = m_data + zframe_size(frame);
+	m_end = m_start + zframe_size(frame);
 	m_data = m_start;
 	m_allocated = false;
 }

@@ -1,12 +1,13 @@
 #include "Peer.h"
 #include "Logger.h"
 #include "Message.h"
+#include "MessageFactory.h"
 #include "ZyreCPP.h"
 #include "boost/uuid/uuid_io.hpp"
 
 
 Peer::Peer(zctx_t* context, boost::uuids::uuid nodeUUID, boost::uuids::uuid peerUUID)
-	: m_context(context), m_self(nodeUUID), m_uuid(peerUUID)
+	: m_context(context), m_nodeUUID(nodeUUID), m_peerUUID(peerUUID)
 {
 	assert (nodeUUID != peerUUID);
 	m_mailbox = NULL;
@@ -18,18 +19,18 @@ Peer::Peer(zctx_t* context, boost::uuids::uuid nodeUUID, boost::uuids::uuid peer
 
 Peer::~Peer(void)
 {
-	LOG() << "Destroying peer for " << m_uuid << std::endl;
+	LOG() << "Destroying peer for " << m_peerUUID << std::endl;
 	if (m_mailbox)
 		zsocket_destroy(m_context, m_mailbox);
 }
 
-bool Peer::connect(const std::string& endpoint)
+bool Peer::connect(const std::string& endpoint, Message* hello)
 {
-	LOG() << "Connecting peer " << m_uuid << " to " << endpoint << std::endl;
+	LOG() << "Connecting peer " << m_peerUUID << " to " << endpoint << std::endl;
 	//Create mailbox
 	if (m_mailbox)
 	{
-		LOG_WARN() << "Peer " << m_uuid << " already has a mailbox Peer::connect" << std::endl;
+		LOG_WARN() << "Peer " << m_peerUUID << " already has a mailbox Peer::connect" << std::endl;
 		zsocket_destroy( m_context, m_mailbox);
 	}
 
@@ -41,7 +42,7 @@ bool Peer::connect(const std::string& endpoint)
 		//  Set our own identity on the socket so that receiving node
 		//  knows who each message came from.
 		zmq_setsockopt (m_mailbox, ZMQ_IDENTITY,
-			m_self.begin(), m_self.size());
+			m_nodeUUID.begin(), m_nodeUUID.size());
 
 		zsocket_set_sndhwm (m_mailbox, EXPIRED_TIME * 100);
 
@@ -53,6 +54,10 @@ bool Peer::connect(const std::string& endpoint)
 		assert (rc == 0);
 		m_endpoint = endpoint;
 		m_connected = true;
+
+		// Send a hello msg
+		sendMesg(hello);
+		delete hello;
 
 		return true;
 	}
@@ -80,6 +85,7 @@ int Peer::sendMesg(Message* msg)
 	if (m_connected) {
 		//zre_msg_set_sequence (*msg_p, ++(self->sent_sequence));
 		if (msg->send(m_mailbox) && errno == EAGAIN) {
+			LOG_WARN() << "Sending message to peer " << m_peerUUID << " failed" << std::endl;
 			m_closed = true;
 			return -1;
 		}
@@ -91,4 +97,24 @@ int Peer::sendMesg(Message* msg)
 bool Peer::isConnected()
 {
 	return m_connected;
+}
+
+KeyValuePair Peer::getHeaders() const 
+{ 
+	return m_headers; 
+}
+
+void Peer::setHeaders(KeyValuePair val) 
+{ 
+	m_headers = val; 
+}
+
+TStringVector Peer::getGroups() const 
+{ 
+	return m_groups; 
+}
+
+void Peer::setGroups(TStringVector val) 
+{ 
+	m_groups = val; 
 }
