@@ -248,6 +248,7 @@ Peer* NodeThread::getPeer( boost::uuids::uuid peerUUID,std::string ip, uint16_t 
 		}
 
 		MessageHello* msg = reinterpret_cast<MessageHello*>(MessageFactory::generateHello());
+		msg->setMailbox(m_port);
 		msg->setHeaders(m_headers);
 		msg->setStatus(1);
 		

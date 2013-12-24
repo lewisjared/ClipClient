@@ -209,5 +209,11 @@
     <ClInclude Include="include\Node.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="include\Message.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ZyreCPP.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

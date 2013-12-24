@@ -108,8 +108,8 @@ void MessageHello::addHeader(const std::string& keyValue)
 {
 	//Parse the header string
 	size_t pos = keyValue.find_first_of('=');
-	std::string key = keyValue.substr(0, pos-1);
-	std::string value = keyValue.substr(pos);
+	std::string key = keyValue.substr(0, pos);
+	std::string value = keyValue.substr(pos+1);
 
 	addHeader(key, value);
 }

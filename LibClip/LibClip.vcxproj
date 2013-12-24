@@ -109,6 +109,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Logger.h" />
+    <ClInclude Include="include\Message.h" />
     <ClInclude Include="include\Node.h" />
     <ClInclude Include="include\ss\array.h" />
     <ClInclude Include="include\ss\bulk_setting.h" />
@@ -127,6 +128,7 @@
     <ClInclude Include="include\ss\util.h" />
     <ClInclude Include="include\UdpSocket.h" />
     <ClInclude Include="include\ZThreaded.h" />
+    <ClInclude Include="include\ZyreCPP.h" />
     <ClInclude Include="src\Beacon.h" />
     <ClInclude Include="src\ByteStream.h" />
     <ClInclude Include="src\LogConsole.h" />

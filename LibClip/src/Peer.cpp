@@ -83,6 +83,7 @@ void Peer::seen()
 int Peer::sendMesg(Message* msg)
 {
 	if (m_connected) {
+		LOG() << "Sending msg to " << m_peerUUID << std::endl;
 		//zre_msg_set_sequence (*msg_p, ++(self->sent_sequence));
 		if (msg->send(m_mailbox) && errno == EAGAIN) {
 			LOG_WARN() << "Sending message to peer " << m_peerUUID << " failed" << std::endl;
