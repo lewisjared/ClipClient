@@ -40,6 +40,7 @@ private:
 	Peer* getPeer( boost::uuids::uuid peerUUID, std::string ip, uint16_t port);
 
 	void checkPeersHealth();
+	void setKeyValue(std::string key, std::string value);
 
 	zctx_t* m_context;
 	Beacon* m_beacon;

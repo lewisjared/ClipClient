@@ -147,13 +147,22 @@ void NodeThread::checkPeersHealth()
 
 void NodeThread::handleAPI()
 {
-	char* text = zstr_recv(m_pipe);
+	//Get the whole message before parsing
+	zmsg_t *request = zmsg_recv (m_pipe);
+	char *text = zmsg_popstr (request);
 	std::string command(text);
 	zstr_free(&text);
 
 	LOG() << "Node received command: " << command << std::endl;
-
-	if (command == "TERMINATE")
+	if (command == "SET")
+	{
+		char* key = zmsg_popstr(request);
+		char* value = zmsg_popstr(request);
+		setKeyValue(key, value);
+		free(key);
+		free(value);
+	}
+	else if (command == "TERMINATE")
 	{
 		m_terminated = true;
 		zstr_send(m_pipe, "OK");
@@ -251,4 +260,20 @@ Peer* NodeThread::getPeer( boost::uuids::uuid peerUUID,std::string ip, uint16_t 
 		return peer;
 	} else 
 		return it->second;
+}
+
+void NodeThread::setKeyValue(std::string key, std::string value)
+{
+	//Update m_headers
+	m_headers[key] = value;
+
+	Message* msg = MessageFactory::generateHeader(key, value);
+
+	//Inform other peers of the change
+	for (auto it = m_peers.begin(); it != m_peers.end(); ++it)
+	{
+		Peer* peer = it->second;
+		peer->sendMesg(msg);
+	}
+	delete msg;
 }
