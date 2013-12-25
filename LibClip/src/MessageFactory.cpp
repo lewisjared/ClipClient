@@ -2,53 +2,53 @@
 #include "ByteStream.h"
 #include "Logger.h"
 
-Message* MessageFactory::generateHello()
+MessageHello* MessageFactory::generateHello()
 {
 	MessageHello* msg = new MessageHello();
 
-	return (Message*) msg;
+	return msg;
 }
 
-Message* MessageFactory::generateShout()
+MessageShout* MessageFactory::generateShout()
 {
 	MessageShout* msg = new MessageShout();
 
-	return (Message*) msg;
+	return msg;
 }
 
 
-Message* MessageFactory::generateWhisper()
+MessageWhisper* MessageFactory::generateWhisper()
 {
 	MessageWhisper* msg = new MessageWhisper();
 
-	return (Message*) msg;
+	return msg;
 }
 
-Message* MessageFactory::generateJoin()
+MessageJoin* MessageFactory::generateJoin()
 {
 	MessageJoin* msg = new MessageJoin();
-	return (Message*) msg;
+	return msg;
 }
 
-Message* MessageFactory::generateLeave()
+MessageLeave* MessageFactory::generateLeave()
 {
 	MessageLeave* msg = new MessageLeave();
-	return (Message*) msg;
+	return msg;
 }
 
-Message* MessageFactory::generatePing()
+MessagePing* MessageFactory::generatePing()
 {
-	return (Message*) new MessagePing();
+	return new MessagePing();
 }
 
-Message* MessageFactory::generatePingOk()
+MessagePingOK* MessageFactory::generatePingOk()
 {
-	return (Message*) new MessagePingOK();
+	return new MessagePingOK();
 }
 
-Message* MessageFactory::generateHeader(const std::string& key, const std::string& value)
+MessageHeader* MessageFactory::generateHeader(const std::string& key, const std::string& value)
 {
-	return (Message*) new MessageHeader(key, value);
+	return new MessageHeader(key, value);
 }
 
 Message* MessageFactory::parse( void* socket )

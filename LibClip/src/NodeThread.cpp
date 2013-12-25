@@ -122,8 +122,9 @@ void NodeThread::checkPeersHealth()
 			{
 				LOG() << "Peer " << it->first << " evasive" << std::endl;
 				//Ping the node
-				Message* msg = MessageFactory::generatePing();
+				MessagePing* msg = MessageFactory::generatePing();
 				peer->sendMesg(msg);
+				delete msg;
 			}
 		}
 	}
@@ -159,7 +160,7 @@ void NodeThread::handleAPI()
 	} else if (command == "SHOUT")
 	{
 		char* group = zmsg_popstr(request);
-		MessageShout* msg = reinterpret_cast<MessageShout*> (MessageFactory::generateShout());
+		MessageShout* msg = dynamic_cast<MessageShout*> (MessageFactory::generateShout());
 		msg->setContent(request);
 		msg->setGroup(std::string(group));
 		sendToPeers(msg);
@@ -184,11 +185,13 @@ void NodeThread::handlePeers()
 	if (msg->getID() == MSG_HELLO)
 	{
 		LOG() << "Received a hello from " << uuid << std::endl;
-		MessageHello* hello = reinterpret_cast<MessageHello*> (msg);
+		MessageHello* hello = dynamic_cast<MessageHello*> (msg);
 		//Update the peer
 		Peer* peer = getPeer(uuid, hello->getIP(), hello->getMailbox());
 		peer->setHeaders(hello->getHeaders());
 		peer->setGroups(hello->getGroups());
+
+		delete hello;
 
 		return;
 	}
@@ -202,7 +205,7 @@ void NodeThread::handlePeers()
 
 	if (msg->getID() == MSG_SHOUT) 
 	{
-		MessageShout* shout = reinterpret_cast<MessageShout*> (msg);
+		MessageShout* shout = dynamic_cast<MessageShout*> (msg);
 		//if (inGroup(shout->getGroup()))
 		{
 			zstr_sendm(m_pipe, "SHOUT");
@@ -210,19 +213,21 @@ void NodeThread::handlePeers()
 			zmsg_t* zmsg =shout->getContent();
 			ByteStream bs(zmsg_first(zmsg));
 			LOG() << "Shout received " << bs.getString() << std::endl;
-			zmsg_destroy(&zmsg);
 		}
+		delete shout;
 	} else if (msg->getID() == MSG_PING)
 	{
+		MessagePing* ping = dynamic_cast<MessagePing*> (msg);
 		//Reply with ping ok
 		peer->sendMesg(MessageFactory::generatePingOk());
+		delete ping;
+	} else {
+		LOG() << "Didn't handle message" << std::endl;
+		delete msg;
 	}
 
 	if (peer)
 		peer->seen();
-
-	//Consume message
-	delete msg;
 }
 
 void NodeThread::handleBeacon()
@@ -264,13 +269,15 @@ Peer* NodeThread::getPeer( boost::uuids::uuid peerUUID,std::string ip, uint16_t 
 				++pr;
 		}
 
-		MessageHello* msg = reinterpret_cast<MessageHello*>(MessageFactory::generateHello());
+		MessageHello* msg = MessageFactory::generateHello();
 		msg->setMailbox(m_port);
 		msg->setHeaders(m_headers);
 		msg->setStatus(1);
 		
 		peer->connect(endpoint, (Message*)msg);
 		m_peers[peerUUID] = peer;
+
+		delete msg;
 
 		return peer;
 	} else 
@@ -298,7 +305,7 @@ void NodeThread::setKeyValue(std::string key, std::string value)
 	//Update m_headers
 	m_headers[key] = value;
 
-	Message* msg = MessageFactory::generateHeader(key, value);
+	MessageHeader* msg = MessageFactory::generateHeader(key, value);
 
 	//Inform other peers of the change
 	for (auto it = m_peers.begin(); it != m_peers.end(); ++it)

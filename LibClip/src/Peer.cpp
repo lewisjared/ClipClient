@@ -57,7 +57,6 @@ bool Peer::connect(const std::string& endpoint, Message* hello)
 
 		// Send a hello msg
 		sendMesg(hello);
-		delete hello;
 
 		return true;
 	}
