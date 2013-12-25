@@ -19,6 +19,7 @@ Logger::Logger()
 
 Logger::~Logger()
 {
+	delete m_nullStream;
 	delete m_file;
 }
 

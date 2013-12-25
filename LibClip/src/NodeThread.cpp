@@ -158,10 +158,14 @@ void NodeThread::handleAPI()
 		zstr_send(m_pipe, "OK");
 	} else if (command == "SHOUT")
 	{
+		char* group = zmsg_popstr(request);
 		MessageShout* msg = reinterpret_cast<MessageShout*> (MessageFactory::generateShout());
 		msg->setContent(request);
+		msg->setGroup(std::string(group));
 		sendToPeers(msg);
+		delete msg;
 		request = NULL; //MessageShout destroys content in destructor
+		zstr_free(&group);
 	} else if (command == "TERMINATE")
 	{
 		m_terminated = true;
@@ -198,12 +202,16 @@ void NodeThread::handlePeers()
 
 	if (msg->getID() == MSG_SHOUT) 
 	{
-		zstr_sendm(m_pipe, "SHOUT");
-		zstr_sendm(m_pipe, boost::uuids::to_string(msg->getAddress()).c_str());
-		zmsg_t* zmsg =reinterpret_cast<MessageShout*> (msg)->getContent();
-		ByteStream bs(zmsg_first(zmsg));
-		LOG() << "Shout received " << bs.getString() << std::endl;
-		zmsg_destroy(&zmsg);
+		MessageShout* shout = reinterpret_cast<MessageShout*> (msg);
+		//if (inGroup(shout->getGroup()))
+		{
+			zstr_sendm(m_pipe, "SHOUT");
+			zstr_sendm(m_pipe, boost::uuids::to_string(msg->getAddress()).c_str());
+			zmsg_t* zmsg =shout->getContent();
+			ByteStream bs(zmsg_first(zmsg));
+			LOG() << "Shout received " << bs.getString() << std::endl;
+			zmsg_destroy(&zmsg);
+		}
 	} else if (msg->getID() == MSG_PING)
 	{
 		//Reply with ping ok

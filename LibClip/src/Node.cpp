@@ -45,9 +45,10 @@ void Node::whisper(boost::uuids::uuid target, const ByteStream& bs)
 
 }
 
-void Node::shout(const ByteStream& bs)
+void Node::shout(const std::string &group, const ByteStream& bs)
 {
 	zstr_sendm(m_pipe, "SHOUT");
+	zstr_sendm(m_pipe, group.c_str());
 	zmsg_t* msg = zmsg_new();
 
 	zframe_t* frame = zframe_new(bs.data(), bs.size());
