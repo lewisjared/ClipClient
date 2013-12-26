@@ -12,7 +12,12 @@
 MessageWhisper::MessageWhisper()
 	:Message(MSG_WHISPER)
 {
-	m_content = NULL;
+	m_content = zmsg_new();
+}
+
+MessageWhisper::~MessageWhisper()
+{
+	zmsg_destroy(&m_content);
 }
 
 /**
@@ -53,3 +58,10 @@ zmsg_t* MessageWhisper::getContent()
 	return m_content;
 }
 
+void MessageWhisper::setContent(zmsg_t* content)
+{
+	//Destroy the old message
+	zmsg_destroy(&m_content);
+	//Duplicate the message that is passed
+	m_content = zmsg_dup(content);
+}
