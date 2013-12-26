@@ -13,9 +13,23 @@ public:
 		: std::runtime_error(message) { };
 };
 
+#define BS_DEFAULT_ALLOCATE 50
+
+/**
+ \class	ByteStream
+
+ \brief	Class that contains serialised bytes
+		
+ */
 class ByteStream
 {
 public:
+
+	/**
+	 \fn	ByteStream::ByteStream();
+	
+	 \brief	Default constructor.
+	 */
 	ByteStream();
 	ByteStream(size_t bufferSize);
 	ByteStream(zframe_t* frame);
@@ -23,6 +37,15 @@ public:
 
 	~ByteStream(void);
 
+	/**
+	 \fn	void ByteStream::setFrame(zframe_t* frame);
+	
+	 \brief	Copies the data from a zframe
+
+			This function takes ownership of the frame.
+	
+	 \param	frame	The frame.
+	 */
 	void setFrame(zframe_t* frame);
 
 	void putBlock(void* data, size_t size);
@@ -43,10 +66,11 @@ public:
 
 	void* data() const;
 	size_t size() const;
-	size_t usedSize() const;
+	size_t reservedSize() const;
 private:
-	bool m_allocated;
-	byte* m_data;
+	void checkSize(size_t toAdd);
+	byte* m_writePtr;
+	byte* m_readPtr;
 	byte* m_start;
 	byte* m_end;
 };
