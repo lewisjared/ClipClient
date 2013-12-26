@@ -211,7 +211,7 @@ void NodeThread::handlePeers()
 			zstr_sendm(m_pipe, "SHOUT");
 			zstr_sendm(m_pipe, boost::uuids::to_string(msg->getAddress()).c_str());
 			zmsg_t* zmsg =shout->getContent();
-			ByteStream bs(zmsg_first(zmsg));
+			ByteStream bs(zmsg_pop(zmsg));
 			LOG() << "Shout received " << bs.getString() << std::endl;
 		}
 		delete shout;

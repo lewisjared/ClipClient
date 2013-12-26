@@ -54,7 +54,7 @@ MessageHeader* MessageFactory::generateHeader(const std::string& key, const std:
 Message* MessageFactory::parse( void* socket )
 {
 	Message* msg;
-	ByteStream frameStream;
+	ByteStream* frameStream;
 	zframe_t *frame = NULL;
 	zframe_t *address = NULL;
 	zmsg_t *content = NULL;
@@ -78,10 +78,10 @@ Message* MessageFactory::parse( void* socket )
 			throw EEmptyPacket();
 
 		//  Get and check protocol signature
-		frameStream.setFrame(frame);
+		frameStream = new ByteStream(frame);
 
 		uint16_t signature;
-		signature = frameStream.getUINT16();
+		signature = frameStream->getUINT16();
 		if (signature == (0xAAA0 | 1))
 			break;                  //  Valid signature
 
@@ -90,29 +90,28 @@ Message* MessageFactory::parse( void* socket )
 			zframe_destroy (&frame);
 			frame = zframe_recv (socket);
 		}
-		zframe_destroy (&frame);
 	}
 	//  Get message id and parse per message type
-	msg_t type = (msg_t)frameStream.getByte();
+	msg_t type = (msg_t)frameStream->getByte();
 
-	uint16_t sequence = frameStream.getUINT16();
+	uint16_t sequence = frameStream->getUINT16();
 
 	if (type == MSG_HELLO)
 	{
 		msg = new MessageHello();
 		msg->setSequence(sequence);
-		dynamic_cast<MessageHello*>(msg)->setIP(frameStream.getString());
-		dynamic_cast<MessageHello*>(msg)->setMailbox(frameStream.getUINT16());
+		dynamic_cast<MessageHello*>(msg)->setIP(frameStream->getString());
+		dynamic_cast<MessageHello*>(msg)->setMailbox(frameStream->getUINT16());
 
-		numGroups = frameStream.getByte();
+		numGroups = frameStream->getByte();
 		while (numGroups--) {
-			std::string group = frameStream.getString();
+			std::string group = frameStream->getString();
 			dynamic_cast<MessageHello*>(msg)->addGroup(group);
 		}
-		static_cast<MessageHello*>(msg)->setStatus(frameStream.getByte());
-		numHeaders = frameStream.getByte();
+		dynamic_cast<MessageHello*>(msg)->setStatus(frameStream->getByte());
+		numHeaders = frameStream->getByte();
 		while (numHeaders--) {
-			std::string header = frameStream.getString();
+			std::string header = frameStream->getString();
 			dynamic_cast<MessageHello*>(msg)->addHeader(header);
 		}
 	} else if (type == MSG_WHISPER)
@@ -128,7 +127,7 @@ Message* MessageFactory::parse( void* socket )
 	{
 		msg = new MessageShout();
 		msg->setSequence(sequence);
-		dynamic_cast<MessageShout*> (msg)->setGroup(frameStream.getString());
+		dynamic_cast<MessageShout*> (msg)->setGroup(frameStream->getString());
 		//  Get zero or more remaining frames,
 		//  leave current frame untouched
 		content = dynamic_cast<MessageShout*> (msg)->getContent();
@@ -138,14 +137,14 @@ Message* MessageFactory::parse( void* socket )
 	{
 		msg = new MessageJoin();
 		msg->setSequence(sequence);
-		dynamic_cast<MessageJoin*> (msg)->setGroup(frameStream.getString());
-		dynamic_cast<MessageJoin*> (msg)->setStatus(frameStream.getByte());
+		dynamic_cast<MessageJoin*> (msg)->setGroup(frameStream->getString());
+		dynamic_cast<MessageJoin*> (msg)->setStatus(frameStream->getByte());
 	} else if (type == MSG_LEAVE)
 	{
 		msg = new MessageLeave();
 		msg->setSequence(sequence);
-		dynamic_cast<MessageLeave*> (msg)->setGroup(frameStream.getString());
-		dynamic_cast<MessageLeave*> (msg)->setStatus(frameStream.getByte());
+		dynamic_cast<MessageLeave*> (msg)->setGroup(frameStream->getString());
+		dynamic_cast<MessageLeave*> (msg)->setStatus(frameStream->getByte());
 	} else if (type == MSG_PING)
 	{
 		msg = new MessagePing();
@@ -156,8 +155,8 @@ Message* MessageFactory::parse( void* socket )
 		msg->setSequence(sequence);
 	} else if (type == MSG_HEADER)
 	{
-		std::string key = frameStream.getString();
-		std::string value = frameStream.getString();
+		std::string key = frameStream->getString();
+		std::string value = frameStream->getString();
 		msg = new MessageHeader(key, value);
 		msg->setSequence(sequence);
 	} else {
@@ -167,6 +166,6 @@ Message* MessageFactory::parse( void* socket )
 		msg->setAddress(address);
 
 	//  Successful return
-	zframe_destroy (&frame);
+	delete frameStream;
 	return msg;
 }

@@ -19,7 +19,6 @@ void Message::setAddress(zframe_t* address)
 {
 	ByteStream bs(address);
 	m_address = bs.getUUID();
-	zframe_destroy(&address);
 }
 
 boost::uuids::uuid Message::getAddress() const

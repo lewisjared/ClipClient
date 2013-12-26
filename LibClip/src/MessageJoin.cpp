@@ -47,6 +47,7 @@ int MessageJoin::send(void* socket)
 	//Status
 	bs.putByte(m_status);
 
+	assert(bs.size() == frameSize);
 
 	return sendBytes(socket, bs, 0);
 }
