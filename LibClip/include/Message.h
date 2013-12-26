@@ -78,7 +78,19 @@ class MessageWhisper : public Message
 {
 public:
 	MessageWhisper();
+	~MessageWhisper();
+
 	zmsg_t* getContent();
+
+	/**
+	 \fn	void MessageWhisper::setContent(zmsg_t* content) int send(void* socket);
+	
+	 \brief	Sets the content of a message.
+			This function duplicates the content internally, so the passed content can be destroyed.
+	
+	 \param	content The content of the message
+	 */
+	void setContent(zmsg_t* content);
 
 	int send(void* socket);
 private:

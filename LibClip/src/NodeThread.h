@@ -38,7 +38,8 @@ private:
 	void handlePeers();
 	void handleBeacon();
 	void start();
-	Peer* getPeer( boost::uuids::uuid peerUUID, std::string ip, uint16_t port);
+	Peer* getPeer(boost::uuids::uuid peerUUID);
+	Peer* createPeer(boost::uuids::uuid peerUUID, std::string ip, uint16_t port);
 	void checkPeersHealth();
 	void setKeyValue(std::string key, std::string value);
 	void sendToPeers(Message* msg);

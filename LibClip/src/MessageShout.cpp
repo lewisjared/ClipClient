@@ -78,7 +78,7 @@ void MessageShout::addContent(zframe_t* content)
 void MessageShout::setContent(zmsg_t* content)
 {
 	zmsg_destroy(&m_content);
-	m_content = content;
+	m_content = zmsg_dup(content);
 }
 
 std::string MessageShout::getGroup() const
