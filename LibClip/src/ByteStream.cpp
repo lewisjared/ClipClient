@@ -33,9 +33,34 @@ ByteStream::ByteStream(const ByteStream& a)
 	m_writePtr = m_start + (a.m_writePtr-a.m_start);
 }
 
-ByteStream::ByteStream(zframe_t* frame)
+ByteStream::ByteStream(zframe_t* frame, bool takeOwnership)
+	:m_start(NULL)
 {
-	setFrame(frame);
+	setFrame(frame, takeOwnership);
+}
+
+/**
+ \fn	ByteStream& ByteStream::operator= (const ByteStream& other)
+
+ \brief	Assignment operator.
+
+ \param	other	The bytestream to be copied.
+
+ \return	A deep copy of this object.
+ */
+ByteStream& ByteStream::operator= (const ByteStream& other)
+{
+	if (m_start)
+		free(m_start);
+	//Perform a deep copy
+	size_t reserved = other.reservedSize();
+	m_start = (byte*) malloc(reserved);
+	memcpy(m_start, other.m_start, reserved);
+	m_end = m_start + reserved;
+	m_readPtr = m_start + (other.m_readPtr-other.m_start);
+	m_writePtr = m_start + (other.m_writePtr-other.m_start);
+
+	return *this;
 }
 
 ByteStream::~ByteStream(void)
@@ -72,8 +97,10 @@ size_t ByteStream::reservedSize() const
 	return m_end - m_start;
 }
 
-void ByteStream::setFrame( zframe_t* frame ) 
+void ByteStream::setFrame( zframe_t* frame, bool takeOwnership) 
 {
+	if (m_start)
+		free(m_start);
 	m_start = (byte*)malloc(zframe_size(frame));
 	memcpy(m_start, zframe_data(frame),zframe_size(frame));
 	m_end = m_start + zframe_size(frame);
@@ -81,7 +108,8 @@ void ByteStream::setFrame( zframe_t* frame )
 	m_writePtr = m_end;
 
 	//Destroy frame
-	zframe_destroy(&frame);
+	if (takeOwnership)
+		zframe_destroy(&frame);
 }
 
 void ByteStream::putBlock( void* data, size_t size )

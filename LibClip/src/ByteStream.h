@@ -32,8 +32,9 @@ public:
 	 */
 	ByteStream();
 	ByteStream(size_t bufferSize);
-	ByteStream(zframe_t* frame);
+	ByteStream(zframe_t* frame, bool takeOwnership = true);
 	ByteStream(const ByteStream& a);
+	ByteStream& operator= (const ByteStream& other);
 
 	~ByteStream(void);
 
@@ -46,7 +47,7 @@ public:
 	
 	 \param	frame	The frame.
 	 */
-	void setFrame(zframe_t* frame);
+	void setFrame(zframe_t* frame,bool takeOwnership=true);
 
 	void putBlock(void* data, size_t size);
 	void getBlock(void* buffer, size_t size);
