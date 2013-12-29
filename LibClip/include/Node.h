@@ -11,11 +11,20 @@
 class NodeThread;
 
 
+namespace zyre
+{
+
+	class Event;
+
 class Node
 {
 public:
 	Node(zctx_t* context);
 	~Node(void);
+
+	void* getSocket();
+
+	Event* recv();
 
 	void join(const std::string &group);
 	void leave(const std::string &group);
@@ -28,3 +37,4 @@ private:
 	void* m_pipe;
 };
 
+}

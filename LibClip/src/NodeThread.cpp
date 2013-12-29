@@ -229,13 +229,24 @@ void NodeThread::handlePeers()
 		MessageShout* shout = dynamic_cast<MessageShout*> (msg);
 		//if (inGroup(shout->getGroup()))
 		{
-			zstr_sendm(m_pipe, "SHOUT");
-			zstr_sendm(m_pipe, boost::uuids::to_string(msg->getAddress()).c_str());
-			zmsg_t* zmsg =shout->getContent();
-			ByteStream bs(zmsg_pop(zmsg));
+			zmsg_t* content = zmsg_dup(shout->getContent());
+			ByteStream bs(zmsg_first(shout->getContent()), false);
 			LOG() << "Shout received " << bs.getString() << std::endl;
+			zmsg_pushstr(content,boost::uuids::to_string(msg->getAddress()).c_str());
+			zmsg_pushstr(content, "SHOUT");
+			zmsg_send(&content, m_pipe);
 		}
 		delete shout;
+	} else if (msg->getID() == MSG_WHISPER)
+	{
+		MessageWhisper* whisper = dynamic_cast<MessageWhisper*> (msg);
+		zmsg_t* content = zmsg_dup(whisper->getContent());
+		ByteStream bs(zmsg_first(content));
+		LOG() << "Whisper received " << bs.getString() << std::endl;
+		zmsg_pushstr(content,boost::uuids::to_string(msg->getAddress()).c_str());
+		zmsg_pushstr(content, "WHISPER");
+		zmsg_send(&content, m_pipe);
+		delete whisper;
 	} else if (msg->getID() == MSG_PING)
 	{
 		MessagePing* ping = dynamic_cast<MessagePing*> (msg);

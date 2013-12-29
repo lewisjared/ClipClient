@@ -1,5 +1,8 @@
 #include "Node.h"
 #include "NodeThread.h"
+#include "Event.h"
+
+using namespace zyre;
 
 Node::Node(zctx_t* context)
 {
@@ -18,6 +21,11 @@ void Node::addHeader(const std::string &key, const std::string &value)
 	zstr_sendm(m_pipe, "SET");
 	zstr_sendm(m_pipe, key.c_str());
 	zstr_send(m_pipe, value.c_str());
+}
+
+void* Node::getSocket()
+{
+	return m_pipe;
 }
 
 void Node::join(const std::string &group)
@@ -42,17 +50,43 @@ void Node::start()
 
 void Node::whisper(boost::uuids::uuid target, const ByteStream& bs)
 {
-
+	zmsg_t* msg = zmsg_new();
+	zmsg_pushmem(msg, &target, 16);
+	zmsg_pushstr(msg,"WHISPER");
+	
+	zframe_t* frame = zframe_new(bs.data(), bs.size());
+	zmsg_append(msg, &frame);
+	zmsg_send(&msg, m_pipe);
 }
 
 void Node::shout(const std::string &group, const ByteStream& bs)
 {
-	zstr_sendm(m_pipe, "SHOUT");
-	zstr_sendm(m_pipe, group.c_str());
 	zmsg_t* msg = zmsg_new();
-
+	zmsg_pushstr(msg,group.c_str());
+	zmsg_pushstr(msg,"SHOUT");
+	
 	zframe_t* frame = zframe_new(bs.data(), bs.size());
 	zmsg_append(msg, &frame);
 	zmsg_send(&msg, m_pipe);
-	zmsg_destroy(&msg);
+}
+
+zyre::Event* Node::recv()
+{
+	//Read in a complete message
+	// Blocks till message is ready
+	zmsg_t* msg = zmsg_recv(m_pipe);
+
+	//Parse the Event out of the message takes ownership of message
+	Event* event = Event::parse(msg);
+
+
+	//May as well null any invalid messages
+	if (event)
+		if (!event->isValid())
+		{
+			delete event;
+			event = NULL;
+		}
+
+	return event;
 }

@@ -83,6 +83,7 @@
   <ItemGroup>
     <ClCompile Include="src\Beacon.cpp" />
     <ClCompile Include="src\ByteStream.cpp" />
+    <ClCompile Include="src\Event.cpp" />
     <ClCompile Include="src\LogConsole.cpp" />
     <ClCompile Include="src\LogFile.cpp" />
     <ClCompile Include="src\Logger.cpp" />
@@ -111,6 +112,7 @@
     <ClCompile Include="src\ZThreaded.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="include\Event.h" />
     <ClInclude Include="include\Logger.h" />
     <ClInclude Include="include\Message.h" />
     <ClInclude Include="include\Node.h" />
@@ -134,6 +136,7 @@
     <ClInclude Include="include\ZyreCPP.h" />
     <ClInclude Include="src\Beacon.h" />
     <ClInclude Include="src\ByteStream.h" />
+    <ClInclude Include="src\Event.h" />
     <ClInclude Include="src\LogConsole.h" />
     <ClInclude Include="src\LogFile.h" />
     <ClInclude Include="src\LogPolicy.h" />
