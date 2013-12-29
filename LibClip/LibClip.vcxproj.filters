@@ -191,9 +191,6 @@
     <ClInclude Include="include\Logger.h">
       <Filter>Header Files\log</Filter>
     </ClInclude>
-    <ClInclude Include="src\ByteStream.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\Beacon.h">
       <Filter>Header Files\network</Filter>
     </ClInclude>
@@ -222,6 +219,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\Event.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ByteStream.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -112,6 +112,7 @@
     <ClCompile Include="src\ZThreaded.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="include\ByteStream.h" />
     <ClInclude Include="include\Event.h" />
     <ClInclude Include="include\Logger.h" />
     <ClInclude Include="include\Message.h" />
@@ -135,7 +136,6 @@
     <ClInclude Include="include\ZThreaded.h" />
     <ClInclude Include="include\ZyreCPP.h" />
     <ClInclude Include="src\Beacon.h" />
-    <ClInclude Include="src\ByteStream.h" />
     <ClInclude Include="src\Event.h" />
     <ClInclude Include="src\LogConsole.h" />
     <ClInclude Include="src\LogFile.h" />
