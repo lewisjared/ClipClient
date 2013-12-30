@@ -1,4 +1,6 @@
 #include "NodeThread.h"
+#include "Event.h"
+#include "EventFactory.h"
 #include "Peer.h"
 #include "Beacon.h"
 #include "Logger.h"
@@ -9,6 +11,8 @@
 #include <vector>
 
 #include "boost/uuid/uuid_io.hpp"
+
+using zyre::Event;
 
 NodeThread::NodeThread(zctx_t* context)
 	:ZThread(context), m_context(context), m_pipe(NULL)
@@ -229,23 +233,17 @@ void NodeThread::handlePeers()
 		MessageShout* shout = dynamic_cast<MessageShout*> (msg);
 		//if (inGroup(shout->getGroup()))
 		{
-			zmsg_t* content = zmsg_dup(shout->getContent());
-			ByteStream bs(zmsg_first(shout->getContent()), false);
-			LOG() << "Shout received " << bs.getString() << std::endl;
-			zmsg_pushstr(content,boost::uuids::to_string(msg->getAddress()).c_str());
-			zmsg_pushstr(content, "SHOUT");
-			zmsg_send(&content, m_pipe);
+			Event* event = EventFactory::generateShout(msg->getAddress(), shout->getContent());
+			event->send(m_pipe);
+			delete event;
 		}
 		delete shout;
 	} else if (msg->getID() == MSG_WHISPER)
 	{
 		MessageWhisper* whisper = dynamic_cast<MessageWhisper*> (msg);
-		zmsg_t* content = zmsg_dup(whisper->getContent());
-		ByteStream bs(zmsg_first(content));
-		LOG() << "Whisper received " << bs.getString() << std::endl;
-		zmsg_pushstr(content,boost::uuids::to_string(msg->getAddress()).c_str());
-		zmsg_pushstr(content, "WHISPER");
-		zmsg_send(&content, m_pipe);
+		Event* event = EventFactory::generateWhisper(msg->getAddress(), whisper->getContent());
+		event->send(m_pipe);
+		delete event;
 		delete whisper;
 	} else if (msg->getID() == MSG_PING)
 	{

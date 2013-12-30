@@ -97,6 +97,11 @@ size_t ByteStream::reservedSize() const
 	return m_end - m_start;
 }
 
+zframe_t* ByteStream::getFrame()
+{
+	return zframe_new(m_start, size());
+}
+
 void ByteStream::setFrame( zframe_t* frame, bool takeOwnership) 
 {
 	if (m_start)

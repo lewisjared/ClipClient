@@ -25,6 +25,7 @@ public:
 	~Event();
 
 	EventType getType() const;
+	std::string getTypeStr() const;
 	bool isValid() const;
 
 	void setContent(const ByteStream& bs);
@@ -34,6 +35,7 @@ public:
 	void setFrom(boost::uuids::uuid uuid);
 
 	static Event* parse(zmsg_t* msg);
+	void send(void* socket);
 
 private:
 	EventType m_type;

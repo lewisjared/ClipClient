@@ -118,21 +118,21 @@ Message* MessageFactory::parse( void* socket )
 	{
 		msg = new MessageWhisper();
 		msg->setSequence(sequence);
-		//  Get zero or more remaining frames,
-		//  leave current frame untouched
-		content = dynamic_cast<MessageWhisper*> (msg)->getContent();
-		while (zsocket_rcvmore (socket))
-			zmsg_add (content, zframe_recv (socket));
+		if (zsocket_rcvmore (socket))
+		{
+			ByteStream content(zframe_recv(socket));
+			dynamic_cast<MessageWhisper*> (msg)->setContent(content);
+		}
 	} else if (type == MSG_SHOUT)
 	{
 		msg = new MessageShout();
 		msg->setSequence(sequence);
 		dynamic_cast<MessageShout*> (msg)->setGroup(frameStream->getString());
-		//  Get zero or more remaining frames,
-		//  leave current frame untouched
-		content = dynamic_cast<MessageShout*> (msg)->getContent();
-		while (zsocket_rcvmore (socket))
-			zmsg_add (content, zframe_recv (socket));
+		if (zsocket_rcvmore (socket))
+		{
+			ByteStream content(zframe_recv(socket));
+			dynamic_cast<MessageShout*> (msg)->setContent(content);
+		}
 	} else if (type == MSG_JOIN)
 	{
 		msg = new MessageJoin();

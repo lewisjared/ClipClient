@@ -129,6 +129,9 @@
     <ClCompile Include="src\Event.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\EventFactory.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\UdpSocket.h">
@@ -218,10 +221,10 @@
     <ClInclude Include="include\Event.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Event.h">
+    <ClInclude Include="include\ByteStream.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\ByteStream.h">
+    <ClInclude Include="src\EventFactory.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -39,6 +39,15 @@ public:
 	~ByteStream(void);
 
 	/**
+	 \fn	zframe_t* ByteStream::getFrame();
+	
+	 \brief	Gets the data as a zframe_t. The calling function takes ownership of this frame and must destroy it.
+	
+	 \return	A zframe_t containing data
+	 */
+	zframe_t* getFrame();
+
+	/**
 	 \fn	void ByteStream::setFrame(zframe_t* frame);
 	
 	 \brief	Copies the data from a zframe

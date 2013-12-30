@@ -26,6 +26,19 @@ EventType Event::getType() const
 	return m_type;
 }
 
+std::string Event::getTypeStr() const
+{
+	switch(m_type)
+	{
+	case EVT_ENTER:		return "ENTER";		break;
+	case EVT_EXIT:		return "EXIT";		break;
+	case EVT_INVALID:	return "INVALID";	break;
+	case EVT_SHOUT:		return "SHOUT";		break;
+	case EVT_WHISPER:	return "WHISPER";	break;
+	}
+	return "INVALID";
+}
+
 boost::uuids::uuid Event::getFrom() const
 {
 	return m_from;
@@ -44,6 +57,19 @@ void Event::setFrom(boost::uuids::uuid uuid)
 void Event::setContent(const ByteStream& bs)
 {
 	m_content = bs;
+}
+
+void Event::send(void* socket)
+{
+	zmsg_t* msg = zmsg_new();
+	zmsg_pushstr(msg, getTypeStr().c_str());
+	zmsg_addmem(msg, &m_from, 16);
+
+	//Now handle the conditional sending
+	if (m_type == EVT_SHOUT || m_type == EVT_WHISPER)
+		zmsg_add(msg, m_content.getFrame());
+	
+	zmsg_send(&msg, socket);
 }
 
 

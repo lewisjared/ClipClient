@@ -12,12 +12,6 @@
 MessageWhisper::MessageWhisper()
 	:Message(MSG_WHISPER)
 {
-	m_content = zmsg_new();
-}
-
-MessageWhisper::~MessageWhisper()
-{
-	zmsg_destroy(&m_content);
 }
 
 /**
@@ -44,24 +38,26 @@ int MessageWhisper::send(void* socket)
 
 	bs.putUINT16(m_sequence);
 
-	int flags = zmsg_size (m_content)? ZFRAME_MORE: 0;
+	int flags = m_content.size() ? ZFRAME_MORE: 0;
 
 	int result = sendBytes(socket, bs, flags);
 
-	zmsg_send(&m_content, socket);
+	sendBytes(socket, m_content, 0);
 
 	return result;
 }
 
-zmsg_t* MessageWhisper::getContent()
+ByteStream MessageWhisper::getContent()
 {
 	return m_content;
 }
 
+void MessageWhisper::setContent(ByteStream content)
+{
+	m_content = content;
+}
+
 void MessageWhisper::setContent(zmsg_t* content)
 {
-	//Destroy the old message
-	zmsg_destroy(&m_content);
-	//Duplicate the message that is passed
-	m_content = zmsg_dup(content);
+	m_content = ByteStream(zmsg_pop(content));
 }

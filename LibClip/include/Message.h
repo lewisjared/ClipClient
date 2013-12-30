@@ -78,41 +78,32 @@ class MessageWhisper : public Message
 {
 public:
 	MessageWhisper();
-	~MessageWhisper();
 
-	zmsg_t* getContent();
-
-	/**
-	 \fn	void MessageWhisper::setContent(zmsg_t* content) int send(void* socket);
-	
-	 \brief	Sets the content of a message.
-			This function duplicates the content internally, so the passed content can be destroyed.
-	
-	 \param	content The content of the message
-	 */
+	ByteStream getContent();
+	void setContent(ByteStream content);
 	void setContent(zmsg_t* content);
 
 	int send(void* socket);
 private:
-	zmsg_t* m_content;
+	ByteStream m_content;
 };
 
 class MessageShout : public Message
 {
 public:
 	MessageShout();
-	~MessageShout();
 
-	zmsg_t* getContent();
-	void addContent(zframe_t* content);
+	ByteStream getContent();
 	void setContent(zmsg_t* content);
+	void setContent(ByteStream bs);
+
 	std::string getGroup() const;
 	void setGroup(const std::string& group);
 
 	int send(void* socket);
 private:
 	std::string m_group;
-	zmsg_t* m_content;
+	ByteStream m_content;
 };
 
 class MessageJoin : public Message

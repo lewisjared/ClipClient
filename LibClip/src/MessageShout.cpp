@@ -11,12 +11,6 @@
 MessageShout::MessageShout()
 	:Message(MSG_SHOUT)
 {
-	m_content = zmsg_new();
-}
-
-MessageShout::~MessageShout()
-{
-	zmsg_destroy(&m_content);
 }
 
 /**
@@ -48,37 +42,28 @@ int MessageShout::send(void* socket)
 	//Group String
 	bs.putString(m_group);
 
-	int flags = zmsg_size (m_content)? ZFRAME_MORE: 0;
+	int flags = m_content.size() ? ZFRAME_MORE: 0;
 
 	int result = sendBytes(socket, bs, flags);
 
-	zmsg_send(&m_content, socket);
+	sendBytes(socket, m_content, 0);
 
 	return result;
 }
 
-zmsg_t* MessageShout::getContent()
+ByteStream MessageShout::getContent()
 {
 	return m_content;
 }
 
-/**
- \fn	void MessageShout::setContent(zmsg_t* content)
-
- \brief	Appends a frame to the message
-		Takes ownership of the passed message
-
- \param 	content	If non-null, the conten of this message.
- */
-void MessageShout::addContent(zframe_t* content)
-{
-	zmsg_append(m_content, &content);
-}
-
 void MessageShout::setContent(zmsg_t* content)
 {
-	zmsg_destroy(&m_content);
-	m_content = zmsg_dup(content);
+	m_content = ByteStream(zmsg_pop(content));
+}
+
+void MessageShout::setContent(ByteStream bs)
+{
+	m_content = bs;
 }
 
 std::string MessageShout::getGroup() const
