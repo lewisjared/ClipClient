@@ -31,7 +31,9 @@ public:
 	void addHeader(const std::string &key, const std::string &value);
 	void start();
 	void whisper(boost::uuids::uuid target, const ByteStream& bs);
+	void whisper(boost::uuids::uuid target, const std::string &text);
 	void shout(const std::string &group, const ByteStream& bs);
+	void shout(const std::string &group, const std::string &text);
 private:
 	NodeThread* m_node;
 	void* m_pipe;

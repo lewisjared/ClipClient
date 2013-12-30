@@ -59,6 +59,14 @@ void Node::whisper(boost::uuids::uuid target, const ByteStream& bs)
 	zmsg_send(&msg, m_pipe);
 }
 
+void Node::whisper( boost::uuids::uuid target, const std::string &text )
+{
+	ByteStream bs;
+	bs.putString(text);
+	whisper(target, bs);
+}
+
+
 void Node::shout(const std::string &group, const ByteStream& bs)
 {
 	zmsg_t* msg = zmsg_new();
@@ -68,6 +76,13 @@ void Node::shout(const std::string &group, const ByteStream& bs)
 	zframe_t* frame = zframe_new(bs.data(), bs.size());
 	zmsg_append(msg, &frame);
 	zmsg_send(&msg, m_pipe);
+}
+
+void Node::shout(const std::string &group, const std::string &text)
+{
+	ByteStream bs;
+	bs.putString(text);
+	shout(group,bs);
 }
 
 zyre::Event* Node::recv()
