@@ -110,7 +110,6 @@
     <ClCompile Include="src\ss\file_storage.cpp" />
     <ClCompile Include="src\ss\registry_storage.cpp" />
     <ClCompile Include="src\ss\util.cpp" />
-    <ClCompile Include="src\UdpSocket.cpp" />
     <ClCompile Include="src\ZThreaded.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -135,7 +134,6 @@
     <ClInclude Include="include\ss\template.h" />
     <ClInclude Include="include\ss\ts.h" />
     <ClInclude Include="include\ss\util.h" />
-    <ClInclude Include="include\UdpSocket.h" />
     <ClInclude Include="include\ZThreaded.h" />
     <ClInclude Include="include\ZyreCPP.h" />
     <ClInclude Include="src\Beacon.h" />

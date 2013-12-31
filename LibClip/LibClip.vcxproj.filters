@@ -42,9 +42,6 @@
     <None Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\UdpSocket.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\ss\bulk_setting.cpp">
       <Filter>Source Files\ss</Filter>
     </ClCompile>
@@ -137,9 +134,6 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="include\UdpSocket.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="include\ss\array.h">
       <Filter>Header Files\ss</Filter>
     </ClInclude>
