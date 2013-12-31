@@ -1,6 +1,7 @@
 #pragma once
 
 #include "ZThreaded.h"
+#include "KeyValuePair.h"
 
 #include <boost/uuid/uuid.hpp>
 #include <boost/uuid/uuid_generators.hpp>
@@ -13,7 +14,6 @@ class Message;
 class Beacon;
 class Peer;
 
-typedef std::map<std::string, std::string> KeyValuePair;
 typedef std::map<boost::uuids::uuid, Peer *> Peers;
 
 #define ZRE_PORT 888

@@ -38,6 +38,8 @@ public:
 
 	~ByteStream(void);
 
+	void append(const ByteStream& bs);
+
 	/**
 	 \fn	zframe_t* ByteStream::getFrame();
 	

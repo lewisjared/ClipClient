@@ -85,6 +85,7 @@
     <ClCompile Include="src\ByteStream.cpp" />
     <ClCompile Include="src\Event.cpp" />
     <ClCompile Include="src\EventFactory.cpp" />
+    <ClCompile Include="src\KeyValuePair.cpp" />
     <ClCompile Include="src\LogConsole.cpp" />
     <ClCompile Include="src\LogFile.cpp" />
     <ClCompile Include="src\Logger.cpp" />
@@ -115,6 +116,7 @@
   <ItemGroup>
     <ClInclude Include="include\ByteStream.h" />
     <ClInclude Include="include\Event.h" />
+    <ClInclude Include="include\KeyValuePair.h" />
     <ClInclude Include="include\Logger.h" />
     <ClInclude Include="include\Message.h" />
     <ClInclude Include="include\Node.h" />

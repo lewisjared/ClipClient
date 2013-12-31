@@ -120,9 +120,6 @@
     <ClCompile Include="src\NodeThread.cpp">
       <Filter>Source Files\network</Filter>
     </ClCompile>
-    <ClCompile Include="src\MessageHeader.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\Node.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -131,6 +128,12 @@
     </ClCompile>
     <ClCompile Include="src\EventFactory.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\KeyValuePair.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\MessageHeader.cpp">
+      <Filter>Source Files\network</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -225,6 +228,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\EventFactory.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\KeyValuePair.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -7,7 +7,9 @@
 #include <string>
 #include "czmq.h"
 #include "ByteStream.h"
-#include "ZyreCPP.h"
+#include "KeyValuePair.h"
+
+typedef std::vector<std::string> TStringVector;
 
 enum msg_t
 {

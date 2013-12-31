@@ -26,30 +26,7 @@ int MessageHello::send(void* socket)
 {
 	assert(socket);
 
-	size_t frameSize = HEADER_SIZE;
-	frameSize += 2; //sequence
-	frameSize++; //String size
-	frameSize+= m_ip.size(); //ip address
-	frameSize += 2; //mailbox
-	frameSize++; //Number of groups
-	for (auto it = m_groups.begin(); it != m_groups.end(); ++it)
-	{
-		frameSize++;
-		frameSize+=it->size();
-	}
-
-	frameSize++; //status
-
-	frameSize++; //number of headers
-	for (auto it = m_headers.begin(); it != m_headers.end(); ++it)
-	{
-		frameSize++; //stringsize
-		frameSize+=it->first.size(); //keysize
-		frameSize++; // =
-		frameSize+= it->second.size();
-	}
-
-	ByteStream bs = ByteStream(frameSize);
+	ByteStream bs = ByteStream();
 
 	// Write the header
 	bs.putUINT16(0xAAA0 | 1);
@@ -67,13 +44,8 @@ int MessageHello::send(void* socket)
 		bs.putString(*it);
 	//Status
 	bs.putByte(m_status);
-	//headers
-	bs.putByte(m_headers.size());
-	for (auto it = m_headers.begin(); it != m_headers.end(); ++it)
-	{
-		std::string line = it->first + "=" + it->second;
-		bs.putString(line);
-	}
+
+	bs.append(m_headers.generateBS());
 
 	return sendBytes(socket, bs, 0);
 }
@@ -101,17 +73,13 @@ TStringVector MessageHello::getGroups() const
 void MessageHello::addHeader(const std::string& key, const std::string& value)
 {
 	//Overwrites the key with new value 
-	m_headers[key] = value;
+	m_headers.addValue(key,value);
 }
 
 void MessageHello::addHeader(const std::string& keyValue)
 {
 	//Parse the header string
-	size_t pos = keyValue.find_first_of('=');
-	std::string key = keyValue.substr(0, pos);
-	std::string value = keyValue.substr(pos+1);
-
-	addHeader(key, value);
+	m_headers.addValue(keyValue);
 }
 
 void MessageHello::addGroup(const std::string& group)

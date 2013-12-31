@@ -25,6 +25,18 @@ ByteStream Event::getContent() const
 	return m_content;
 }
 
+KeyValuePair Event::getHeaders()
+{
+	assert(m_type == EVT_ENTER);
+
+	//Copy bs 
+	ByteStream bs(m_content);
+	
+	KeyValuePair kvp;
+	kvp.parseBS(bs);
+	return kvp;
+}
+
 EventType Event::getType() const
 {
 	return m_type;
@@ -70,7 +82,7 @@ void Event::send(void* socket)
 	zmsg_addmem(msg, &m_from, 16);
 
 	//Now handle the conditional sending
-	if (m_type == EVT_SHOUT || m_type == EVT_WHISPER)
+	if (m_type == EVT_SHOUT || m_type == EVT_WHISPER || m_type == EVT_ENTER)
 		zmsg_add(msg, m_content.getFrame());
 	
 	zmsg_send(&msg, socket);
@@ -117,8 +129,12 @@ Event* Event::parse(zmsg_t* msg)
 
 		if (type == EVT_WHISPER || type == EVT_SHOUT || type == EVT_ENTER)
 		{
-			ByteStream content(zmsg_pop(msg));
-			event->setContent(content);
+			zframe_t* frame = zmsg_pop(msg);
+			if (frame)
+			{
+				ByteStream content(frame);
+				event->setContent(content);
+			}
 		}
 	} else {
 		LOG_ERR() << "Invalid event command, " << command << ", dumping message" << std::endl;

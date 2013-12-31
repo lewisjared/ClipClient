@@ -106,11 +106,10 @@ KeyValuePair Peer::getHeaders() const
 
 void Peer::setHeaders(KeyValuePair val) 
 { 
-	m_headers = val; 
+	m_headers = val;
 
 	LOG() << "New Headers for peer " << m_peerUUID <<std::endl;
-	for (auto it = val.begin(); it != val.end(); ++it)
-		LOG() << it->first << "=" << it->second << std::endl;
+	m_headers.log();
 }
 
 TStringVector Peer::getGroups() const 

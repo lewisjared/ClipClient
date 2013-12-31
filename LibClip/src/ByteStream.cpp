@@ -68,6 +68,11 @@ ByteStream::~ByteStream(void)
 	free(m_start);
 }
 
+void ByteStream::append(const ByteStream& bs)
+{
+	putBlock(bs.data(), bs.size());
+}
+
 void ByteStream::checkSize(size_t toAdd)
 {
 	size_t newSize = size() + toAdd;
@@ -106,6 +111,9 @@ void ByteStream::setFrame( zframe_t* frame, bool takeOwnership)
 {
 	if (m_start)
 		free(m_start);
+
+	assert(frame);
+
 	m_start = (byte*)malloc(zframe_size(frame));
 	memcpy(m_start, zframe_data(frame),zframe_size(frame));
 	m_end = m_start + zframe_size(frame);

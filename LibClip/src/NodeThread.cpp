@@ -213,6 +213,12 @@ void NodeThread::handlePeers()
 		peer->setHeaders(hello->getHeaders());
 		peer->setGroups(hello->getGroups());
 
+		//Inform the Node with an enter event
+		Event* event = EventFactory::generateEnter(uuid, peer->getHeaders());
+		event->send(m_pipe);
+		delete event;
+
+
 		delete hello;
 
 		return;
@@ -317,12 +323,6 @@ Peer* NodeThread::createPeer(boost::uuids::uuid peerUUID, std::string ip, uint16
 	m_peers[peerUUID] = peer;
 
 	delete msg;
-
-	//Inform the Node with an enter event
-	Event* event = EventFactory::generateEnter(peerUUID);
-	event->send(m_pipe);
-	delete event;
-
 	return peer;
 }
 
@@ -345,7 +345,7 @@ void NodeThread::sendToPeers(Message* msg)
 void NodeThread::setKeyValue(std::string key, std::string value)
 {
 	//Update m_headers
-	m_headers[key] = value;
+	m_headers.addValue(key, value);
 
 	MessageHeader* msg = MessageFactory::generateHeader(key, value);
 

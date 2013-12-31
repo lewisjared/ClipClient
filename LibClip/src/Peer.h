@@ -5,6 +5,7 @@
 #include <boost/uuid/uuid.hpp>
 
 #include "ZyreCPP.h"
+#include "KeyValuePair.h"
 
 class Message;
 

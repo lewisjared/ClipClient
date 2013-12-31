@@ -1,6 +1,7 @@
 #pragma once
 
 #include "ByteStream.h"
+#include "KeyValuePair.h"
 
 #include "boost/uuid/uuid.hpp"
 #include <string>
@@ -30,6 +31,7 @@ public:
 
 	void setContent(const ByteStream& bs);
 	ByteStream getContent() const;
+	KeyValuePair getHeaders();
 
 	boost::uuids::uuid getFrom() const;
 	void setFrom(boost::uuids::uuid uuid);

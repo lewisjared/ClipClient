@@ -58,7 +58,6 @@ Message* MessageFactory::parse( void* socket )
 	zframe_t *frame = NULL;
 	zframe_t *address = NULL;
 	zmsg_t *content = NULL;
-	uint8_t numHeaders;
 	uint8_t numGroups;
 
 	//  Read valid message frame from socket; we loop over any
@@ -109,11 +108,9 @@ Message* MessageFactory::parse( void* socket )
 			dynamic_cast<MessageHello*>(msg)->addGroup(group);
 		}
 		dynamic_cast<MessageHello*>(msg)->setStatus(frameStream->getByte());
-		numHeaders = frameStream->getByte();
-		while (numHeaders--) {
-			std::string header = frameStream->getString();
-			dynamic_cast<MessageHello*>(msg)->addHeader(header);
-		}
+		KeyValuePair headers;
+		headers.parseBS(*frameStream);
+		dynamic_cast<MessageHello*>(msg)->setHeaders(headers);
 	} else if (type == MSG_WHISPER)
 	{
 		msg = new MessageWhisper();
