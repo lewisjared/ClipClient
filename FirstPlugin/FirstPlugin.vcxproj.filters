@@ -26,8 +26,5 @@
     <ClInclude Include="TestClass.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Plugin.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
   </ItemGroup>
 </Project>

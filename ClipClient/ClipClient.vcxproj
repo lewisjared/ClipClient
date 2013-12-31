@@ -80,29 +80,20 @@
     <None Include="small.ico" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Broadcaster.h" />
     <ClInclude Include="Clipboard.h" />
     <ClInclude Include="ClipboardItem.h" />
     <ClInclude Include="ClipClient.h" />
     <ClInclude Include="Data.h" />
-    <ClInclude Include="DynamicLibrary.h" />
-    <ClInclude Include="NetworkHandler.h" />
-    <ClInclude Include="PluginManager.h" />
     <ClInclude Include="plugin\Plugin.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
-    <ClInclude Include="utils.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Broadcaster.cpp" />
     <ClCompile Include="Clipboard.cpp" />
     <ClCompile Include="ClipboardItem.cpp" />
     <ClCompile Include="ClipClient.cpp" />
     <ClCompile Include="Data.cpp" />
-    <ClCompile Include="DynamicLibrary.cpp" />
-    <ClCompile Include="NetworkHandler.cpp" />
-    <ClCompile Include="PluginManager.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>

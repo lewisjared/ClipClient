@@ -102,6 +102,8 @@
     <ClCompile Include="src\Node.cpp" />
     <ClCompile Include="src\NodeThread.cpp" />
     <ClCompile Include="src\Peer.cpp" />
+    <ClCompile Include="src\Plugin\DynamicLibrary.cpp" />
+    <ClCompile Include="src\Plugin\PluginManager.cpp" />
     <ClCompile Include="src\ss\bulk_setting.cpp" />
     <ClCompile Include="src\ss\configuration.cpp" />
     <ClCompile Include="src\ss\defaults_holder.cpp" />
@@ -118,6 +120,9 @@
     <ClInclude Include="include\KeyValuePair.h" />
     <ClInclude Include="include\Logger.h" />
     <ClInclude Include="include\Node.h" />
+    <ClInclude Include="include\Plugin\DynamicLibrary.h" />
+    <ClInclude Include="include\Plugin\Plugin.h" />
+    <ClInclude Include="include\Plugin\PluginManager.h" />
     <ClInclude Include="include\ss\array.h" />
     <ClInclude Include="include\ss\bulk_setting.h" />
     <ClInclude Include="include\ss\configuration.h" />

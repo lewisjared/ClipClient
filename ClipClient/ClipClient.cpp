@@ -4,14 +4,14 @@
 #include "stdafx.h"
 #include "ClipClient.h"
 #include "ClipboardItem.h"
-#include "NetworkHandler.h"
-#include "PluginManager.h"
+#include "Plugin/PluginManager.h"
 #include "ss/setting.h"
 #include "ss/configuration.h"
 #include "ss/file_storage.h"
 
+#include "Node.h"
+
 #include "logger.h"
-#include "Broadcaster.h"
 #include <vector>
 
 using namespace ss;
@@ -23,8 +23,6 @@ HINSTANCE hInst;								// current instance
 TCHAR szTitle[MAX_LOADSTRING];					// The title bar text
 TCHAR szWindowClass[MAX_LOADSTRING];			// the main window class name
 
-NetworkHandler networkHandler;
-Broadcaster* broadcaster;
 void ss::init_settings( ) {
 	def_cfg().add_storage(TTEXT("user"), new file_storage("user.ini"));
 
@@ -138,7 +136,6 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 	}
 
 	AddClipboardFormatListener(hWnd);
-	broadcaster = new Broadcaster();
 
 	PluginManager& pm = PluginManager::getInstance();
 	pm.loadAll("D:/docs/code/ClipClient/ClipClient/debug");
@@ -146,7 +143,7 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 	ShowWindow(hWnd, nCmdShow);
 	UpdateWindow(hWnd);
 
-	Node* node = new Node();
+	zyre::Node * node = new zyre::Node();
 
 	return TRUE;
 }
@@ -194,7 +191,6 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		break;
 	case WM_DESTROY:
 		RemoveClipboardFormatListener(hWnd);
-		delete broadcaster;
 		PostQuitMessage(0);
 		break;
 	default:

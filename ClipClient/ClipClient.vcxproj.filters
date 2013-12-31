@@ -19,9 +19,6 @@
     <Filter Include="Source Files\network">
       <UniqueIdentifier>{40fb9c0d-4e04-41da-94c8-61076abf2f6a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Plugin">
-      <UniqueIdentifier>{3f756342-ee54-485f-a2b4-18d57c977cd9}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="ReadMe.txt" />
@@ -48,29 +45,14 @@
     <ClInclude Include="Data.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="NetworkHandler.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Clipboard.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ClipboardItem.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="DynamicLibrary.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="utils.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="PluginManager.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="plugin\Plugin.h">
       <Filter>Header Files\plugin</Filter>
-    </ClInclude>
-    <ClInclude Include="Broadcaster.h">
-      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -88,18 +70,6 @@
     </ClCompile>
     <ClCompile Include="Data.cpp">
       <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="DynamicLibrary.cpp">
-      <Filter>Source Files\Plugin</Filter>
-    </ClCompile>
-    <ClCompile Include="PluginManager.cpp">
-      <Filter>Source Files\Plugin</Filter>
-    </ClCompile>
-    <ClCompile Include="NetworkHandler.cpp">
-      <Filter>Source Files\network</Filter>
-    </ClCompile>
-    <ClCompile Include="Broadcaster.cpp">
-      <Filter>Source Files\network</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

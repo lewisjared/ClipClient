@@ -1,7 +1,9 @@
-#include "StdAfx.h"
-#include "DynamicLibrary.h"
-#include "utils.h"
+#include "Plugin/DynamicLibrary.h"
+#include "Logger.h"
 
+#ifdef WIN32
+#include <windows.h>
+#endif
 
 DynamicLibrary::DynamicLibrary(void)
 	: m_handle(NULL)
@@ -29,7 +31,7 @@ DynamicLibrary::~DynamicLibrary(void)
 #endif
 }
 
-DynamicLibrary* DynamicLibrary::load(const std::wstring& path, std::wstring &error)
+DynamicLibrary* DynamicLibrary::load(const std::wstring& path)
 {
 	DynamicLibrary* library = new DynamicLibrary;
 #ifdef WIN32
@@ -37,7 +39,7 @@ DynamicLibrary* DynamicLibrary::load(const std::wstring& path, std::wstring &err
 #endif // WINDOWS
 	if (library->m_handle == NULL)
 	{
-		GetErrorString(error);
+		LogErrorString();
 		delete library;
 		library = NULL;
 	}
@@ -49,5 +51,16 @@ void* DynamicLibrary::getSymbol(const std::string& name)
 {
 #ifdef WIN32
 	return GetProcAddress((HMODULE)m_handle, name.c_str());
+#endif // WIN32
+}
+
+void DynamicLibrary::LogErrorString()
+{
+#ifdef WIN32
+	DWORD errorCode = GetLastError();
+	WCHAR errorMessage[100];
+	FormatMessage(FORMAT_MESSAGE_FROM_SYSTEM , 
+		0, errorCode,0,errorMessage, MAX_PATH,0);
+	LOG_WARN() << "Error loading library: " << errorMessage << std::endl;
 #endif // WIN32
 }

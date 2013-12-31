@@ -5,8 +5,8 @@
 #include <memory>
 #include <vector>
 
-#include "DynamicLibrary.h"
-#include "plugin/Plugin.h"
+#include "Plugin/DynamicLibrary.h"
+#include "Plugin/Plugin.h"
 
 
 /**

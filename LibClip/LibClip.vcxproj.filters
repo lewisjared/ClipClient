@@ -31,6 +31,12 @@
     <Filter Include="Source Files\network">
       <UniqueIdentifier>{d3268b35-b3e0-4e2c-a404-5c2f2ea05b88}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Plugin">
+      <UniqueIdentifier>{015a08a8-58fa-4c4b-94d9-e84b284868df}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Plugin">
+      <UniqueIdentifier>{a6f3bd06-b2a9-4da1-8285-c799699a5407}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="ReadMe.txt" />
@@ -126,6 +132,12 @@
     <ClCompile Include="src\MessageHeader.cpp">
       <Filter>Source Files\network</Filter>
     </ClCompile>
+    <ClCompile Include="src\Plugin\DynamicLibrary.cpp">
+      <Filter>Source Files\Plugin</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Plugin\PluginManager.cpp">
+      <Filter>Source Files\Plugin</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\ss\array.h">
@@ -220,6 +232,15 @@
     </ClInclude>
     <ClInclude Include="include\Zyre.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Plugin\Plugin.h">
+      <Filter>Header Files\Plugin</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Plugin\DynamicLibrary.h">
+      <Filter>Header Files\Plugin</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Plugin\PluginManager.h">
+      <Filter>Header Files\Plugin</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

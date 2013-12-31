@@ -1,5 +1,4 @@
-#include "StdAfx.h"
-#include "PluginManager.h"
+#include "Plugin/PluginManager.h"
 #include "boost/filesystem.hpp"
 
 using namespace boost::filesystem;
@@ -64,7 +63,6 @@ bool PluginManager::loadAll(const std::string& pluginDir)
 		std::cout << pluginDir <<" is not a directory." << std::endl;
 		return false;
 	}
-	std::wstring error;
 
 	std::vector<path> filenames;
 	copy(directory_iterator(p), directory_iterator(), back_inserter(filenames));
@@ -78,7 +76,7 @@ bool PluginManager::loadAll(const std::string& pluginDir)
 	{
 		if (it->extension() == ".dll")
 		{
-			DynamicLibrary* lib = DynamicLibrary::load(it->wstring(), error);
+			DynamicLibrary* lib = DynamicLibrary::load(it->wstring());
 			//Disregard bad non libraries
 			if (lib != NULL) 
 			{

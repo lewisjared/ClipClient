@@ -2,8 +2,6 @@
 #include <string>
 #include "ClipboardItem.h"
 #include "ClipClient.h"
-#include "DynamicLibrary.h"
-#include "PluginManager.h"
 
 #include "ss/setting.h"
 
