@@ -119,6 +119,7 @@ void NodeThread::checkPeersHealth()
 				//Remove the Node
 				LOG() << "Peer " << it->first << " expired" << std::endl;
 				Event* event = EventFactory::generateExit(it->first);
+
 				event->send(m_pipe);
 				delete event;
 
@@ -174,11 +175,6 @@ void NodeThread::handleAPI()
 	} else if (command == "WHISPER")
 	{
 		ByteStream bs(zmsg_pop(request));
-		if (bs.size() != 16)
-		{
-			LOG() << "Invalid packet" << std::endl;
-		}
-
 		boost::uuids::uuid uuid = bs.getUUID();
 
 		MessageWhisper* msg = MessageFactory::generateWhisper();

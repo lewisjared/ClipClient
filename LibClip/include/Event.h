@@ -37,6 +37,8 @@ public:
 	static Event* parse(zmsg_t* msg);
 	void send(void* socket);
 
+	void dump(const std::string &filename);
+
 private:
 	EventType m_type;
 	boost::uuids::uuid m_from;

@@ -1,6 +1,10 @@
 #include "Event.h"
 #include "Logger.h"
 
+#include <fstream>
+
+#include <boost/uuid/uuid_io.hpp>
+
 
 using namespace zyre;
 
@@ -17,7 +21,7 @@ Event::~Event()
 
 ByteStream Event::getContent() const
 {
-	assert(m_type == EVT_SHOUT || m_type == EVT_WHISPER);
+	assert(m_type == EVT_SHOUT || m_type == EVT_WHISPER || m_type == EVT_ENTER);
 	return m_content;
 }
 
@@ -72,6 +76,15 @@ void Event::send(void* socket)
 	zmsg_send(&msg, socket);
 }
 
+void Event::dump(const std::string &filename)
+{
+	std::ofstream output;
+	output.open(filename, std::ios::out);
+
+	output << getTypeStr() << " from "  << m_from << std::endl;
+	output.write((char*)m_content.data(), m_content.size());
+}
+
 
 Event* Event::parse(zmsg_t* msg)
 {
@@ -93,23 +106,23 @@ Event* Event::parse(zmsg_t* msg)
 	} else if (command == "EXIT")
 	{
 		type = EVT_EXIT;
-	} else {
-		LOG_ERR() << "Invalid event command, " << command << ", dropping message" << std::endl;
 	}
-
 
 	Event* event = new Event(type);
 
-	if (event)
+	if (event->isValid())
 	{
 		ByteStream uuid (zmsg_pop(msg));
 		event->setFrom(uuid.getUUID());
 
-		if (type == EVT_WHISPER || type == EVT_SHOUT)
+		if (type == EVT_WHISPER || type == EVT_SHOUT || type == EVT_ENTER)
 		{
 			ByteStream content(zmsg_pop(msg));
 			event->setContent(content);
 		}
+	} else {
+		LOG_ERR() << "Invalid event command, " << command << ", dumping message" << std::endl;
+		event->dump("invalidEvent.txt");
 	}
 
 	zmsg_destroy(&msg);

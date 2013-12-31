@@ -255,6 +255,8 @@ void ByteStream::putUUID(boost::uuids::uuid uuid)
 
 boost::uuids::uuid ByteStream::getUUID()
 {
+	if (m_readPtr + 16 > m_end)
+		throw EByteStream("Malformed Packet");
 	boost::uuids::uuid uuid;
 	memcpy(&uuid, m_readPtr, 16);
 	m_readPtr += 16;
