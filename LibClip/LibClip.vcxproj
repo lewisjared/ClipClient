@@ -117,7 +117,6 @@
     <ClInclude Include="include\Event.h" />
     <ClInclude Include="include\KeyValuePair.h" />
     <ClInclude Include="include\Logger.h" />
-    <ClInclude Include="include\Message.h" />
     <ClInclude Include="include\Node.h" />
     <ClInclude Include="include\ss\array.h" />
     <ClInclude Include="include\ss\bulk_setting.h" />
@@ -135,12 +134,13 @@
     <ClInclude Include="include\ss\ts.h" />
     <ClInclude Include="include\ss\util.h" />
     <ClInclude Include="include\ZThreaded.h" />
-    <ClInclude Include="include\ZyreCPP.h" />
+    <ClInclude Include="include\Zyre.h" />
     <ClInclude Include="src\Beacon.h" />
     <ClInclude Include="src\EventFactory.h" />
     <ClInclude Include="src\LogConsole.h" />
     <ClInclude Include="src\LogFile.h" />
     <ClInclude Include="src\LogPolicy.h" />
+    <ClInclude Include="src\Message.h" />
     <ClInclude Include="src\MessageFactory.h" />
     <ClInclude Include="src\NodeThread.h" />
     <ClInclude Include="src\Peer.h" />

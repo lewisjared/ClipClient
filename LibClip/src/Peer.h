@@ -4,7 +4,7 @@
 #include "czmq.h"
 #include <boost/uuid/uuid.hpp>
 
-#include "ZyreCPP.h"
+#include "Zyre.h"
 #include "KeyValuePair.h"
 
 class Message;

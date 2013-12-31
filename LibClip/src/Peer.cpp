@@ -2,7 +2,7 @@
 #include "Logger.h"
 #include "Message.h"
 #include "MessageFactory.h"
-#include "ZyreCPP.h"
+
 #include "boost/uuid/uuid_io.hpp"
 
 

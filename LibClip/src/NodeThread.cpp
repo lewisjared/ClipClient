@@ -5,7 +5,7 @@
 #include "Beacon.h"
 #include "Logger.h"
 #include "MessageFactory.h"
-#include "ZyreCPP.h"
+#include "Zyre.h"
 
 #include <sstream>
 #include <vector>

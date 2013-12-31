@@ -28,12 +28,6 @@
     <Filter Include="Header Files\network">
       <UniqueIdentifier>{c379ca31-7634-4d2c-89f0-75c5fca47bfb}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\zyre">
-      <UniqueIdentifier>{9e65ed62-1269-436f-88ee-0805cdaa5a95}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\zyre">
-      <UniqueIdentifier>{9549258b-5024-4ae3-b3e8-927699a730c3}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\network">
       <UniqueIdentifier>{d3268b35-b3e0-4e2c-a404-5c2f2ea05b88}</UniqueIdentifier>
     </Filter>
@@ -197,9 +191,6 @@
     <ClInclude Include="src\Peer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\MessageFactory.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="include\ZThreaded.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -209,22 +200,25 @@
     <ClInclude Include="include\Node.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\Message.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\ZyreCPP.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Event.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="include\ByteStream.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\EventFactory.h">
+    <ClInclude Include="include\KeyValuePair.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\KeyValuePair.h">
+    <ClInclude Include="src\Message.h">
+      <Filter>Header Files\network</Filter>
+    </ClInclude>
+    <ClInclude Include="src\MessageFactory.h">
+      <Filter>Header Files\network</Filter>
+    </ClInclude>
+    <ClInclude Include="src\EventFactory.h">
+      <Filter>Header Files\network</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Event.h">
+      <Filter>Header Files\network</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Zyre.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
