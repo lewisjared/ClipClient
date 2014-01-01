@@ -18,6 +18,9 @@ CMainFrame::CMainFrame(const wxString& title, const wxPoint& pos, const wxSize& 
 	SetIcon(wxICON(CLIPCLIENT));
 
 	Bind(ZYRE_EVENT, &CMainFrame::OnZyreEvent, this);
+
+	//Register a hotkey
+	//RegisterHotKey(0, )
 }
 
 CMainFrame::~CMainFrame()

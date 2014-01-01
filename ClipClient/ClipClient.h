@@ -13,6 +13,7 @@ public:
 	virtual bool OnInit();
 
 private:
+	void initLogging();
 	CMainFrame* m_mainFrame;
 };
 
