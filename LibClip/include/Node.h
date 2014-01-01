@@ -11,16 +11,15 @@ class NodeThread;
 
 
 class CEvent;
+class wxEvtHandler;
 
 class CNode
 {
 public:
-	CNode();
+	CNode(wxEvtHandler* handler = NULL);
 	~CNode(void);
 
 	void* getSocket();
-
-	CEvent* recv();
 
 	void join(const std::string &group);
 	void leave(const std::string &group);

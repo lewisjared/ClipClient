@@ -6,6 +6,11 @@
 #include <fstream>
 #include <boost/uuid/uuid_io.hpp>
 
+CEvent::CEvent()
+	:m_type(EVT_INVALID)
+{
+
+}
 
 CEvent::CEvent(EventType type)
 	: m_type(type)
@@ -74,19 +79,6 @@ void CEvent::setContent(const ByteStream& bs)
 	m_content = bs;
 }
 
-zmsg_t* CEvent::getMsg()
-{
-	zmsg_t* msg = zmsg_new();
-	zmsg_pushstr(msg, getTypeStr().c_str());
-	zmsg_addmem(msg, &m_from, 16);
-
-	//Now handle the conditional sending
-	if (m_type == EVT_SHOUT || m_type == EVT_WHISPER || m_type == EVT_ENTER)
-		zmsg_add(msg, m_content.getFrame());
-	
-	return msg;
-}
-
 void CEvent::dump(const std::string &filename)
 {
 	std::ofstream output;
@@ -94,53 +86,4 @@ void CEvent::dump(const std::string &filename)
 
 	output << getTypeStr() << " from "  << m_from << std::endl;
 	output.write((char*)m_content.data(), m_content.size());
-}
-
-
-CEvent* CEvent::parse(zmsg_t* msg)
-{
-	LOG() << "Parsing Event" << std::endl;
-	//The first frame will contain the command
-	std::string command = zmsg_popstr(msg);
-
-	EventType type = EVT_INVALID;
-
-	if (command == "WHISPER")
-	{
-		type = EVT_WHISPER;
-	} else if (command == "SHOUT")
-	{
-		type = EVT_SHOUT;
-	} else if (command == "ENTER")
-	{
-		type = EVT_ENTER;
-	} else if (command == "EXIT")
-	{
-		type = EVT_EXIT;
-	}
-
-	CEvent* event = new CEvent(type);
-
-	if (event->isValid())
-	{
-		ByteStream uuid (zmsg_pop(msg));
-		event->setFrom(uuid.getUUID());
-
-		if (type == EVT_WHISPER || type == EVT_SHOUT || type == EVT_ENTER)
-		{
-			zframe_t* frame = zmsg_pop(msg);
-			if (frame)
-			{
-				ByteStream content(frame);
-				event->setContent(content);
-			}
-		}
-	} else {
-		LOG_ERR() << "Invalid event command, " << command << ", dumping message" << std::endl;
-		event->dump("invalidEvent.txt");
-	}
-
-	zmsg_destroy(&msg);
-
-	return event;
 }

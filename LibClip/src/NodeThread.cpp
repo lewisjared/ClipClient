@@ -13,6 +13,10 @@
 #include <boost/uuid/uuid_generators.hpp>
 #include "boost/uuid/uuid_io.hpp"
 
+#include "wx/event.h"
+
+wxDEFINE_EVENT(ZYRE_EVENT, wxThreadEvent);
+
 NodeThread::NodeThread(zctx_t* context)
 	:ZThread(context), m_context(context), m_pipe(NULL)
 {
@@ -369,7 +373,16 @@ void NodeThread::start()
 
 void NodeThread::sendEvent(CEvent* evt)
 {
-	zmsg_t* msg = evt->getMsg();
-	zmsg_send(&msg, m_pipe);
+	if (m_handler)
+	{
+		wxThreadEvent* event = new wxThreadEvent(ZYRE_EVENT);
+		event->SetPayload<CEvent>(*evt);
+		m_handler->QueueEvent(event);
+	}
 	delete evt;
+}
+
+void NodeThread::setEventHandler(wxEvtHandler* handler)
+{
+	m_handler = handler;
 }

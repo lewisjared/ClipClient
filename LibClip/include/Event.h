@@ -19,6 +19,7 @@ enum EventType
 class CEvent
 {
 public:
+	CEvent();
 	CEvent(EventType type);
 	~CEvent();
 
@@ -32,9 +33,6 @@ public:
 
 	boost::uuids::uuid getFrom() const;
 	void setFrom(boost::uuids::uuid uuid);
-
-	static CEvent* parse(zmsg_t* msg);
-	zmsg_t* getMsg();
 
 	void dump(const std::string &filename);
 private:

@@ -14,6 +14,7 @@ class Message;
 class Beacon;
 class Peer;
 class CEvent;
+class wxEvtHandler;
 
 typedef std::map<boost::uuids::uuid, Peer *> Peers;
 
@@ -33,6 +34,8 @@ public:
 	NodeThread(zctx_t* context);
 	~NodeThread(void);
 
+	void setEventHandler(wxEvtHandler* handler);
+
 private:
 	void eventLoop(void *pipe);
 	void handleAPI();
@@ -47,6 +50,7 @@ private:
 	void sendEvent(CEvent* evt);
 
 	zctx_t* m_context;
+	wxEvtHandler* m_handler;
 	Beacon* m_beacon;
 	void* m_pipe;
 	void* m_inbox;

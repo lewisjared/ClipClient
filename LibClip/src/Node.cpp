@@ -2,10 +2,14 @@
 #include "NodeThread.h"
 #include "Event.h"
 
-CNode::CNode()
+#include "wx/event.h"
+
+CNode::CNode(wxEvtHandler* handler)
 {
 	m_context = zctx_new();
 	m_node = new NodeThread(m_context);
+	if (handler)
+		m_node->setEventHandler(handler);
 	m_pipe = m_node->run();
 }
 
@@ -83,25 +87,4 @@ void CNode::shout(const std::string &group, const std::string &text)
 	ByteStream bs;
 	bs.putString(text);
 	shout(group,bs);
-}
-
-CEvent* CNode::recv()
-{
-	//Read in a complete message
-	// Blocks till message is ready
-	zmsg_t* msg = zmsg_recv(m_pipe);
-
-	//Parse the Event out of the message takes ownership of message
-	CEvent* event = CEvent::parse(msg);
-
-
-	//May as well null any invalid messages
-	if (event)
-		if (!event->isValid())
-		{
-			delete event;
-			event = NULL;
-		}
-
-	return event;
 }
