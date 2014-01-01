@@ -82,7 +82,7 @@ std::ostream& Logger::print()
 std::ostream& Logger::printInfo()
 {
 	//Info is always printed
-	printHeader(DEBUG_SEV);
+	printHeader(INFO_SEV);
 	return m_file->getStream();
 }
 
