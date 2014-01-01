@@ -5,10 +5,10 @@
 
 typedef std::map<ClipFormat_t,ClipboardItem> ClipboardMap;
 
-class Clipboard
+class CClipboardManager
 {
 public:
-	Clipboard(void);
+	CClipboardManager(void);
 	
 	void checkClipboard();
 	void empty();

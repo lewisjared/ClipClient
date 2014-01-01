@@ -23,3 +23,5 @@ Release
 ipch
 /LibClip/*.sdf
 /LibTest
+
+/ClipClient/*.aps

@@ -1,12 +1,12 @@
-#include "stdafx.h"
+#include "windows.h"
 #include "Clipboard.h"
 
 
-Clipboard::Clipboard(void)
+CClipboardManager::CClipboardManager(void)
 {
 }
 
-void Clipboard::checkClipboard()
+void CClipboardManager::checkClipboard()
 {
 	// Check read the linked list of formats and create a new Clipboard item for each
 	UINT format = EnumClipboardFormats(0);
@@ -18,12 +18,12 @@ void Clipboard::checkClipboard()
 	}
 }
 
-void Clipboard::empty()
+void CClipboardManager::empty()
 {
 	EmptyClipboard();
 }
 
-DWORD Clipboard::getSequenceNum()
+DWORD CClipboardManager::getSequenceNum()
 {
 	return GetClipboardSequenceNumber();
 }
