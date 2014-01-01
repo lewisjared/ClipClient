@@ -12,6 +12,7 @@ public:
 private:
 	void OnExit(wxCommandEvent& event);
 	void OnZyreEvent(wxThreadEvent& event);
+	void OnHotkey(wxKeyEvent& event);
 
 	CTaskBarIcon* m_taskbar;
 	CNode* m_node;

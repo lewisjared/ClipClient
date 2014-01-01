@@ -18,9 +18,14 @@ CMainFrame::CMainFrame(const wxString& title, const wxPoint& pos, const wxSize& 
 	SetIcon(wxICON(CLIPCLIENT));
 
 	Bind(ZYRE_EVENT, &CMainFrame::OnZyreEvent, this);
+	Bind(wxEVT_HOTKEY, &CMainFrame::OnHotkey, this);
 
 	//Register a hotkey
-	//RegisterHotKey(0, )
+	if (!RegisterHotKey(1000, wxMOD_SHIFT | wxMOD_CONTROL, 0x43))
+	{
+		LOG_WARN() << "Could not register hotkey" << std::endl;
+	}
+
 }
 
 CMainFrame::~CMainFrame()
@@ -38,5 +43,11 @@ void CMainFrame::OnZyreEvent(wxThreadEvent& event)
 {
 
 	CEvent evt = event.GetPayload<CEvent>();
+
+}
+
+void CMainFrame::OnHotkey(wxKeyEvent& event)
+{
+	LOG() << "Captured hotkey" << std::endl;
 
 }

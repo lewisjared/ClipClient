@@ -2,8 +2,6 @@
 //
 
 #include "stdafx.h"
-#include "Settings.h"
-#include "Logger.h"
 #include "ClipClient.h"
 #include "MainFrame.h"
 
