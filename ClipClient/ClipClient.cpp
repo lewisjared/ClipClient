@@ -7,6 +7,8 @@
 #include "ClipClient.h"
 #include "MainFrame.h"
 
+#include "VLD.h"
+
 
 void ss::init_settings( ) {
 	def_cfg().add_storage(TTEXT("user"), new file_storage("user.ini"));

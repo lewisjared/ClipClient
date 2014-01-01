@@ -1,12 +1,17 @@
 #pragma once
 
+class CTaskBarIcon;
+
 class CMainFrame :	public wxFrame
 {
 public:
 	CMainFrame(const wxString& title, const wxPoint& pos, const wxSize& size);
+	virtual ~CMainFrame();
 	
 private:
 	void OnExit(wxCommandEvent& event);
+
+	CTaskBarIcon* m_taskbar;	
 
 	DECLARE_EVENT_TABLE();
 };

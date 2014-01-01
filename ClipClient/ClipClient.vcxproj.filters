@@ -15,9 +15,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <None Include="small.ico">
-      <Filter>Resource Files</Filter>
-    </None>
     <None Include="ClipClient.ico">
       <Filter>Resource Files</Filter>
     </None>
@@ -27,9 +24,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="targetver.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Resource.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ClipClient.h">
@@ -45,6 +39,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="MainFrame.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="TaskBarIcon.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -65,6 +62,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="MainFrame.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="TaskBarIcon.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
