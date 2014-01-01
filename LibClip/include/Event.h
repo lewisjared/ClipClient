@@ -7,9 +7,6 @@
 #include <string>
 #include "czmq.h"
 
-namespace zyre
-{
-
 enum EventType
 {
 	EVT_INVALID,
@@ -19,11 +16,11 @@ enum EventType
 	EVT_EXIT,
 };
 
-class Event
+class CEvent
 {
 public:
-	Event(EventType type);
-	~Event();
+	CEvent(EventType type);
+	~CEvent();
 
 	EventType getType() const;
 	std::string getTypeStr() const;
@@ -36,15 +33,12 @@ public:
 	boost::uuids::uuid getFrom() const;
 	void setFrom(boost::uuids::uuid uuid);
 
-	static Event* parse(zmsg_t* msg);
+	static CEvent* parse(zmsg_t* msg);
 	void send(void* socket);
 
 	void dump(const std::string &filename);
-
 private:
 	EventType m_type;
 	boost::uuids::uuid m_from;
 	ByteStream m_content;
 };
-
-}

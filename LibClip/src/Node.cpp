@@ -2,9 +2,7 @@
 #include "NodeThread.h"
 #include "Event.h"
 
-using namespace zyre;
-
-Node::Node()
+CNode::CNode()
 {
 	m_context = zctx_new();
 	m_node = new NodeThread(m_context);
@@ -12,37 +10,37 @@ Node::Node()
 }
 
 
-Node::~Node(void)
+CNode::~CNode(void)
 {
 	delete m_node;
 	zctx_destroy(&m_context);
 }
 
-void Node::addHeader(const std::string &key, const std::string &value)
+void CNode::addHeader(const std::string &key, const std::string &value)
 {
 	zstr_sendm(m_pipe, "SET");
 	zstr_sendm(m_pipe, key.c_str());
 	zstr_send(m_pipe, value.c_str());
 }
 
-void* Node::getSocket()
+void* CNode::getSocket()
 {
 	return m_pipe;
 }
 
-void Node::join(const std::string &group)
+void CNode::join(const std::string &group)
 {
 	zstr_sendm(m_pipe, "JOIN");
 	zstr_send(m_pipe, group.c_str());
 }
 
-void Node::leave(const std::string &group)
+void CNode::leave(const std::string &group)
 {
 	zstr_sendm(m_pipe, "LEAVE");
 	zstr_send(m_pipe, group.c_str());
 }
 
-void Node::start()
+void CNode::start()
 {
 	zstr_send(m_pipe, "START");
 	char* resp = zstr_recv(m_pipe);
@@ -50,7 +48,7 @@ void Node::start()
 	zstr_free(&resp);
 }
 
-void Node::whisper(boost::uuids::uuid target, const ByteStream& bs)
+void CNode::whisper(boost::uuids::uuid target, const ByteStream& bs)
 {
 	zmsg_t* msg = zmsg_new();
 	zmsg_pushmem(msg, &target, 16);
@@ -61,7 +59,7 @@ void Node::whisper(boost::uuids::uuid target, const ByteStream& bs)
 	zmsg_send(&msg, m_pipe);
 }
 
-void Node::whisper( boost::uuids::uuid target, const std::string &text )
+void CNode::whisper( boost::uuids::uuid target, const std::string &text )
 {
 	ByteStream bs;
 	bs.putString(text);
@@ -69,7 +67,7 @@ void Node::whisper( boost::uuids::uuid target, const std::string &text )
 }
 
 
-void Node::shout(const std::string &group, const ByteStream& bs)
+void CNode::shout(const std::string &group, const ByteStream& bs)
 {
 	zmsg_t* msg = zmsg_new();
 	zmsg_pushstr(msg,group.c_str());
@@ -80,21 +78,21 @@ void Node::shout(const std::string &group, const ByteStream& bs)
 	zmsg_send(&msg, m_pipe);
 }
 
-void Node::shout(const std::string &group, const std::string &text)
+void CNode::shout(const std::string &group, const std::string &text)
 {
 	ByteStream bs;
 	bs.putString(text);
 	shout(group,bs);
 }
 
-zyre::Event* Node::recv()
+CEvent* CNode::recv()
 {
 	//Read in a complete message
 	// Blocks till message is ready
 	zmsg_t* msg = zmsg_recv(m_pipe);
 
 	//Parse the Event out of the message takes ownership of message
-	Event* event = Event::parse(msg);
+	CEvent* event = CEvent::parse(msg);
 
 
 	//May as well null any invalid messages

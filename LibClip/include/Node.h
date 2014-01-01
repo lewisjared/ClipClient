@@ -1,6 +1,5 @@
 #pragma once
 
-
 #include <string>
 
 #include "czmq.h"
@@ -11,20 +10,17 @@
 class NodeThread;
 
 
-namespace zyre
-{
+class CEvent;
 
-	class Event;
-
-class Node
+class CNode
 {
 public:
-	Node();
-	~Node(void);
+	CNode();
+	~CNode(void);
 
 	void* getSocket();
 
-	Event* recv();
+	CEvent* recv();
 
 	void join(const std::string &group);
 	void leave(const std::string &group);
@@ -39,5 +35,3 @@ private:
 	void* m_pipe;
 	zctx_t* m_context;
 };
-
-}

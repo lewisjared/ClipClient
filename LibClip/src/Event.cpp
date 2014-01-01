@@ -1,31 +1,30 @@
+#pragma  once
+
 #include "Event.h"
 #include "Logger.h"
 
 #include <fstream>
-
 #include <boost/uuid/uuid_io.hpp>
 
 
-using namespace zyre;
-
-Event::Event(EventType type)
+CEvent::CEvent(EventType type)
 	: m_type(type)
 {
 }
 
-Event::~Event()
+CEvent::~CEvent()
 {
 
 }
 
 
-ByteStream Event::getContent() const
+ByteStream CEvent::getContent() const
 {
 	assert(m_type == EVT_SHOUT || m_type == EVT_WHISPER || m_type == EVT_ENTER);
 	return m_content;
 }
 
-KeyValuePair Event::getHeaders()
+KeyValuePair CEvent::getHeaders()
 {
 	assert(m_type == EVT_ENTER);
 
@@ -37,12 +36,12 @@ KeyValuePair Event::getHeaders()
 	return kvp;
 }
 
-EventType Event::getType() const
+EventType CEvent::getType() const
 {
 	return m_type;
 }
 
-std::string Event::getTypeStr() const
+std::string CEvent::getTypeStr() const
 {
 	switch(m_type)
 	{
@@ -55,27 +54,27 @@ std::string Event::getTypeStr() const
 	return "INVALID";
 }
 
-boost::uuids::uuid Event::getFrom() const
+boost::uuids::uuid CEvent::getFrom() const
 {
 	return m_from;
 }
 
-bool Event::isValid() const
+bool CEvent::isValid() const
 {
 	return (m_type != EVT_INVALID);
 }
 
-void Event::setFrom(boost::uuids::uuid uuid)
+void CEvent::setFrom(boost::uuids::uuid uuid)
 {
 	m_from = uuid;
 }
 
-void Event::setContent(const ByteStream& bs)
+void CEvent::setContent(const ByteStream& bs)
 {
 	m_content = bs;
 }
 
-void Event::send(void* socket)
+void CEvent::send(void* socket)
 {
 	zmsg_t* msg = zmsg_new();
 	zmsg_pushstr(msg, getTypeStr().c_str());
@@ -88,7 +87,7 @@ void Event::send(void* socket)
 	zmsg_send(&msg, socket);
 }
 
-void Event::dump(const std::string &filename)
+void CEvent::dump(const std::string &filename)
 {
 	std::ofstream output;
 	output.open(filename, std::ios::out);
@@ -98,7 +97,7 @@ void Event::dump(const std::string &filename)
 }
 
 
-Event* Event::parse(zmsg_t* msg)
+CEvent* CEvent::parse(zmsg_t* msg)
 {
 	LOG() << "Parsing Event" << std::endl;
 	//The first frame will contain the command
@@ -120,7 +119,7 @@ Event* Event::parse(zmsg_t* msg)
 		type = EVT_EXIT;
 	}
 
-	Event* event = new Event(type);
+	CEvent* event = new CEvent(type);
 
 	if (event->isValid())
 	{

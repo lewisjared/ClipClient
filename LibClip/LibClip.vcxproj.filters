@@ -117,12 +117,6 @@
     <ClCompile Include="src\NodeThread.cpp">
       <Filter>Source Files\network</Filter>
     </ClCompile>
-    <ClCompile Include="src\Node.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Event.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\EventFactory.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -137,6 +131,12 @@
     </ClCompile>
     <ClCompile Include="src\Plugin\PluginManager.cpp">
       <Filter>Source Files\Plugin</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Event.cpp">
+      <Filter>Source Files\network</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Node.cpp">
+      <Filter>Source Files\network</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

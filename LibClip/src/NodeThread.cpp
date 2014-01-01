@@ -12,8 +12,6 @@
 
 #include "boost/uuid/uuid_io.hpp"
 
-using zyre::Event;
-
 NodeThread::NodeThread(zctx_t* context)
 	:ZThread(context), m_context(context), m_pipe(NULL)
 {
@@ -118,7 +116,7 @@ void NodeThread::checkPeersHealth()
 			{
 				//Remove the Node
 				LOG() << "Peer " << it->first << " expired" << std::endl;
-				Event* event = EventFactory::generateExit(it->first);
+				CEvent* event = EventFactory::generateExit(it->first);
 
 				event->send(m_pipe);
 				delete event;
@@ -214,7 +212,7 @@ void NodeThread::handlePeers()
 		peer->setGroups(hello->getGroups());
 
 		//Inform the Node with an enter event
-		Event* event = EventFactory::generateEnter(uuid, peer->getHeaders());
+		CEvent* event = EventFactory::generateEnter(uuid, peer->getHeaders());
 		event->send(m_pipe);
 		delete event;
 
@@ -236,7 +234,7 @@ void NodeThread::handlePeers()
 		MessageShout* shout = dynamic_cast<MessageShout*> (msg);
 		//if (inGroup(shout->getGroup()))
 		{
-			Event* event = EventFactory::generateShout(msg->getAddress(), shout->getContent());
+			CEvent* event = EventFactory::generateShout(msg->getAddress(), shout->getContent());
 			event->send(m_pipe);
 			delete event;
 		}
@@ -244,7 +242,7 @@ void NodeThread::handlePeers()
 	} else if (msg->getID() == MSG_WHISPER)
 	{
 		MessageWhisper* whisper = dynamic_cast<MessageWhisper*> (msg);
-		Event* event = EventFactory::generateWhisper(msg->getAddress(), whisper->getContent());
+		CEvent* event = EventFactory::generateWhisper(msg->getAddress(), whisper->getContent());
 		event->send(m_pipe);
 		delete event;
 		delete whisper;
