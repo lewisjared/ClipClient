@@ -50,7 +50,6 @@ void ClipboardItem::readClipboard()
 	//Allocate the correct size
 	HGLOBAL   hglb;
 	hglb = GetClipboardData(m_format);
-	std::wstring str;
 
 	if (hglb != NULL) 
     {

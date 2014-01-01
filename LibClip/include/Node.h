@@ -19,7 +19,7 @@ namespace zyre
 class Node
 {
 public:
-	Node(zctx_t* context);
+	Node();
 	~Node(void);
 
 	void* getSocket();
@@ -37,6 +37,7 @@ public:
 private:
 	NodeThread* m_node;
 	void* m_pipe;
+	zctx_t* m_context;
 };
 
 }

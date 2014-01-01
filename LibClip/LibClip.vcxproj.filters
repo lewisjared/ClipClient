@@ -242,5 +242,8 @@
     <ClInclude Include="include\Plugin\PluginManager.h">
       <Filter>Header Files\Plugin</Filter>
     </ClInclude>
+    <ClInclude Include="include\Settings.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

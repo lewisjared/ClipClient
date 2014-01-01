@@ -4,9 +4,10 @@
 
 using namespace zyre;
 
-Node::Node(zctx_t* context)
+Node::Node()
 {
-	m_node = new NodeThread(context);
+	m_context = zctx_new();
+	m_node = new NodeThread(m_context);
 	m_pipe = m_node->run();
 }
 
@@ -14,6 +15,7 @@ Node::Node(zctx_t* context)
 Node::~Node(void)
 {
 	delete m_node;
+	zctx_destroy(&m_context);
 }
 
 void Node::addHeader(const std::string &key, const std::string &value)
