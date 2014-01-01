@@ -2,12 +2,10 @@
 //
 
 #include "stdafx.h"
-#include "ClipClient.h"
-#include "ClipboardItem.h"
-#include "Plugin/PluginManager.h"
 #include "Settings.h"
-#include "Node.h"
 #include "Logger.h"
+#include "ClipClient.h"
+#include "MainFrame.h"
 
 
 void ss::init_settings( ) {
@@ -18,20 +16,33 @@ void ss::init_settings( ) {
 }
 
 
-IMPLEMENT_APP(MyApp)
+IMPLEMENT_APP(CClipClientApp)
 
-bool MyApp::OnInit()
+CClipClientApp::CClipClientApp()
 {
+}
+
+CClipClientApp::~CClipClientApp()
+{
+
+}
+
+bool CClipClientApp::OnInit()
+{
+	LOG_INFO() << "Initialising Application" << std::endl;
+
 	if ( !wxApp::OnInit() )
 		return false;
 
-	wxMessageBox
-		(
-		"There appears to be no system tray support in your current environment. This sample may not behave as expected.",
-		"Warning",
-		wxOK | wxICON_EXCLAMATION
-		);
-
+	m_mainFrame = new CMainFrame("Test",wxDefaultPosition, wxDefaultSize);
+	m_mainFrame->Show();
 
 	return true;
+}
+
+int CClipClientApp::OnExit()
+{
+	LOG() << "Exiting application" << std::endl;
+
+	return 1;
 }
