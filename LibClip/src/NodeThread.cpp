@@ -10,6 +10,7 @@
 #include <sstream>
 #include <vector>
 
+#include <boost/uuid/uuid_generators.hpp>
 #include "boost/uuid/uuid_io.hpp"
 
 NodeThread::NodeThread(zctx_t* context)
@@ -117,9 +118,7 @@ void NodeThread::checkPeersHealth()
 				//Remove the Node
 				LOG() << "Peer " << it->first << " expired" << std::endl;
 				CEvent* event = EventFactory::generateExit(it->first);
-
-				event->send(m_pipe);
-				delete event;
+				sendEvent(event);
 
 				toDelete.push_back(it);
 			} else if (time > evaisiveAt)
@@ -213,9 +212,7 @@ void NodeThread::handlePeers()
 
 		//Inform the Node with an enter event
 		CEvent* event = EventFactory::generateEnter(uuid, peer->getHeaders());
-		event->send(m_pipe);
-		delete event;
-
+		sendEvent(event);
 
 		delete hello;
 
@@ -235,16 +232,14 @@ void NodeThread::handlePeers()
 		//if (inGroup(shout->getGroup()))
 		{
 			CEvent* event = EventFactory::generateShout(msg->getAddress(), shout->getContent());
-			event->send(m_pipe);
-			delete event;
+			sendEvent(event);
 		}
 		delete shout;
 	} else if (msg->getID() == MSG_WHISPER)
 	{
 		MessageWhisper* whisper = dynamic_cast<MessageWhisper*> (msg);
 		CEvent* event = EventFactory::generateWhisper(msg->getAddress(), whisper->getContent());
-		event->send(m_pipe);
-		delete event;
+		sendEvent(event);
 		delete whisper;
 	} else if (msg->getID() == MSG_PING)
 	{
@@ -370,4 +365,11 @@ void NodeThread::start()
 	//Start pub and subbing
 	m_beacon->publish(stream);
 	m_beacon->subscribe("ZRE");
+}
+
+void NodeThread::sendEvent(CEvent* evt)
+{
+	zmsg_t* msg = evt->getMsg();
+	zmsg_send(&msg, m_pipe);
+	delete evt;
 }

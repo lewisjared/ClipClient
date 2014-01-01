@@ -4,7 +4,7 @@
 #include "KeyValuePair.h"
 
 #include <boost/uuid/uuid.hpp>
-#include <boost/uuid/uuid_generators.hpp>
+
 #include <string>
 #include <map>
 
@@ -13,6 +13,7 @@
 class Message;
 class Beacon;
 class Peer;
+class CEvent;
 
 typedef std::map<boost::uuids::uuid, Peer *> Peers;
 
@@ -43,6 +44,7 @@ private:
 	void checkPeersHealth();
 	void setKeyValue(std::string key, std::string value);
 	void sendToPeers(Message* msg);
+	void sendEvent(CEvent* evt);
 
 	zctx_t* m_context;
 	Beacon* m_beacon;

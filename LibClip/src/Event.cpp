@@ -74,7 +74,7 @@ void CEvent::setContent(const ByteStream& bs)
 	m_content = bs;
 }
 
-void CEvent::send(void* socket)
+zmsg_t* CEvent::getMsg()
 {
 	zmsg_t* msg = zmsg_new();
 	zmsg_pushstr(msg, getTypeStr().c_str());
@@ -84,7 +84,7 @@ void CEvent::send(void* socket)
 	if (m_type == EVT_SHOUT || m_type == EVT_WHISPER || m_type == EVT_ENTER)
 		zmsg_add(msg, m_content.getFrame());
 	
-	zmsg_send(&msg, socket);
+	return msg;
 }
 
 void CEvent::dump(const std::string &filename)

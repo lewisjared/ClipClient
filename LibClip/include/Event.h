@@ -34,7 +34,7 @@ public:
 	void setFrom(boost::uuids::uuid uuid);
 
 	static CEvent* parse(zmsg_t* msg);
-	void send(void* socket);
+	zmsg_t* getMsg();
 
 	void dump(const std::string &filename);
 private:
