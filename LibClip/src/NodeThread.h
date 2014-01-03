@@ -59,5 +59,6 @@ private:
 	Peers m_peers;
 	boost::uuids::uuid m_uuid;
 	bool m_terminated;
+	DECLARE_LOGGER();
 };
 

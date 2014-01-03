@@ -1,6 +1,6 @@
 #include "ZThreaded.h"
-#include "Logger.h"
 
+DEFINE_LOGGER(ZThread);
 
 ZThread::ZThread(zctx_t* ctx)
 	:m_ctx(ctx), m_pipeToThread (NULL)
@@ -24,7 +24,7 @@ ZThread::~ZThread(void)
 
 void* ZThread::run()
 {
-	LOG()<< "Spawning new ZThread" << std::endl;
+	LOG()<< "Spawning new ZThread";
 
 	m_pipeToThread = zthread_fork (m_ctx,  runFunc, this);
 
@@ -50,7 +50,7 @@ void ZThread::runFunc(void *args, zctx_t *ctx, void *pipe)
 
 void ZThread::eventLoop(void* pipe)
 {
-	LOG_WARN() << "Empty ZThread::eventLoop" << std::endl;
+	LOG_WARN() << "Empty ZThread::eventLoop";
 }
 /**
  \fn	void terminate()
@@ -59,7 +59,7 @@ void ZThread::eventLoop(void* pipe)
  */
 void ZThread::terminate()
 {
-	LOG() << "Terminating thread" << std::endl;
+	LOG() << "Terminating thread";
 
 	zstr_send (m_pipeToThread , "TERMINATE");
 	char *reply = zstr_recv (m_pipeToThread );

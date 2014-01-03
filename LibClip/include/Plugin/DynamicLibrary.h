@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include "Logger.h"
 
 class DynamicLibrary
 {
@@ -17,5 +18,6 @@ private:
 	static void LogErrorString();
 	 
 	void* m_handle;
+	DECLARE_LOGGER();
 };
 

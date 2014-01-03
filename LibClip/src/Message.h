@@ -8,6 +8,7 @@
 #include "czmq.h"
 #include "ByteStream.h"
 #include "KeyValuePair.h"
+#include "Logger.h"
 
 typedef std::vector<std::string> TStringVector;
 
@@ -47,6 +48,7 @@ protected:
 	msg_t m_id;
 	uint16_t m_sequence;
 	boost::uuids::uuid m_address;
+	DECLARE_LOGGER();
 };
 
 class MessageHello : public Message

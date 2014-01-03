@@ -1,29 +1,85 @@
 #include "windows.h"
-#include "Clipboard.h"
+#include "wx/dataobj.h"
+#include "wx/clipbrd.h"
+#include "ClipboardManager.h"
+
+DEFINE_LOGGER(CClipboardManager);
 
 
 CClipboardManager::CClipboardManager(void)
 {
 }
 
-void CClipboardManager::checkClipboard()
+wxTextDataObject* CClipboardManager::getText()
 {
-	// Check read the linked list of formats and create a new Clipboard item for each
-	UINT format = EnumClipboardFormats(0);
+	wxTextDataObject* data = NULL;
 
-	while (format)
+	if (wxClipboard::Get()->Open())
 	{
-		m_data[format] = ClipboardItem(format);
-		format = EnumClipboardFormats(format);
+		if (wxClipboard::Get()->IsSupported(wxDF_TEXT))
+		{
+			data = new wxTextDataObject;
+			wxClipboard::Get()->GetData(*data);
+		}
+		wxClipboard::Get()->Close();
+	}
+	return data;
+}
+
+void CClipboardManager::setClipboard(const std::string &text)
+{
+	if (wxClipboard::Get()->Open())
+	{
+		wxTextDataObject* data = new wxTextDataObject(text);
+		wxClipboard::Get()->SetData(data);
+		wxClipboard::Get()->Close();
 	}
 }
 
-void CClipboardManager::empty()
+void CClipboardManager::simulateCopy() const
 {
-	EmptyClipboard();
+	simulateKeyPress(VK_LCONTROL);
+	simulateKeyPress(0x43);
+	simulateKeyRelease(0x43);
+	simulateKeyRelease(VK_LCONTROL);
 }
 
-DWORD CClipboardManager::getSequenceNum()
+void CClipboardManager::simulateCut() const
 {
-	return GetClipboardSequenceNumber();
+	simulateKeyPress(VK_LCONTROL);
+	simulateKeyPress(0x58);
+	simulateKeyRelease(0x58);
+	simulateKeyRelease(VK_LCONTROL);
+}
+
+void CClipboardManager::simulatePaste() const
+{
+	simulateKeyPress(VK_LCONTROL);
+	simulateKeyPress(0x56);
+	simulateKeyRelease(0x56);
+	simulateKeyRelease(VK_LCONTROL);
+}
+
+void CClipboardManager::simulateKeyPress(uint8_t vk) const
+{
+	INPUT key;
+	key.type = INPUT_KEYBOARD;
+	key.ki.wScan = 0; // hardware scan code for key
+	key.ki.time = 0;
+	key.ki.dwExtraInfo = 0;
+	key.ki.wVk = vk; 
+	key.ki.dwFlags = 0; // 0 for key press
+	SendInput(1, &key, sizeof(INPUT));
+}
+
+void CClipboardManager::simulateKeyRelease(uint8_t vk) const
+{
+	INPUT key;
+	key.type = INPUT_KEYBOARD;
+	key.ki.wScan = 0; // hardware scan code for key
+	key.ki.time = 0;
+	key.ki.dwExtraInfo = 0;
+	key.ki.wVk = vk; 
+	key.ki.dwFlags = KEYEVENTF_KEYUP; // KEYEVENTF_KEYUP for key release
+	SendInput(1, &key, sizeof(INPUT));
 }

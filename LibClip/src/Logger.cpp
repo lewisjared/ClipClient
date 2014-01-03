@@ -1,139 +1,83 @@
-#ifdef WIN32
-#include <cassert>
-#include <ctime>
-#include <sstream>
-
 #include "Logger.h"
-#include "LogFile.h"
-#include "LogConsole.h"
 
-Logger::Logger()
+#include <fstream>
+
+#include <boost/shared_ptr.hpp>
+#include "boost/utility/empty_deleter.hpp"
+#include <boost/log/core.hpp>
+#include <boost/log/sinks.hpp>
+#include "boost/log/expressions.hpp"
+#include <boost/log/expressions/formatters/stream.hpp>
+#include "boost/log/expressions/formatters/date_time.hpp"
+#include <boost/log/support/date_time.hpp>
+#include "boost/log/utility/setup/common_attributes.hpp"
+
+std::ostream& operator<< (std::ostream& strm, SeverityLevel level)
 {
-	m_nullStream = new std::ostream(NULL);
-	m_lineNum = 0;
-	m_severity = WARNING_SEV;
-	m_file = NULL;
-
-	enableConsole();
-}
-
-Logger::~Logger()
-{
-	delete m_nullStream;
-	delete m_file;
-}
-
-
-Logger& Logger::getInstance()
-{
-	static Logger logger;
-
-	return logger;
-}
-
-void Logger::enableConsole()
-{
-	if (m_file)
-		delete m_file;
-	m_file = new ConsoleLogPolicy;
-}
-
-void Logger::enableFile(const std::string& name)
-{
-	if (m_file)
-		delete m_file;
-	m_name = name;
-	m_file = new FileLogPolicy;
-	m_file->openOStream(name);
-}
-
-std::string Logger::getTime()
-{
-	std::string timeStr;
-	time_t currentTime;
-	time(&currentTime);
-
-	timeStr = ctime(&currentTime);
-
-	//Drop the newline char
-	return timeStr.substr(0, timeStr.length()-1);
-}
-
-std::string Logger::getHeaderText()
-{
-	std::stringstream text;
-	text.width(5);
-	text << m_lineNum++ << " < " << getTime() << " > ";
-
-	return text.str();
-}
-
-std::ostream& Logger::print()
-{
-	if (m_severity <= DEBUG_SEV)
+	static const char* strings[] =
 	{
-		printHeader(DEBUG_SEV);
-		return m_file->getStream();
-	} else {
-		return *m_nullStream;
-	}
+		"debug",
+		"info",
+		"warning",
+		"error",
+		"critical"
+	};
+
+	if (static_cast< std::size_t >(level) < sizeof(strings) / sizeof(*strings))
+		strm << strings[level];
+	else
+		strm << static_cast< int >(level);
+
+	return strm;
 }
 
-std::ostream& Logger::printInfo()
-{
-	//Info is always printed
-	printHeader(INFO_SEV);
-	return m_file->getStream();
-}
 
-std::ostream& Logger::printErr()
+logging::formatting_ostream& operator<<
+	(
+	logging::formatting_ostream& strm,
+	logging::to_log_manip< SeverityLevel, tag::severity > const& manip
+	)
 {
-	if (m_severity <= ERROR_SEV)
+	static const char* strings[] =
 	{
-		printHeader(ERROR_SEV);
-		return m_file->getStream();
-	} else {
-		return *m_nullStream;
-	}
+		"DBUG",
+		"INFO",
+		"WARN",
+		"ERRR",
+		"CRIT"
+	};
+
+	SeverityLevel level = manip.get();
+	if (static_cast< std::size_t >(level) < sizeof(strings) / sizeof(*strings))
+		strm << strings[level];
+	else
+		strm << static_cast< int >(level);
+
+	return strm;
 }
 
-std::ostream& Logger::printWarn()
+void initLogging(const std::string &filename)
 {
-	if (m_severity <= WARNING_SEV)
-	{
-		printHeader(WARNING_SEV);
-		return m_file->getStream();
-	} else {
-		return *m_nullStream;
-	}
+	boost::shared_ptr< logging::core > core = logging::core::get();
+
+	//Create a sink back end that logs to cout and file
+	boost::shared_ptr< logging::sinks::text_ostream_backend > backend =
+		boost::make_shared< logging::sinks::text_ostream_backend >();
+	backend->add_stream( boost::shared_ptr< std::ostream >(&std::cout, boost::empty_deleter()));
+
+	if(!filename.empty())
+		backend->add_stream( boost::shared_ptr< std::ostream >(new std::ofstream(filename)));
+
+	backend->auto_flush(true);
+
+	typedef logging::sinks::synchronous_sink< logging::sinks::text_ostream_backend > sink_t;
+	boost::shared_ptr< sink_t > sink(new sink_t(backend));
+	sink->set_formatter	(
+		logging::expressions::stream << logging::expressions::format_date_time< boost::posix_time::ptime >("TimeStamp", "%b %d %H:%M:%S.%f")
+		<< " <" << severity << "> "
+		<< "[" << logging::expressions::attr< std::string >("Channel") << "] : "
+		<< logging::expressions::message
+		);
+	core->add_sink(sink);
+	logging::add_common_attributes();
 }
-
-
-void Logger::printHeader(Severity severity)
-{
-	assert(m_file->isOpen());
-
-	std::string line = getHeaderText();
-	switch(severity)
-	{
-	case DEBUG_SEV:
-		line.append("<DEBUG> : ");
-		break;
-	case INFO_SEV:
-		line.append("<INFO> : ");
-		break;
-	case WARNING_SEV:
-		line.append("<WARNING> : ");
-		break;
-	case ERROR_SEV:
-		line.append("<ERROR> : ");
-		break;
-	}
-	m_file->getStream() << line;
-}
-
-void Logger::setSeverity(Severity severity)
-{
-	m_severity = severity;
-}
-#endif // WIN32

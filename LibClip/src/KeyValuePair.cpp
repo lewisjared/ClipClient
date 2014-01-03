@@ -1,7 +1,13 @@
 #include "KeyValuePair.h"
-#include "Logger.h"
 
 #include <cassert>
+
+DEFINE_LOGGER(KeyValuePair);
+
+
+KeyValuePair::KeyValuePair()
+{
+}
 
 void KeyValuePair::addValue(const std::string &key, const std::string &value)
 {
@@ -49,8 +55,8 @@ ByteStream KeyValuePair::generateBS() const
 void KeyValuePair::log() const
 {
 	for (auto it = m_data.begin(); it != m_data.end(); ++it)
-		LOG() << "\t" << it->first + "=" + it->second << std::endl;
-	LOG() << "\t" << "end" << std::endl;
+		LOG() << "\t" << it->first + "=" + it->second;
+	LOG() << "\t" << "end";
 }
 
 void KeyValuePair::parseBS(ByteStream& bs)

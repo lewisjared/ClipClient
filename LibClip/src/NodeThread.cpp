@@ -17,17 +17,19 @@
 
 wxDEFINE_EVENT(ZYRE_EVENT, wxThreadEvent);
 
+DEFINE_LOGGER(NodeThread);
+
 NodeThread::NodeThread(zctx_t* context)
 	:ZThread(context), m_context(context), m_pipe(NULL)
 {
-	LOG() << "Creating new node" << std::endl;
+	LOG() << "Creating new node";
 	m_uuid = boost::uuids::random_generator() ();
-	LOG() << "Node UUID: " << boost::uuids::to_string(m_uuid) << std::endl;
+	LOG() << "Node UUID: " << boost::uuids::to_string(m_uuid);
 
 	//Create and bind the inbox
 	m_inbox = zsocket_new(m_context, ZMQ_ROUTER);
 	m_port = zsocket_bind(m_inbox, "tcp://*:*");
-	LOG() << "Inbox bound to port " << m_port << std::endl;
+	LOG() << "Inbox bound to port " << m_port;
 
 	//Create the beacon on the correct port
 	m_beacon = new Beacon(m_context, ZRE_PORT);
@@ -40,7 +42,7 @@ NodeThread::NodeThread(zctx_t* context)
 
 NodeThread::~NodeThread(void)
 {
-	LOG() << "Destroying Node" << std::endl;
+	LOG() << "Destroying Node";
 
 	//Terminate the worker thread
 	terminate();
@@ -58,7 +60,7 @@ NodeThread::~NodeThread(void)
 
 void NodeThread::eventLoop(void *pipe)
 {
-	LOG() << "Beginning Node eventLoop" << std::endl;
+	LOG() << "Beginning Node eventLoop";
 	m_pipe = pipe;
 	zstr_send(m_pipe, "OK");
 
@@ -91,7 +93,7 @@ void NodeThread::eventLoop(void *pipe)
 		if (m_terminated)
 			break;
 	}
-	LOG() << "Node event loop terminated" << std::endl;
+	LOG() << "Node event loop terminated";
 	zpoller_destroy(&poller);
 }
 
@@ -120,14 +122,14 @@ void NodeThread::checkPeersHealth()
 			if (time >= expiredAt)
 			{
 				//Remove the Node
-				LOG() << "Peer " << it->first << " expired" << std::endl;
+				LOG() << "Peer " << it->first << " expired";
 				CEvent* event = EventFactory::generateExit(it->first);
 				sendEvent(event);
 
 				toDelete.push_back(it);
 			} else if (time > evaisiveAt)
 			{
-				LOG() << "Peer " << it->first << " evasive" << std::endl;
+				LOG() << "Peer " << it->first << " evasive";
 				//Ping the node
 				MessagePing* msg = MessageFactory::generatePing();
 				peer->sendMesg(msg);
@@ -152,7 +154,7 @@ void NodeThread::handleAPI()
 	std::string command(text);
 	zstr_free(&text);
 
-	LOG() << "Node received command: " << command << std::endl;
+	LOG() << "Node received command: " << command;
 	if (command == "SET")
 	{
 		char* key = zmsg_popstr(request);
@@ -202,7 +204,7 @@ void NodeThread::handlePeers()
 
 	if (msg->getID() == MSG_HELLO)
 	{
-		LOG() << "Received a hello from " << uuid << std::endl;
+		LOG() << "Received a hello from " << uuid;
 		MessageHello* hello = dynamic_cast<MessageHello*> (msg);
 		//Update the peer
 		Peer* peer = getPeer(uuid);
@@ -252,7 +254,7 @@ void NodeThread::handlePeers()
 		peer->sendMesg(MessageFactory::generatePingOk());
 		delete ping;
 	} else {
-		LOG() << "Didn't handle message" << std::endl;
+		LOG() << "Didn't handle message";
 		delete msg;
 	}
 

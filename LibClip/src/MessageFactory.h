@@ -31,5 +31,7 @@ public:
 
 	// Parses a Message from a socket
 	static Message* parse(void* socket);
+private:
+	DECLARE_LOGGER();
 };
 

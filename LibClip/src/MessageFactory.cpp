@@ -1,6 +1,8 @@
 #include "MessageFactory.h"
 #include "ByteStream.h"
-#include "Logger.h"
+
+DEFINE_LOGGER(MessageFactory);
+
 
 MessageHello* MessageFactory::generateHello()
 {

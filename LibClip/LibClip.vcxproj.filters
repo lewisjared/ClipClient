@@ -19,9 +19,6 @@
     <Filter Include="Source Files\ss">
       <UniqueIdentifier>{32957a4d-977e-4967-8f8b-386701fc99bb}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\log">
-      <UniqueIdentifier>{37ebee88-7ba8-4153-89f8-b9645ae2337f}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\log">
       <UniqueIdentifier>{6dae20ca-f519-4104-95c8-94899871904e}</UniqueIdentifier>
     </Filter>
@@ -36,6 +33,12 @@
     </Filter>
     <Filter Include="Source Files\Plugin">
       <UniqueIdentifier>{a6f3bd06-b2a9-4da1-8285-c799699a5407}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Clipboard">
+      <UniqueIdentifier>{b18ad91d-f8b8-4067-9404-4475d81c0923}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Clipboard">
+      <UniqueIdentifier>{b78f9427-85f1-4420-88cc-9cb0ac67ec81}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -65,15 +68,6 @@
     </ClCompile>
     <ClCompile Include="src\ss\util.cpp">
       <Filter>Source Files\ss</Filter>
-    </ClCompile>
-    <ClCompile Include="src\LogConsole.cpp">
-      <Filter>Source Files\log</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Logger.cpp">
-      <Filter>Source Files\log</Filter>
-    </ClCompile>
-    <ClCompile Include="src\LogFile.cpp">
-      <Filter>Source Files\log</Filter>
     </ClCompile>
     <ClCompile Include="src\ByteStream.cpp">
       <Filter>Source Files</Filter>
@@ -138,6 +132,12 @@
     <ClCompile Include="src\Node.cpp">
       <Filter>Source Files\network</Filter>
     </ClCompile>
+    <ClCompile Include="src\ClipboardManager.cpp">
+      <Filter>Source Files\Clipboard</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Logger.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\ss\array.h">
@@ -184,18 +184,6 @@
     </ClInclude>
     <ClInclude Include="include\ss\util.h">
       <Filter>Header Files\ss</Filter>
-    </ClInclude>
-    <ClInclude Include="src\LogConsole.h">
-      <Filter>Header Files\log</Filter>
-    </ClInclude>
-    <ClInclude Include="src\LogPolicy.h">
-      <Filter>Header Files\log</Filter>
-    </ClInclude>
-    <ClInclude Include="src\LogFile.h">
-      <Filter>Header Files\log</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Logger.h">
-      <Filter>Header Files\log</Filter>
     </ClInclude>
     <ClInclude Include="src\Beacon.h">
       <Filter>Header Files\network</Filter>
@@ -244,6 +232,15 @@
     </ClInclude>
     <ClInclude Include="include\Settings.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ClipboardManager.h">
+      <Filter>Header Files\Clipboard</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Logger.h">
+      <Filter>Header Files\log</Filter>
+    </ClInclude>
+    <ClInclude Include="include\LoggerFormat.h">
+      <Filter>Header Files\log</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

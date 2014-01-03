@@ -5,6 +5,8 @@
 #include <windows.h>
 #endif
 
+DEFINE_LOGGER(DynamicLibrary);
+
 DynamicLibrary::DynamicLibrary(void)
 	: m_handle(NULL)
 {
@@ -13,7 +15,6 @@ DynamicLibrary::DynamicLibrary(void)
 DynamicLibrary::DynamicLibrary(void* handle)
 	: m_handle(handle)
 {
-
 }
 
 DynamicLibrary::DynamicLibrary(const DynamicLibrary &obj)
@@ -61,6 +62,6 @@ void DynamicLibrary::LogErrorString()
 	WCHAR errorMessage[100];
 	FormatMessage(FORMAT_MESSAGE_FROM_SYSTEM , 
 		0, errorCode,0,errorMessage, MAX_PATH,0);
-	LOG_WARN() << "Error loading library: " << errorMessage << std::endl;
+	LOG_WARN() << "Error loading library: " << errorMessage;
 #endif // WIN32
 }

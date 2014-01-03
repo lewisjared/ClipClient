@@ -50,4 +50,5 @@ private:
 
 	KeyValuePair m_headers;
 	TStringVector m_groups;
+	DECLARE_LOGGER();
 };

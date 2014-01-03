@@ -1,5 +1,7 @@
 #include "ByteStream.h"
 
+DEFINE_LOGGER(ByteStream);
+
 ByteStream::ByteStream()
 {
 	m_start = (byte*) malloc(BS_DEFAULT_ALLOCATE);

@@ -1,5 +1,6 @@
 #include "Message.h"
-#include "Logger.h"
+
+DEFINE_LOGGER(Message);
 
 Message::Message(msg_t type)
 	:m_id(type)
@@ -52,7 +53,7 @@ int Message::sendBytes( void* socket, ByteStream bs, int flags )
 
 		if (zframe_send (&frame, socket, ZFRAME_MORE)) 
 		{
-			LOG_WARN() << "Address frame could not be sent" << std::endl;
+			LOG_WARN() << "Address frame could not be sent";
 			result = -2;
 		}
 		zframe_destroy (&frame);
@@ -65,7 +66,7 @@ int Message::sendBytes( void* socket, ByteStream bs, int flags )
 		if (zframe_send (&frame, socket, flags)) 
 		{
 			result = -1;
-			LOG_WARN() << "Frame could not be sent" << std::endl;
+			LOG_WARN() << "Frame could not be sent";
 		}
 		zframe_destroy (&frame);
 	}

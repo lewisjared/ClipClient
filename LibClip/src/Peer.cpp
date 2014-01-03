@@ -1,9 +1,10 @@
 #include "Peer.h"
-#include "Logger.h"
 #include "Message.h"
 #include "MessageFactory.h"
 
 #include "boost/uuid/uuid_io.hpp"
+
+DEFINE_LOGGER(Peer);
 
 
 Peer::Peer(zctx_t* context, boost::uuids::uuid nodeUUID, boost::uuids::uuid peerUUID)
@@ -12,25 +13,25 @@ Peer::Peer(zctx_t* context, boost::uuids::uuid nodeUUID, boost::uuids::uuid peer
 	assert (nodeUUID != peerUUID);
 	m_mailbox = NULL;
 
-	LOG() << "Creating peer for " << peerUUID << std::endl;
+	LOG() << "Creating peer for " << peerUUID;
 	m_lastSeen = zclock_time();
 }
 
 
 Peer::~Peer(void)
 {
-	LOG() << "Destroying peer for " << m_peerUUID << std::endl;
+	LOG() << "Destroying peer for " << m_peerUUID;
 	if (m_mailbox)
 		zsocket_destroy(m_context, m_mailbox);
 }
 
 bool Peer::connect(const std::string& endpoint, Message* hello)
 {
-	LOG() << "Connecting peer " << m_peerUUID << " to " << endpoint << std::endl;
+	LOG() << "Connecting peer " << m_peerUUID << " to " << endpoint;
 	//Create mailbox
 	if (m_mailbox)
 	{
-		LOG_WARN() << "Peer " << m_peerUUID << " already has a mailbox Peer::connect" << std::endl;
+		LOG_WARN() << "Peer " << m_peerUUID << " already has a mailbox Peer::connect";
 		zsocket_destroy( m_context, m_mailbox);
 	}
 
@@ -82,10 +83,10 @@ void Peer::seen()
 int Peer::sendMesg(Message* msg)
 {
 	if (m_connected) {
-		LOG() << "Sending msg to " << m_peerUUID << std::endl;
+		LOG() << "Sending msg to " << m_peerUUID;
 		//zre_msg_set_sequence (*msg_p, ++(self->sent_sequence));
 		if (msg->send(m_mailbox) && errno == EAGAIN) {
-			LOG_WARN() << "Sending message to peer " << m_peerUUID << " failed" << std::endl;
+			LOG_WARN() << "Sending message to peer " << m_peerUUID << " failed";
 			m_closed = true;
 			return -1;
 		}
@@ -108,7 +109,7 @@ void Peer::setHeaders(KeyValuePair val)
 { 
 	m_headers = val;
 
-	LOG() << "New Headers for peer " << m_peerUUID <<std::endl;
+	LOG() << "New Headers for peer " << m_peerUUID;
 	m_headers.log();
 }
 

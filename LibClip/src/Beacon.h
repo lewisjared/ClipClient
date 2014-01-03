@@ -1,6 +1,7 @@
 #pragma once
 
 #include "czmq.h"
+#include "Logger.h"
 
 #include <string>
 
@@ -49,5 +50,6 @@ private:
 	zbeacon_t *m_beacon;
 	int m_portNumber;
 	std::string m_hostname;
+	DECLARE_LOGGER();
 };
 

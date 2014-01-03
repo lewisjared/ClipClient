@@ -6,6 +6,7 @@
 #include "boost/uuid/uuid.hpp"
 
 #include "ByteStream.h"
+#include "Logger.h"
 
 class NodeThread;
 
@@ -33,4 +34,5 @@ private:
 	NodeThread* m_node;
 	void* m_pipe;
 	zctx_t* m_context;
+	DECLARE_LOGGER();
 };

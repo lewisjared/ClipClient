@@ -1,5 +1,7 @@
 #pragma once
 
+#include "Logger.h"
+
 class CMainFrame;
 
 // Define a new application
@@ -13,8 +15,8 @@ public:
 	virtual bool OnInit();
 
 private:
-	void initLogging();
 	CMainFrame* m_mainFrame;
+	DECLARE_LOGGER();
 };
 
 DECLARE_APP(CClipClientApp)

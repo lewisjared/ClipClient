@@ -1,6 +1,7 @@
 #pragma once
 
 #include "czmq.h"
+#include "Logger.h"
 
 /**
  \class	ZThread
@@ -22,5 +23,6 @@ private:
 	static void runFunc(void *args, zctx_t *ctx, void *pipe);
 	void* m_pipeToThread;
 	zctx_t* m_ctx;
+	DECLARE_LOGGER();
 };
 

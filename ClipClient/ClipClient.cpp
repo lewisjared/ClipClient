@@ -7,6 +7,8 @@
 
 #include "VLD.h"
 
+#include "Logger.h"
+
 using namespace ss;
 
 
@@ -20,20 +22,28 @@ void ss::init_settings( ) {
 
 
 IMPLEMENT_APP(CClipClientApp)
+DEFINE_LOGGER(CClipClientApp);
 
 CClipClientApp::CClipClientApp()
 {
+#ifndef NDEBUG
+	AllocConsole();
+	freopen("CONOUT$", "w", stdout); //redirect cout to the console
+#endif
+
 	initLogging();
 }
 
 CClipClientApp::~CClipClientApp()
 {
-
+#ifdef DEBUG
+	FreeConsole();
+#endif
 }
 
 bool CClipClientApp::OnInit()
 {
-	LOG_INFO() << "Initialising Application" << std::endl;
+	LOG_INFO() << "Initialising Application";
 
 	if ( !wxApp::OnInit() )
 		return false;
@@ -46,22 +56,9 @@ bool CClipClientApp::OnInit()
 
 int CClipClientApp::OnExit()
 {
-	LOG() << "Exiting application" << std::endl;
+	LOG() << "Exiting application";
 
-#ifdef DEBUG
-	FreeConsole();
-#endif
+
 
 	return 1;
-}
-
-void CClipClientApp::initLogging()
-{
-#ifndef NDEBUG
-	AllocConsole();
-	freopen("CONOUT$", "w", stdout); //redirect cout to the console
-	Logger::getInstance().setSeverity(DEBUG_SEV);
-#else
-	Logger::getInstance().enableFile(setting<std::string>(TTEXT("log_file")));
-#endif
 }

@@ -4,6 +4,8 @@
 
 #include "wx/event.h"
 
+DEFINE_LOGGER(CNode);
+
 CNode::CNode(wxEvtHandler* handler)
 {
 	m_context = zctx_new();

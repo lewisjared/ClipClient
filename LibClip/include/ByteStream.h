@@ -4,7 +4,7 @@
 #include <stdexcept>
 #include <string>
 #include "czmq.h"
-
+#include "Logger.h"
 #include <boost/uuid/uuid.hpp>
 
 class EByteStream : public std::runtime_error {
@@ -13,7 +13,7 @@ public:
 		: std::runtime_error(message) { };
 };
 
-#define BS_DEFAULT_ALLOCATE 50
+#define BS_DEFAULT_ALLOCATE 10
 
 /**
  \class	ByteStream
@@ -85,5 +85,6 @@ private:
 	byte* m_readPtr;
 	byte* m_start;
 	byte* m_end;
+	DECLARE_LOGGER();
 };
 

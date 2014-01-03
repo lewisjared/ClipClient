@@ -1,13 +1,14 @@
 #include "Beacon.h"
 #include "ByteStream.h"
-#include "Logger.h"
 
+DEFINE_LOGGER(Beacon);
 
 Beacon::Beacon(zctx_t* context, int portNumber)
 	:m_context(context), m_portNumber(portNumber)
 {
+	
 	m_beacon = zbeacon_new(m_context, portNumber);
-	LOG() << "Creating new beacon on port " << portNumber << std::endl;
+	LOG() << "Creating new beacon on port " << portNumber;
 	m_hostname = zbeacon_hostname(m_beacon);
 }
 

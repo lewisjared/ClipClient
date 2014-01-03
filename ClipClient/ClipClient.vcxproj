@@ -79,8 +79,6 @@
     <None Include="ClipClient.ico" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Clipboard.h" />
-    <ClInclude Include="ClipboardItem.h" />
     <ClInclude Include="ClipClient.h" />
     <ClInclude Include="Data.h" />
     <ClInclude Include="MainFrame.h" />
@@ -89,8 +87,6 @@
     <ClInclude Include="TaskBarIcon.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Clipboard.cpp" />
-    <ClCompile Include="ClipboardItem.cpp" />
     <ClCompile Include="ClipClient.cpp" />
     <ClCompile Include="Data.cpp" />
     <ClCompile Include="MainFrame.cpp" />
