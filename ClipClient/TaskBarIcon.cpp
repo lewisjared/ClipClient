@@ -11,6 +11,11 @@ CTaskBarIcon::CTaskBarIcon(wxWindow* parent)
 	SetIcon(wxICON(CLIPCLIENT));
 }
 
+CTaskBarIcon::~CTaskBarIcon()
+{
+	RemoveIcon();
+}
+
 void CTaskBarIcon::OnDoubleClick(wxTaskBarIconEvent& )
 {
 	if (m_parent->IsShown())

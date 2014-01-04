@@ -8,6 +8,7 @@ class CTaskBarIcon :
 {
 public:
 	CTaskBarIcon(wxWindow* parent);
+	~CTaskBarIcon();
 
 private:
 	void OnDoubleClick(wxTaskBarIconEvent& event);
