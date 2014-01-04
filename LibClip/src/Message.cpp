@@ -75,3 +75,7 @@ int Message::sendBytes( void* socket, ByteStream bs, int flags )
 }
 
 
+void Message::log()
+{
+	LOG() << "Logging base class";
+}

@@ -172,6 +172,7 @@ void NodeThread::handleAPI()
 		MessageShout* msg = MessageFactory::generateShout();
 		msg->setContent(request);
 		msg->setGroup(std::string(group));
+		msg->log();
 		sendToPeers(msg);
 		delete msg;
 		zstr_free(&group);
@@ -182,6 +183,7 @@ void NodeThread::handleAPI()
 
 		MessageWhisper* msg = MessageFactory::generateWhisper();
 		msg->setContent(request);
+		msg->log();
 		Peer* target = getPeer(uuid);
 		assert(target);
 

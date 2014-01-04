@@ -273,3 +273,11 @@ boost::uuids::uuid ByteStream::getUUID()
 
 	return uuid;
 }
+
+std::ostream& operator<< (std::ostream& os, const ByteStream& bs)
+{
+	std::string str((char*)bs.data(), bs.size());
+	os << str;
+
+	return os;
+}

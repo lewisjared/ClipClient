@@ -8,6 +8,9 @@
 #include "Message.h"
 #include <cassert>
 
+DEFINE_LOGGER(MessageHeader);
+
+
 MessageHeader::MessageHeader(const std::string& key, const std::string& value)
 	:Message(MSG_HEADER), m_key(key), m_value(value)
 {
@@ -48,3 +51,7 @@ int MessageHeader::send(void* socket)
 	return sendBytes(socket, bs, 0);
 }
 
+void MessageHeader::log()
+{
+	LOG() << m_key << "=" << m_value;
+}

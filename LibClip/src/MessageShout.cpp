@@ -8,6 +8,8 @@
 #include "Message.h"
 #include <cassert>
 
+DEFINE_LOGGER(MessageShout);
+
 MessageShout::MessageShout()
 	:Message(MSG_SHOUT)
 {
@@ -74,4 +76,9 @@ std::string MessageShout::getGroup() const
 void MessageShout::setGroup(const std::string& group)
 {
 	m_group = group;
+}
+
+void MessageShout::log()
+{
+	LOG() << m_group << " : " << m_content;
 }

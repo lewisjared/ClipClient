@@ -36,18 +36,19 @@ public:
 	~Message();
 	msg_t getID() const;
 
-	std::ostream& dump() const;
-
 	virtual int send(void* socket) = 0;
 
 	void setSequence(uint16_t sequence);
 	void setAddress(zframe_t* address);
 	boost::uuids::uuid getAddress() const;
+
+	virtual void log();
 protected:
 	int sendBytes(void* socket, ByteStream bs, int flags);
 	msg_t m_id;
 	uint16_t m_sequence;
 	boost::uuids::uuid m_address;
+private:
 	DECLARE_LOGGER();
 };
 
@@ -70,12 +71,14 @@ public:
 	void setStatus(uint8_t status);
 
 	int send(void* socket);
+	void log();
 private:
 	KeyValuePair m_headers;
 	TStringVector m_groups;
 	uint16_t m_mailboxPort;
 	uint8_t m_status;
 	std::string m_ip;
+	DECLARE_LOGGER();
 };
 
 class MessageWhisper : public Message
@@ -88,8 +91,10 @@ public:
 	void setContent(zmsg_t* content);
 
 	int send(void* socket);
+	void log();
 private:
 	ByteStream m_content;
+	DECLARE_LOGGER();
 };
 
 class MessageShout : public Message
@@ -105,9 +110,11 @@ public:
 	void setGroup(const std::string& group);
 
 	int send(void* socket);
+	void log();
 private:
 	std::string m_group;
 	ByteStream m_content;
+	DECLARE_LOGGER();
 };
 
 class MessageJoin : public Message
@@ -121,10 +128,11 @@ public:
 	void setStatus(uint8_t status);
 
 	int send(void* socket);
+	void log();
 private:
 	std::string m_group;
 	uint8_t m_status;
-
+	DECLARE_LOGGER();
 };
 
 class MessageLeave : public Message
@@ -138,9 +146,11 @@ public:
 	void setStatus(uint8_t status);
 
 	int send(void* socket);
+	void log();
 private:
 	std::string m_group;
 	uint8_t m_status;
+	DECLARE_LOGGER();
 };
 
 class MessagePing :public Message
@@ -165,9 +175,11 @@ public:
 
 	std::string key() const;
 	std::string value() const;
+	void log();
 private:
 	std::string m_key;
 	std::string m_value;
+	DECLARE_LOGGER();
 };
 
 

@@ -8,6 +8,8 @@
 #include "Message.h"
 #include <cassert>
 
+DEFINE_LOGGER(MessageHello);
+
 MessageHello::MessageHello()
 	:Message(MSG_HELLO)
 {
@@ -110,4 +112,17 @@ void MessageHello::setMailbox(uint16_t mailboxPort)
 void MessageHello::setStatus(uint8_t status)
 {
 	m_status = status;
+}
+
+void MessageHello::log()
+{
+	LOG() << "MessageHello dump";
+	LOG() << m_ip << ":" << m_mailboxPort;
+	m_headers.log();
+	
+	std::string line = "Groups: ";
+	for (auto it = m_groups.begin(); it != m_groups.end(); ++it)
+		line.append(*it + " ");
+	
+	LOG() << line;
 }

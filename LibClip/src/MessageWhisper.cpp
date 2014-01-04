@@ -8,6 +8,7 @@
 #include "Message.h"
 #include <cassert>
 
+DEFINE_LOGGER(MessageWhisper);
 
 MessageWhisper::MessageWhisper()
 	:Message(MSG_WHISPER)
@@ -60,4 +61,9 @@ void MessageWhisper::setContent(ByteStream content)
 void MessageWhisper::setContent(zmsg_t* content)
 {
 	m_content = ByteStream(zmsg_pop(content));
+}
+
+void MessageWhisper::log()
+{
+	LOG() << m_content;
 }

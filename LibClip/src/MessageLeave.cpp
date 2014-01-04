@@ -8,6 +8,8 @@
 #include "Message.h"
 #include <cassert>
 
+DEFINE_LOGGER(MessageLeave);
+
 MessageLeave::MessageLeave()
 	:Message(MSG_LEAVE)
 {
@@ -70,3 +72,7 @@ void MessageLeave::setStatus(uint8_t status)
 	m_status = status;
 }
 
+void MessageLeave::log()
+{
+	LOG() << m_group;
+}

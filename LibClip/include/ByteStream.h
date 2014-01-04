@@ -88,3 +88,4 @@ private:
 	DECLARE_LOGGER();
 };
 
+std::ostream& operator<< (std::ostream& os, const ByteStream &bs);

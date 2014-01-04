@@ -8,6 +8,8 @@
 #include "Message.h"
 #include <cassert>
 
+DEFINE_LOGGER(MessageJoin);
+
 MessageJoin::MessageJoin()
 	:Message(MSG_JOIN)
 {
@@ -72,3 +74,8 @@ void MessageJoin::setStatus(uint8_t status)
 	m_status = status;
 }
 
+
+void MessageJoin::log()
+{
+	LOG() << m_group;
+}
