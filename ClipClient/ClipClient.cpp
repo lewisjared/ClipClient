@@ -31,12 +31,12 @@ CClipClientApp::CClipClientApp()
 	freopen("CONOUT$", "w", stdout); //redirect cout to the console
 #endif
 
-	initLogging();
+	initLogging("sample.log");
 }
 
 CClipClientApp::~CClipClientApp()
 {
-#ifdef DEBUG
+#ifndef NDEBUG
 	FreeConsole();
 #endif
 }

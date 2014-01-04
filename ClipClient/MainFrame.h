@@ -21,6 +21,7 @@ private:
 	CTaskBarIcon* m_taskbar;
 	CNode* m_node;
 	CClipboardManager* m_clipboard;
+	wxTextCtrl    *m_text;
 
 	DECLARE_EVENT_TABLE();
 	DECLARE_LOGGER();

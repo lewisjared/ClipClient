@@ -68,10 +68,11 @@ void initLogging(const std::string &filename)
 	if(!filename.empty())
 		backend->add_stream( boost::shared_ptr< std::ostream >(new std::ofstream(filename)));
 
-	backend->auto_flush(true);
+	//backend->auto_flush(true);
 
 	typedef logging::sinks::synchronous_sink< logging::sinks::text_ostream_backend > sink_t;
 	boost::shared_ptr< sink_t > sink(new sink_t(backend));
+
 	sink->set_formatter	(
 		logging::expressions::stream << logging::expressions::format_date_time< boost::posix_time::ptime >("TimeStamp", "%b %d %H:%M:%S.%f")
 		<< " <" << severity << "> "

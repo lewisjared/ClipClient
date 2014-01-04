@@ -6,6 +6,8 @@
 #include "Event.h"
 #include "ClipboardManager.h"
 
+#include <wx/textctrl.h>
+
 
 wxBEGIN_EVENT_TABLE(CMainFrame, wxFrame)
 	EVT_MENU(wxID_EXIT,  CMainFrame::OnExit)
@@ -22,13 +24,16 @@ CMainFrame::CMainFrame(const wxString& title, const wxPoint& pos, const wxSize& 
 	m_node = new CNode(this);
 	m_clipboard = new CClipboardManager();
 
+	m_text = new wxTextCtrl(this, wxID_ANY,wxEmptyString,
+		wxPoint(0, 250), wxSize(100, 50), wxTE_MULTILINE);
+
 	SetIcon(wxICON(CLIPCLIENT));
 
 	Bind(ZYRE_EVENT, &CMainFrame::OnZyreEvent, this);
 	Bind(wxEVT_HOTKEY, &CMainFrame::OnHotkey, this);
 
 	//Register a hotkey
-	if (!RegisterHotKey(1000, wxMOD_SHIFT | wxMOD_CONTROL, 0x43))
+	if (!RegisterHotKey(1000, wxMOD_SHIFT | wxMOD_CONTROL, 'V'))
 	{
 		LOG_WARN() << "Could not register hotkey";
 	}
@@ -65,7 +70,6 @@ void CMainFrame::OnHotkey(wxKeyEvent& event)
 {
 	LOG() << "Captured hotkey";
 
-	//m_clipboard->simulateCopy();
 	std::string text;
 
 	wxTextDataObject* obj = m_clipboard->getText();
@@ -74,6 +78,7 @@ void CMainFrame::OnHotkey(wxKeyEvent& event)
 	{
 		LOG() << "Text in clipboard: " << obj->GetText();
 		text = obj->GetText();
+		*m_text << wxString(text);
 	}
 
 	m_node->shout("ALL", text);
