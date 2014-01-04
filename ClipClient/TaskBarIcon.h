@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Logger.h"
 #include <wx/taskbar.h>
 
 class CTaskBarIcon :
@@ -12,5 +13,7 @@ private:
 	void OnDoubleClick(wxTaskBarIconEvent& event);
 
 	wxWindow* m_parent;
+
+	DECLARE_LOGGER();
 };
 
