@@ -33,7 +33,7 @@ class Message
 {
 public:
 	Message(msg_t id);
-	~Message();
+	virtual ~Message();
 	msg_t getID() const;
 
 	virtual int send(void* socket) = 0;
