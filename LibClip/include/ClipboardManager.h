@@ -55,8 +55,8 @@ public:
 	 */
 	void simulatePaste() const;
 private:
-	void simulateKeyPress(uint8_t vk) const;
-	void simulateKeyRelease(uint8_t vk) const;
+	void simulateKeyPress(uint16_t vk) const;
+	void simulateKeyRelease(uint16_t vk) const;
 	DECLARE_LOGGER();
 };
 

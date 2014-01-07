@@ -38,10 +38,10 @@ void CClipboardManager::setClipboard(const std::string &text)
 
 void CClipboardManager::simulateCopy() const
 {
-	simulateKeyPress(VK_LCONTROL);
-	simulateKeyPress(0x43);
-	simulateKeyRelease(0x43);
-	simulateKeyRelease(VK_LCONTROL);
+	//simulateKeyPress(VK_LCONTROL);
+	simulateKeyPress('C');
+	simulateKeyRelease('C');
+	//simulateKeyRelease(VK_LCONTROL);
 }
 
 void CClipboardManager::simulateCut() const
@@ -60,19 +60,15 @@ void CClipboardManager::simulatePaste() const
 	simulateKeyRelease(VK_LCONTROL);
 }
 
-void CClipboardManager::simulateKeyPress(uint8_t vk) const
+void CClipboardManager::simulateKeyPress(uint16_t vk) const
 {
-	INPUT key;
+	INPUT key = {0};
 	key.type = INPUT_KEYBOARD;
-	key.ki.wScan = 0; // hardware scan code for key
-	key.ki.time = 0;
-	key.ki.dwExtraInfo = 0;
 	key.ki.wVk = vk; 
-	key.ki.dwFlags = 0; // 0 for key press
 	SendInput(1, &key, sizeof(INPUT));
 }
 
-void CClipboardManager::simulateKeyRelease(uint8_t vk) const
+void CClipboardManager::simulateKeyRelease(uint16_t vk) const
 {
 	INPUT key;
 	key.type = INPUT_KEYBOARD;
