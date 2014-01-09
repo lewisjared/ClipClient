@@ -90,3 +90,9 @@ void CNode::shout(const std::string &group, const std::string &text)
 	bs.putString(text);
 	shout(group,bs);
 }
+
+
+UserList CNode::getUserList() const
+{
+	return m_userList;
+}

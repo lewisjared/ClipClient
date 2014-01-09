@@ -7,12 +7,12 @@
 
 #include "ByteStream.h"
 #include "Logger.h"
+#include "User.h"
 
 class NodeThread;
-
-
 class CEvent;
 class wxEvtHandler;
+
 
 class CNode
 {
@@ -30,8 +30,10 @@ public:
 	void whisper(boost::uuids::uuid target, const std::string &text);
 	void shout(const std::string &group, const ByteStream& bs);
 	void shout(const std::string &group, const std::string &text);
+	UserList getUserList() const;
 private:
 	NodeThread* m_node;
+	UserList m_userList;
 	void* m_pipe;
 	zctx_t* m_context;
 	DECLARE_LOGGER();
