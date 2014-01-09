@@ -6,11 +6,12 @@
 
 #include "Zyre.h"
 #include "KeyValuePair.h"
+#include "User.h"
 
 class Message;
 
 
-class Peer
+class Peer : public CUser
 {
 public:
 	Peer (zctx_t* context, boost::uuids::uuid nodeUUID, boost::uuids::uuid peerUUID);
@@ -36,7 +37,6 @@ public:
 	bool isConnected();
 	TStringVector getGroups() const;
 	void setGroups(TStringVector val);
-	KeyValuePair getHeaders() const;
 	void setHeaders(KeyValuePair val);
 private:
 	zctx_t* m_context;
@@ -44,11 +44,8 @@ private:
 	bool m_connected;
 	bool m_closed;
 	int64_t m_lastSeen;
-	boost::uuids::uuid m_peerUUID;
 	boost::uuids::uuid m_nodeUUID;
 	void* m_mailbox;
-
-	KeyValuePair m_headers;
 	TStringVector m_groups;
 	DECLARE_LOGGER();
 };

@@ -138,6 +138,9 @@
     <ClCompile Include="src\Logger.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\User.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\ss\array.h">
@@ -241,6 +244,9 @@
     </ClInclude>
     <ClInclude Include="include\LoggerFormat.h">
       <Filter>Header Files\log</Filter>
+    </ClInclude>
+    <ClInclude Include="include\User.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
