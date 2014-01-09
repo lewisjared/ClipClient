@@ -120,7 +120,6 @@
     <ClInclude Include="include\Event.h" />
     <ClInclude Include="include\KeyValuePair.h" />
     <ClInclude Include="include\Logger.h" />
-    <ClInclude Include="include\LoggerFormat.h" />
     <ClInclude Include="include\Node.h" />
     <ClInclude Include="include\Plugin\DynamicLibrary.h" />
     <ClInclude Include="include\Plugin\Plugin.h" />

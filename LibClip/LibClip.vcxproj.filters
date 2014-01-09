@@ -242,9 +242,6 @@
     <ClInclude Include="include\Logger.h">
       <Filter>Header Files\log</Filter>
     </ClInclude>
-    <ClInclude Include="include\LoggerFormat.h">
-      <Filter>Header Files\log</Filter>
-    </ClInclude>
     <ClInclude Include="include\User.h">
       <Filter>Header Files</Filter>
     </ClInclude>
