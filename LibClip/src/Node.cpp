@@ -1,18 +1,22 @@
 #include "Node.h"
 #include "NodeThread.h"
 #include "Event.h"
+#include "Zyre.h"
 
-#include "wx/event.h"
+#include "boost/uuid/uuid_io.hpp"
+
 
 DEFINE_LOGGER(CNode);
 
 CNode::CNode(wxEvtHandler* handler)
+	:wxEvtHandler()
 {
 	m_context = zctx_new();
 	m_node = new NodeThread(m_context);
-	if (handler)
-		m_node->setEventHandler(handler);
+	m_node->setEventHandler(this);
 	m_pipe = m_node->run();
+
+	Bind(ZYRE_EVENT, &CNode::onZyreEvent, this);
 }
 
 
@@ -92,7 +96,29 @@ void CNode::shout(const std::string &group, const std::string &text)
 }
 
 
-UserList CNode::getUserList() const
+UserList CNode::getUserList()
 {
-	return m_userList;
+	wxMutexLocker locker(m_mutex);
+	return m_userList; //Puts a copy on the stack before the local lock is destroyed
+}
+
+void CNode::onZyreEvent(wxThreadEvent& event)
+{
+	CEvent evt = event.GetPayload<CEvent>();
+
+	wxMutexLocker locker(m_mutex);
+	if (evt.getType() == EVT_ENTER)
+	{
+		LOG() << "Adding user " << evt.getFrom() << " to userlist";
+		CUser newUser(evt.getFrom(), evt.getHeaders());
+		m_userList.addUser(newUser);
+	} else if (evt.getType() == EVT_EXIT)
+	{
+		LOG() << "Removing user " << evt.getFrom() << " from userlist";
+		CUser user = m_userList.getUserByUUID(evt.getFrom());
+		m_userList.removeUser(user);
+	}
+
+	//Forwards event on to the main application handler
+	m_handler->ProcessEvent(event);
 }

@@ -9,12 +9,15 @@
 #include "Logger.h"
 #include "User.h"
 
+#include "wx/event.h"
+
 class NodeThread;
 class CEvent;
 class wxEvtHandler;
+class wxMutex;
 
 
-class CNode
+class CNode : public wxEvtHandler
 {
 public:
 	CNode(wxEvtHandler* handler = NULL);
@@ -30,8 +33,11 @@ public:
 	void whisper(boost::uuids::uuid target, const std::string &text);
 	void shout(const std::string &group, const ByteStream& bs);
 	void shout(const std::string &group, const std::string &text);
-	UserList getUserList() const;
+	UserList getUserList();
 private:
+	void onZyreEvent(wxThreadEvent& event);
+	wxEvtHandler* m_handler;
+	wxMutex m_mutex;
 	NodeThread* m_node;
 	UserList m_userList;
 	void* m_pipe;
