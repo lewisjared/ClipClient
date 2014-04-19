@@ -13,12 +13,6 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="Header Files\ss">
-      <UniqueIdentifier>{7334cf31-d38e-48e7-a9b1-a32175d3687a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\ss">
-      <UniqueIdentifier>{32957a4d-977e-4967-8f8b-386701fc99bb}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\log">
       <UniqueIdentifier>{6dae20ca-f519-4104-95c8-94899871904e}</UniqueIdentifier>
     </Filter>
@@ -45,30 +39,6 @@
     <None Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\ss\bulk_setting.cpp">
-      <Filter>Source Files\ss</Filter>
-    </ClCompile>
-    <ClCompile Include="src\ss\file_storage.cpp">
-      <Filter>Source Files\ss</Filter>
-    </ClCompile>
-    <ClCompile Include="src\ss\configuration.cpp">
-      <Filter>Source Files\ss</Filter>
-    </ClCompile>
-    <ClCompile Include="src\ss\defaults_holder.cpp">
-      <Filter>Source Files\ss</Filter>
-    </ClCompile>
-    <ClCompile Include="src\ss\enum.cpp">
-      <Filter>Source Files\ss</Filter>
-    </ClCompile>
-    <ClCompile Include="src\ss\error.cpp">
-      <Filter>Source Files\ss</Filter>
-    </ClCompile>
-    <ClCompile Include="src\ss\registry_storage.cpp">
-      <Filter>Source Files\ss</Filter>
-    </ClCompile>
-    <ClCompile Include="src\ss\util.cpp">
-      <Filter>Source Files\ss</Filter>
-    </ClCompile>
     <ClCompile Include="src\ByteStream.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -143,51 +113,6 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="include\ss\array.h">
-      <Filter>Header Files\ss</Filter>
-    </ClInclude>
-    <ClInclude Include="include\ss\fwd.h">
-      <Filter>Header Files\ss</Filter>
-    </ClInclude>
-    <ClInclude Include="include\ss\bulk_setting.h">
-      <Filter>Header Files\ss</Filter>
-    </ClInclude>
-    <ClInclude Include="include\ss\configuration.h">
-      <Filter>Header Files\ss</Filter>
-    </ClInclude>
-    <ClInclude Include="include\ss\const_.h">
-      <Filter>Header Files\ss</Filter>
-    </ClInclude>
-    <ClInclude Include="include\ss\defaults_holder.h">
-      <Filter>Header Files\ss</Filter>
-    </ClInclude>
-    <ClInclude Include="include\ss\enum.h">
-      <Filter>Header Files\ss</Filter>
-    </ClInclude>
-    <ClInclude Include="include\ss\error.h">
-      <Filter>Header Files\ss</Filter>
-    </ClInclude>
-    <ClInclude Include="include\ss\file_storage.h">
-      <Filter>Header Files\ss</Filter>
-    </ClInclude>
-    <ClInclude Include="include\ss\registry_storage.h">
-      <Filter>Header Files\ss</Filter>
-    </ClInclude>
-    <ClInclude Include="include\ss\setting.h">
-      <Filter>Header Files\ss</Filter>
-    </ClInclude>
-    <ClInclude Include="include\ss\setting_storage.h">
-      <Filter>Header Files\ss</Filter>
-    </ClInclude>
-    <ClInclude Include="include\ss\template.h">
-      <Filter>Header Files\ss</Filter>
-    </ClInclude>
-    <ClInclude Include="include\ss\ts.h">
-      <Filter>Header Files\ss</Filter>
-    </ClInclude>
-    <ClInclude Include="include\ss\util.h">
-      <Filter>Header Files\ss</Filter>
-    </ClInclude>
     <ClInclude Include="src\Beacon.h">
       <Filter>Header Files\network</Filter>
     </ClInclude>

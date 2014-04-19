@@ -103,14 +103,6 @@
     <ClCompile Include="src\Peer.cpp" />
     <ClCompile Include="src\Plugin\DynamicLibrary.cpp" />
     <ClCompile Include="src\Plugin\PluginManager.cpp" />
-    <ClCompile Include="src\ss\bulk_setting.cpp" />
-    <ClCompile Include="src\ss\configuration.cpp" />
-    <ClCompile Include="src\ss\defaults_holder.cpp" />
-    <ClCompile Include="src\ss\enum.cpp" />
-    <ClCompile Include="src\ss\error.cpp" />
-    <ClCompile Include="src\ss\file_storage.cpp" />
-    <ClCompile Include="src\ss\registry_storage.cpp" />
-    <ClCompile Include="src\ss\util.cpp" />
     <ClCompile Include="src\User.cpp" />
     <ClCompile Include="src\ZThreaded.cpp" />
   </ItemGroup>
@@ -125,21 +117,6 @@
     <ClInclude Include="include\Plugin\Plugin.h" />
     <ClInclude Include="include\Plugin\PluginManager.h" />
     <ClInclude Include="include\Settings.h" />
-    <ClInclude Include="include\ss\array.h" />
-    <ClInclude Include="include\ss\bulk_setting.h" />
-    <ClInclude Include="include\ss\configuration.h" />
-    <ClInclude Include="include\ss\const_.h" />
-    <ClInclude Include="include\ss\defaults_holder.h" />
-    <ClInclude Include="include\ss\enum.h" />
-    <ClInclude Include="include\ss\error.h" />
-    <ClInclude Include="include\ss\file_storage.h" />
-    <ClInclude Include="include\ss\fwd.h" />
-    <ClInclude Include="include\ss\registry_storage.h" />
-    <ClInclude Include="include\ss\setting.h" />
-    <ClInclude Include="include\ss\setting_storage.h" />
-    <ClInclude Include="include\ss\template.h" />
-    <ClInclude Include="include\ss\ts.h" />
-    <ClInclude Include="include\ss\util.h" />
     <ClInclude Include="include\User.h" />
     <ClInclude Include="include\ZThreaded.h" />
     <ClInclude Include="include\Zyre.h" />
