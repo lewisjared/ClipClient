@@ -13,9 +13,11 @@ public:
 
 	virtual int OnExit();
 	virtual bool OnInit();
+	bool ParseCommandLine();
 
 private:
 	CMainFrame* m_mainFrame;
+
 	DECLARE_LOGGER();
 };
 
