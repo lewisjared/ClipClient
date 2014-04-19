@@ -9,9 +9,7 @@
 
 #include "Logger.h"
 
-using namespace ss;
-
-#include <cstring>
+#include "Settings.h"
 #include "wx/cmdline.h"
 
 
@@ -50,19 +48,49 @@ bool CClipClientApp::OnInit()
 
 	if ( !wxApp::OnInit() )
 		return false;
-	bool validCMDLine = ParseCommandLine();
 
-	if (validCMDLine)
+	m_mainFrame = new CMainFrame("Test",wxDefaultPosition, wxDefaultSize);
+	m_mainFrame->Show();
+
+	return true;
+}
+
+
+void CClipClientApp::OnInitCmdLine(wxCmdLineParser& parser)
+{
+	wxApp::OnInitCmdLine(parser);
+
+	//Add desired command line options
+	static const wxCmdLineEntryDesc cmdLineDesc[] =
 	{
+		{
+			wxCMD_LINE_OPTION,
+			"c",
+			"configfile",
+			"Location of the configuration file",
+			wxCMD_LINE_VAL_STRING,
+			wxCMD_LINE_PARAM_OPTIONAL
+		},
+		wxCMD_LINE_DESC_END
+	};
+	parser.SetDesc(cmdLineDesc);
+}
 
-		m_mainFrame = new CMainFrame("Test",wxDefaultPosition, wxDefaultSize);
-		m_mainFrame->Show();
-		std::string filename = setting<std::string>(TTEXT("test"));
+bool CClipClientApp::OnCmdLineParsed(wxCmdLineParser& parser)
+{
+	wxApp::OnCmdLineParsed(parser);
+	wxString tempStr;
+	
+	//Set the config file location
+	// Default location is config.ini
+	tempStr = "config.ini";
+	parser.Found("configfile", &tempStr);
+	ss::def_cfg().add_storage(TTEXT(""), new ss::file_storage(tempStr.ToStdString()));
 
-		return true;
-	}
+	//Extract config params into settings
+	ss::setting(TTEXT("test")) = "Hello";
 
-	return false;
+	return true;
 }
 
 int CClipClientApp::OnExit()
@@ -70,44 +98,4 @@ int CClipClientApp::OnExit()
 	LOG() << "Exiting application";
 
 	return 1;
-}
-
-bool CClipClientApp::ParseCommandLine()
-{
-	bool isValidCMDLine = false;
-
-	static const wxCmdLineEntryDesc cmdLineDesc[] = 
-	{
-		{ wxCMD_LINE_OPTION, "c", "config-file", "Location of the configuration file", wxCMD_LINE_VAL_STRING,wxCMD_LINE_PARAM_OPTIONAL},
-		{ wxCMD_LINE_NONE}
-	};
-
-	wxCmdLineParser parser(cmdLineDesc, wxApp::argc, wxApp::argv);
-	switch (parser.Parse())
-	{
-	case -1:
-		LOG_WARN() << "Help was given via commandline";
-		break;
-
-	case 0:
-		LOG() << "Commandline parsing complete";
-		isValidCMDLine = true;
-		break;
-
-	default:
-		LOG_ERR() << "Syntax error in the commandline";
-		break;
-	}
-
-	//Extract the data from the parser and 
-	if (isValidCMDLine)
-	{
-		wxString str = "config.ini";
-		parser.Found("config-file",&str);
-		ss::def_cfg().add_storage(TTEXT(""), new file_storage(str.ToStdString()));
-		setting(TTEXT("test")) = "hello";
-	}
-
-	//Return if the command line was parsed correctly
-	return isValidCMDLine;
 }

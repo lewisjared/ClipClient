@@ -13,7 +13,8 @@ public:
 
 	virtual int OnExit();
 	virtual bool OnInit();
-	bool ParseCommandLine();
+	virtual void OnInitCmdLine(wxCmdLineParser& parser);
+	virtual bool OnCmdLineParsed(wxCmdLineParser& parser);
 
 private:
 	CMainFrame* m_mainFrame;
