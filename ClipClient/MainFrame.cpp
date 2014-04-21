@@ -24,8 +24,29 @@ CMainFrame::CMainFrame(const wxString& title, const wxPoint& pos, const wxSize& 
 	m_node = new CNode(this);
 	m_clipboard = new CClipboardManager();
 
-	m_text = new wxTextCtrl(this, wxID_ANY,wxEmptyString,
-		wxPoint(0, 250), wxSize(100, 50), wxTE_MULTILINE);
+	m_text = new wxTextCtrl(this, wxID_ANY,wxEmptyString, wxDefaultPosition, wxSize(100, 50), wxTE_MULTILINE);
+	wxButton* okButton = new wxButton(this, wxID_OK, "OK");
+	Connect(wxID_OK, wxEVT_BUTTON, wxCommandEventHandler(CMainFrame::OnOk) );
+	wxButton* cancelButton = new wxButton(this, wxID_CANCEL, "Cancel");
+	wxBoxSizer* topLevel = new wxBoxSizer(wxVERTICAL);
+
+	topLevel->Add(
+		m_text,
+		1,
+		wxEXPAND | wxALL,
+		10 );
+
+	wxBoxSizer* buttonBox = new wxBoxSizer(wxHORIZONTAL);
+	buttonBox->Add(
+		okButton,
+		0, wxALL, 10 );
+	buttonBox->Add(
+		cancelButton,
+		0, wxALL, 10 );
+	
+	topLevel->Add(buttonBox, 0, wxALIGN_CENTRE);
+
+	SetSizerAndFit(topLevel);	
 
 	SetIcon(wxICON(CLIPCLIENT));
 
@@ -50,6 +71,11 @@ CMainFrame::~CMainFrame()
 void CMainFrame::OnExit(wxCommandEvent& event)
 {
 	Close(true);
+}
+
+void CMainFrame::OnOk(wxCommandEvent& event)
+{
+	m_node->shout("ALL", "Hello");
 }
 
 void CMainFrame::OnZyreEvent(wxThreadEvent& event)

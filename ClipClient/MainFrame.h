@@ -14,6 +14,7 @@ public:
 	
 private:
 	void OnExit(wxCommandEvent& event);
+	void OnOk(wxCommandEvent& event);
 	void OnZyreEvent(wxThreadEvent& event);
 	void OnHotkey(wxKeyEvent& event);
 	bool RegisterHotKey(int hotkeyId, int modifiers, int keycode);

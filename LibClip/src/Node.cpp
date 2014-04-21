@@ -12,6 +12,7 @@ CNode::CNode(wxEvtHandler* handler)
 	:wxEvtHandler()
 {
 	m_context = zctx_new();
+	m_handler = handler;
 	m_node = new NodeThread(m_context);
 	m_node->setEventHandler(this);
 	m_pipe = m_node->run();
